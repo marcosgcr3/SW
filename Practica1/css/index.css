@@ -43,8 +43,8 @@ body{
 .nav-responsive{
     background-color: #8a3924;
     color: #d6d5c4;
-    padding: 5px 10px;
-    border-radius: 5px;
+    padding: 5px 10px;/*grosor del área de relleno*/
+    border-radius: 5px; /*redondeo los bordes*/
     cursor: pointer;
     display: none;
 }
