@@ -1,13 +1,74 @@
+
 body{
     background-color: #d6d5c4;
     color: #8a3924;
     font-size: 18px;
     font-family: 'Arial';
 }
-.center {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 25%;
-    height: 25%;
+.img {
+    width: 50%;
+    height: 50%;
+
+    max-width: 350px;}
+.container-encabezado{
+    
+    /*position: fixed;*/
+    
+    width: 100%;
+    top: 0;
+    left: 0;
+    
 }
+.container-encabezado header{
+    
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+}
+.container-encabezado  header ul{ /*pongo la lista en una fila */
+    display: flex;
+    list-style: none;
+}
+.container-encabezado header ul li a{
+    
+    font-size: 20px;
+    
+    color: #8a3924;
+    margin: 0 20px;
+    padding: 3px;
+    text-decoration: none;
+}
+.nav-responsive{
+    background-color: #8a3924;
+    color: #d6d5c4;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: none;
+}
+ 
+ /*si la screen es menor a 1000 px implementados una nav bar para movernos por el menu
+ quitamos la nav normal y bloqueamos la de navegacion*/   
+@media screen and (max-width: 1000px){
+    nav{
+        display: none;
+    }
+    .nav-responsive{
+        display: block;
+    }
+    nav.responsive{
+        display: block;
+        position: absolute;
+        right: 0;
+
+    }
+    nav.responsive ul{ /*pongo la lista en columnas */
+        display: block !important;
+       
+    }
+
+    
+}
+
