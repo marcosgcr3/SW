@@ -1,0 +1,13 @@
+body{
+    background-color: #d6d5c4;
+    color: #8a3924;
+    font-size: 25px;
+    font-family: 'Arial';
+}
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 25%;
+    height: 25%;
+}
