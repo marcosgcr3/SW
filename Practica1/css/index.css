@@ -41,12 +41,14 @@ body{
     text-decoration: none;
 }
 .nav-responsive{
+    
     background-color: #8a3924;
     color: #d6d5c4;
     padding: 5px 10px;/*grosor del área de relleno*/
     border-radius: 5px; /*redondeo los bordes*/
     cursor: pointer;
     display: none;
+   
 }
  
  /*si la screen es menor a 1000 px implementados una nav bar para movernos por el menu
@@ -62,12 +64,20 @@ body{
         display: block;
         position: absolute;
         right: 0;
+        top: 140px;
+        width: 180px;
 
     }
     nav.responsive ul{ /*pongo la lista en columnas */
         display: block !important;
        
     }
+    nav.responsive ul li{
+        border-bottom: 1px solid #fff;
+        padding: 10px 0;
+        top: 0px;
+    }
+
 
     
 }
