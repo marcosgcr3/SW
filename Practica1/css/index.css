@@ -26,6 +26,14 @@ body{
     width: auto;
     
   }
+
+.imagen{
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 20px;
+}
 .imagen img{
     width: 20%;
     height:20%;
