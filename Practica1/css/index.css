@@ -5,18 +5,30 @@ body{
     font-size: 18px;
     font-family: 'Arial';
 }
-.img {
-    width: 50%;
-    height: 50%;
 
-    max-width: 350px;}
 .container-encabezado{
     
-    /*position: fixed;*/
+   
     
     width: 100%;
     top: 0;
     left: 0;
+    z-index: 99;
+    
+}
+.container-encabezado .logo{
+    cursor: pointer;
+    margin-right: auto;
+  }
+  
+  .logo img{
+    height: 150px;
+    width: auto;
+    
+  }
+.imagen img{
+    width: 20%;
+    height:20%;
     
 }
 .container-encabezado header{
@@ -33,12 +45,16 @@ body{
 }
 .container-encabezado header ul li a{
     
-    font-size: 20px;
-    
+   
+    text-align: none;
     color: #8a3924;
-    margin: 0 20px;
+    margin: 0 15px;
     padding: 3px;
+    ;
     text-decoration: none;
+}
+.container-encabezado header nav ul li a:hover{
+    color: #441d04;
 }
 .nav-responsive{
     
@@ -56,17 +72,19 @@ body{
 @media screen and (max-width: 1000px){
     nav{
         display: none;
+        cursor: pointer;
     }
     .nav-responsive{
         display: block;
     }
     nav.responsive{
         display: block;
-        position: absolute;
-        right: 0;
+        position:absolute ;
+        right: 0px;
         top: 140px;
-        width: 180px;
-
+        width: 190px;
+        z-index: 1;
+        background-color: #d6d5c4;
     }
     nav.responsive ul{ /*pongo la lista en columnas */
         display: block !important;
@@ -75,10 +93,9 @@ body{
     nav.responsive ul li{
         border-bottom: 1px solid #fff;
         padding: 10px 0;
-        top: 0px;
+        
     }
 
 
     
 }
-
