@@ -1,0 +1,75 @@
+body{
+    background-color: #d6d5c4;
+    color: #8a3924;
+    font-size: 18px;
+    font-family: 'Arial';
+}
+a{
+    color: burlywood;
+}
+.logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    height: 50%;
+}
+.links{
+    color:goldenrod;
+}
+
+.container-encabezado{
+    
+    /*position: fixed;*/
+    
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 99;
+}
+.container-encabezado header{
+    
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+.container-encabezado  header ul{ /*pongo la lista en una fila */
+    display: flex;
+    list-style: none;
+}
+.container-encabezado header ul li a{
+    
+    font-size: 20px;
+    
+    color: #8a3924;
+    margin: 0 20px;
+    padding: 3px;
+    text-decoration: none;
+}
+
+.name label,
+  .email label {
+    width: 100px; /* Ancho fijo para las etiquetas */
+    display: inline-block;
+    text-align: right;
+  }
+
+.button{
+    width: 100px; /* Ancho del botón */
+    height: 50px; /* Altura del botón */
+    font-size: 18px;
+    font-family: 'Arial';
+}
+
+.nav-responsive{
+    
+    background-color: #8a3924;
+    color: #d6d5c4;
+    padding: 5px 10px;/*grosor del área de relleno*/
+    border-radius: 5px; /*redondeo los bordes*/
+    cursor: pointer;
+    display: none;
+   
+}

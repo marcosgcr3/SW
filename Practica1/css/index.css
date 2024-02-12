@@ -16,6 +16,7 @@ body{
     z-index: 99;
     
 }
+
 .container-encabezado .logo{
     cursor: pointer;
     margin-right: auto;
@@ -24,20 +25,16 @@ body{
   .logo img{
     height: 150px;
     width: auto;
-    
   }
 
 .imagen{
-    margin: auto;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 15px 20px;
 }
+
 .imagen img{
     width: 20%;
     height:20%;
-    
 }
 .container-encabezado header{
     
