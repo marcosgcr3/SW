@@ -7,17 +7,27 @@ body{
 a{
     color: burlywood;
 }
-.logo {
-    display: block;
-    margin-left: auto;
+.container-encabezado .logo{
+    cursor: pointer;
     margin-right: auto;
-    width: 50%;
-    height: 50%;
-}
+  }
 .links{
     color:goldenrod;
 }
+.logo img{
+    height: 150px;
+    width: auto;
+  }
 
+.imagen{
+    display: flex;
+    justify-content: center;
+}
+
+.imagen img{
+    width: 20%;
+    height:20%;
+}
 .container-encabezado{
     
     /*position: fixed;*/

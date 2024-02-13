@@ -1,0 +1,106 @@
+
+body{
+    background-color: #8a3924;
+    color: #d6d5c4;
+    font-size: 18px;
+    font-family: 'Arial';
+}
+
+.container-encabezado{
+    
+   
+    
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    
+}
+
+.container-encabezado .logo{
+    cursor: pointer;
+    margin-right: auto;
+  }
+  
+  .logo img{
+    height: 150px;
+    width: auto;
+  }
+
+.imagen{
+    display: flex;
+    justify-content: center;
+}
+
+.imagen img{
+    width: 20%;
+    height:20%;
+}
+.container-encabezado header{
+    
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+}
+.container-encabezado  header ul{ /*pongo la lista en una fila */
+    display: flex;
+    list-style: none;
+}
+.container-encabezado header ul li a{
+    
+   
+    text-align: none;
+    color: #d6d5c4;
+    margin: 0 15px;
+    padding: 3px;
+    ;
+    text-decoration: none;
+}
+.container-encabezado header nav ul li a:hover{
+    color: #441d04;
+}
+.nav-responsive{
+    
+    background-color: #d6d5c4;
+    color: #8a3924;
+    padding: 5px 10px;/*grosor del área de relleno*/
+    border-radius: 5px; /*redondeo los bordes*/
+    cursor: pointer;
+    display: none;
+   
+}
+ 
+ /*si la screen es menor a 1000 px implementados una nav bar para movernos por el menu
+ quitamos la nav normal y bloqueamos la de navegacion*/   
+@media screen and (max-width: 1000px){
+    nav{
+        display: none;
+        cursor: pointer;
+    }
+    .nav-responsive{
+        display: block;
+    }
+    nav.responsive{
+        display: block;
+        position:absolute ;
+        right: 0px;
+        top: 140px;
+        width: 190px;
+        z-index: 1;
+        background-color: #8a3924;
+    }
+    nav.responsive ul{ /*pongo la lista en columnas */
+        display: block !important;
+       
+    }
+    nav.responsive ul li{
+        border-bottom: 1px solid #fff;
+        padding: 10px 0;
+        
+    }
+
+
+    
+}
