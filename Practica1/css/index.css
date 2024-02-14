@@ -1,4 +1,3 @@
-
 body{
     background-color: #d6d5c4;
     color: #8a3924;
@@ -7,9 +6,7 @@ body{
 }
 
 .container-encabezado{
-    
    
-    
     width: 100%;
     top: 0;
     left: 0;
@@ -20,12 +17,12 @@ body{
 .container-encabezado .logo{
     cursor: pointer;
     margin-right: auto;
-  }
+}
   
-  .logo img{
-    height: 150px;
-    width: auto;
-  }
+.logo img{
+height: 150px;
+width: auto;
+}
 
 .imagen{
     display: flex;
@@ -91,6 +88,7 @@ body{
         z-index: 1;
         background-color: #d6d5c4;
     }
+    
     nav.responsive ul{ /*pongo la lista en columnas */
         display: block !important;
        

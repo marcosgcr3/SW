@@ -1,7 +1,7 @@
 
 body{
-    background-color: #8a3924;
-    color: #d6d5c4;
+    background-color: #292a3b;
+    color: #75c3d7;
     font-size: 18px;
     font-family: 'Arial';
 }
@@ -52,7 +52,7 @@ body{
     
    
     text-align: none;
-    color: #d6d5c4;
+    color: #75c3d7;
     margin: 0 15px;
     padding: 3px;
     ;
@@ -63,8 +63,8 @@ body{
 }
 .nav-responsive{
     
-    background-color: #d6d5c4;
-    color: #8a3924;
+    background-color: #75c3d7;
+    color: #292a3b;
     padding: 5px 10px;/*grosor del área de relleno*/
     border-radius: 5px; /*redondeo los bordes*/
     cursor: pointer;
@@ -81,6 +81,7 @@ body{
     }
     .nav-responsive{
         display: block;
+        color: #292a3b;
     }
     nav.responsive{
         display: block;
@@ -89,14 +90,16 @@ body{
         top: 140px;
         width: 190px;
         z-index: 1;
-        background-color: #8a3924;
+        background-color: #292a3b;
+        
     }
+   
     nav.responsive ul{ /*pongo la lista en columnas */
         display: block !important;
        
     }
     nav.responsive ul li{
-        border-bottom: 1px solid #fff;
+        border-bottom: 1px solid #75c3d7;
         padding: 10px 0;
         
     }
