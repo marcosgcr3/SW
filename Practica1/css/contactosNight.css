@@ -83,3 +83,36 @@ a{
     display: none;
    
 }
+@media screen and (max-width: 1000px){
+    nav{
+        display: none;
+        cursor: pointer;
+    }
+    .nav-responsive{
+        display: block;
+        
+    }
+    nav.responsive{
+        display: block;
+        position:absolute ;
+        right: 0px;
+        top: 140px;
+        width: 190px;
+        z-index: 1;
+        background-color: #292a3b;
+        
+    }
+   
+    nav.responsive ul{ /*pongo la lista en columnas */
+        display: block !important;
+       
+    }
+    nav.responsive ul li{
+        border-bottom: 1px solid #75c3d7;
+        padding: 10px 0;
+        
+    }
+
+
+    
+}
