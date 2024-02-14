@@ -39,7 +39,7 @@ width: auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 20px;
+    padding: 10px 20px;
 }
 .container-encabezado  header ul{ /*pongo la lista en una fila */
     display: flex;
@@ -47,12 +47,12 @@ width: auto;
 }
 .container-encabezado header ul li a{
     
-   
+    
     text-align: none;
     color: #8a3924;
-    margin: 0 15px;
+    margin: 0 20px;
     padding: 3px;
-    ;
+    
     text-decoration: none;
 }
 .container-encabezado header nav ul li a:hover{
@@ -84,14 +84,14 @@ width: auto;
         position:absolute ;
         right: 0px;
         top: 140px;
-        width: 190px;
+        
         z-index: 1;
         background-color: #d6d5c4;
     }
     
     nav.responsive ul{ /*pongo la lista en columnas */
         display: block !important;
-       
+        ;
     }
     nav.responsive ul li{
         border-bottom: 1px solid #fff;

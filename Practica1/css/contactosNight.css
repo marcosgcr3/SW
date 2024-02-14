@@ -51,7 +51,7 @@ a{
 }
 .container-encabezado header ul li a{
     
-    font-size: 20px;
+   
     
     color: #75c3d7;
     margin: 0 20px;
@@ -97,7 +97,7 @@ a{
         position:absolute ;
         right: 0px;
         top: 140px;
-        width: 190px;
+        
         z-index: 1;
         background-color: #292a3b;
         
