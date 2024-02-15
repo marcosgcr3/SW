@@ -11,9 +11,8 @@
    
     <body> 
 
-    
         <div class="container-encabezado">
-          <header></header>
+          <?php include("componentes/header.php"); ?>
 
         </div> 
        

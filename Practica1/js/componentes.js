@@ -11,15 +11,6 @@ function mostrarOcultarMenu(){
 }
 
 
-fetch('./componentes/header.html')
-
-  .then(response => response.text())
-  .then(data => {
-    document.querySelector('header').innerHTML = data
-
-  })
-  .catch
-
   function cambiarTema(){
     cambiarCSS();
     cambiarImagen();
@@ -27,13 +18,13 @@ fetch('./componentes/header.html')
 }
 function cambiarCSS(){
     var tema =  document.getElementById('estilo').getAttribute('href');
-    if(tema === 'css/index.css' || tema === 'css/contactos.css'){
+    if(tema === 'css/index.css'){
         document.getElementById('estilo').setAttribute('href','css/indexNight.css');
-        document.getElementById('estilo').setAttribute('href','css/contactosNight.css');
+        
     }
     else{
         document.getElementById('estilo').setAttribute('href','css/index.css');
-        document.getElementById('estilo').setAttribute('href','css/contactos.css');
+       
     }
 }
 

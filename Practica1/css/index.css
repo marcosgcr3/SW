@@ -4,12 +4,6 @@ body{
     font-size: 18px;
     font-family: 'Arial';
 }
-.button {
-    width: 100px; /* Ancho del botón */
-    height: 50px; /* Altura del botón */
-    font-size: 18px;
-    font-family: 'Arial';
-}
 
 .container-encabezado{
    
@@ -74,12 +68,19 @@ width: auto;
     display: none;
    
 }
-.informacion-personal .name label,
-.informacion-personal .email label {
-    width: 500px; /* Ancho fijo para las etiquetas */
+.name label,
+  .email label {
+    width: 100px; /* Ancho fijo para las etiquetas */
     display: inline-block;
     text-align: right;
   }
+
+.button{
+    width: 100px; /* Ancho del botón */
+    height: 50px; /* Altura del botón */
+    font-size: 18px;
+    font-family: 'Arial';
+}
 
 
  /*si la screen es menor a 1000 px implementados una nav bar para movernos por el menu
