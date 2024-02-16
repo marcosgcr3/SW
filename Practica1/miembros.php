@@ -25,27 +25,33 @@
             <h2>Informacion de los miembros del grupo</h2>
             <article id="info_marcos">
                 <h3>Marcos</h3>
-                <a href="mailto:marcos@ucm.es">Correo electronico Marcos</a>
                 <img src="img/marcos.png" alt="Foto_Marcos" width="150" height="150">
-                <p>Descripcion de Marcos</p> 
+                <p></p>
+                <a href="mailto:marcos@ucm.es">Correo electronico Marcos</a>
+                <p>Su forma redondeada y las hendiduras que tiene le ayudan a reducir su resistencia al agua y le permiten nadar 
+                    a gran velocidad.</p> 
             </article>
             <article id="info_pablo">
                 <h3>Pablo</h3>
-                <a href="mailto:pablo@ucm.es">Correo electronico Pablo</a>
                 <img src="img/pablo.png"alt="Foto_Pablo" width="150" height="150">
-                <p>Descripcion de Pablo</p>
+                <p></p>
+                <a href="mailto:pablo@ucm.es">Correo electronico Pablo</a>
+                <p>La semilla que tiene en el lomo va creciendo cada vez más a medida que absorbe los rayos del sol.</p>
             </article>
             <article id="info_alex">
                 <h3>Alex</h3>
-                <a href="mailto:alex@ucm.es">Correo electronico Alex</a>
                 <img src="img/alex.png"alt="Foto_Alex" width="155" height="150">
-                <p>Descripcion de Alex</p>
+                <p></p>
+                <a href="mailto:alex@ucm.es">Correo electronico Alex</a>
+                <p>La llama que tiene en la punta de la cola arde según sus sentimientos. Llamea levemente cuando está alegre y 
+                    arde vigorosamente cuando está enfadado.</p>
             </article>
             <article id="info_val">
                 <h3>Valentina</h3>
-                <a href="mailto:valentina@ucm.es">Correo electronico Valentina</a>
                 <img src="img/valentina.png"alt="Foto_Valentina" width="140" height="150">
-                <p>Descripcion de Valentina</p>
+                <p></p>
+                <a href="mailto:valentina@ucm.es">Correo electronico Valentina</a>
+                <p>Su irregular estructura genética encierra el secreto de su capacidad para adoptar evoluciones de lo más diversas.</p>
             </article>
         </section>
         <script src="js/componentes.js"></script>
