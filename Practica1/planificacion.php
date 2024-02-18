@@ -44,11 +44,11 @@
         <section>
             <h2>Diagrama de Gantt</h2>
             <h3>Practica 1</h3>
-            <img src="img/gantt1.png" alt="Gantt1" width="500" height="300">
+            <img src="img/gantt1.png" alt="Gantt Practica 1" width="700" height="300">
             <h3>Practica 2</h3>
-            <img src="img/gantt2.png" alt="Gantt2" width="500" height="300">
+            <img src="img/gantt2.png" alt="Gantt Pratica 2" width="750" height="220">
             <h3>Practica 3</h3>
-            <img src="img/gantt3.png" alt="Gantt3" width="500" height="300">
+            <img src="img/gantt3.png" alt="Gantt Practica 3" width="1000" height="220">
         </section>
         <script src="js/componentes.js"></script>
     </body>
