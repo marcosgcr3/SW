@@ -35,11 +35,10 @@ width: auto;
 }
 .container-encabezado header{
     
-    margin: auto; 
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px; 
+    padding: 10px 20px; /* espacio en la parte superior e inferior de 10px, espacio a los lados de 20 px para centrar un poco mas*/
 }
 .container-encabezado  header ul{ /*pongo la lista en una fila */
     display: flex;
@@ -50,8 +49,8 @@ width: auto;
     
     text-align: none; 
     color: #8a3924;
-    margin: 0 20px;
-    padding: 3px;
+    margin: 0 20px; /*espacio entre los elementos de la lista */
+    
     
     text-decoration: none;
 }
@@ -62,7 +61,7 @@ width: auto;
     
     background-color: #8a3924;
     color: #d6d5c4;
-    padding: 5px 10px;/*grosor del área de relleno*/
+    padding: 5px 10px;/*espacio entre los bordes del nav-responsive para que el fondo ocupe mas que los margenes del icono*/
     border-radius: 5px; /*redondeo los bordes*/
     cursor: pointer;
     display: none;
@@ -105,7 +104,7 @@ width: auto;
     
     nav.responsive ul{ /*pongo la lista en columnas */
         display: block !important;
-        ;
+        
     }
     nav.responsive ul li{
         border-bottom: 1px solid #fff;

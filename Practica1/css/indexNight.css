@@ -38,11 +38,11 @@ body{
 }
 .container-encabezado header{
     
-    margin: auto;
+    
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: 10px 20px; /* espacio en la parte superior e inferior de 10px, espacio a los lados de 20 px*/
 }
 .container-encabezado  header ul{ /*pongo la lista en una fila */
     display: flex;
@@ -54,12 +54,12 @@ body{
     text-align: none;
     color: #75c3d7;
     margin: 0 20px;
-    padding: 3px;
-    ;
+    
+    
     text-decoration: none;
 }
 .container-encabezado header nav ul li a:hover{
-    color: #441d04;
+    color: #ffffff;
 }
 .nav-responsive{
     
