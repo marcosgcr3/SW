@@ -25,8 +25,8 @@ width: auto;
 }
 
 .imagen{
-    display: flex;
-    justify-content: center;
+    display: flex; /*pongo la imagen en el centro */
+    justify-content: center; /*centro la imagen */
 }
 
 .imagen img{
@@ -35,11 +35,11 @@ width: auto;
 }
 .container-encabezado header{
     
-    margin: auto;
+    margin: auto; 
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: 10px 20px; 
 }
 .container-encabezado  header ul{ /*pongo la lista en una fila */
     display: flex;
@@ -48,7 +48,7 @@ width: auto;
 .container-encabezado header ul li a{
     
     
-    text-align: none;
+    text-align: none; 
     color: #8a3924;
     margin: 0 20px;
     padding: 3px;

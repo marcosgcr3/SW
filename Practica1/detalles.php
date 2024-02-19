@@ -65,6 +65,6 @@
                     se encarga del inventario de los vehículos.
                 </p>
         </ul>
-        <script src="js/componentes.js"></script>
+        <script src="js/cabecera.js"></script>
 </body>
 </html>

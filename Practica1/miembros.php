@@ -48,7 +48,7 @@
                 <p>Descripcion de Valentina</p>
             </article>
         </section>
-        <script src="js/componentes.js"></script>
+        <script src="js/cabecera.js"></script>
         
     </body>
 </html>

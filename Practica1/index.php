@@ -4,7 +4,7 @@
         <link id ="estilo" rel="stylesheet" href="css/index.css">
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="Index" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"/>
         <title>DriveCrafters</title>
     </head>
@@ -38,7 +38,7 @@
             <p>&copy; 2024 DriveCrafters - Todos los derechos reservados</p>
         </footer>
         
-        <script src="js/componentes.js"></script>
+        <script src="js/cabecera.js"></script>
         <script src="js/index.js"></script>
         
         

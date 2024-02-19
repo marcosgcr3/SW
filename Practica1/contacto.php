@@ -92,6 +92,6 @@
       </form>
     </div>
     <script src="js/contactos.js"></script>
-    <script src="js/componentes.js"></script>
+    <script src="js/cabecera.js"></script>
   </body>
 </html>
