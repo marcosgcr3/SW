@@ -1,0 +1,136 @@
+body{
+    background-color: #d6d5c4;
+    color: #8a3924;
+    font-size: 18px;
+    font-family: 'Arial';
+}
+
+.container-encabezado{
+   
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    
+}
+
+.container-encabezado .logo{
+    cursor: pointer;
+    margin-right: auto;
+}
+  
+.logo img{
+height: 150px;
+width: auto;
+}
+
+.imagen{
+    display: flex; /*pongo la imagen en el centro */
+    justify-content: center; /*centro la imagen */
+}
+
+.imagen img{
+    width: 20%;
+    height:20%;
+}
+.container-encabezado header{
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px; /* espacio en la parte superior e inferior de 10px, espacio a los lados de 20 px para centrar un poco mas*/
+}
+.container-encabezado  header ul{ /*pongo la lista en una fila */
+    display: flex;
+    list-style: none;
+}
+.container-encabezado header ul li a{
+    
+    
+    text-align: none; 
+    color: #8a3924;
+    margin: 0 20px; /*espacio entre los elementos de la lista */
+    
+    
+    text-decoration: none;
+}
+.container-encabezado header nav ul li a:hover{
+    color: #441d04;
+}
+.nav-responsive{
+    
+    background-color: #8a3924;
+    color: #d6d5c4;
+    padding: 5px 10px;/*espacio entre los bordes del nav-responsive para que el fondo ocupe mas que los margenes del icono*/
+    border-radius: 5px; /*redondeo los bordes*/
+    cursor: pointer;
+    display: none;
+   
+}
+.name label,
+  .email label {
+    width: 100px; /* Ancho fijo para las etiquetas */
+    display: inline-block;
+    text-align: right;
+  }
+
+.button{
+    width: 100px; /* Ancho del botón */
+    height: 50px; /* Altura del botón */
+    font-size: 18px;
+    font-family: 'Arial';
+}
+
+
+ /*si la screen es menor a 1000 px implementados una nav bar para movernos por el menu
+ quitamos la nav normal y bloqueamos la de navegacion*/   
+@media screen and (max-width: 1000px){
+    nav{
+        display: none;
+        cursor: pointer;
+    }
+    .nav-responsive{
+        display: block;
+    }
+    nav.responsive{
+        display: block;
+        position:absolute ;
+        right: 0px;
+        top: 140px;
+        
+        z-index: 1;
+        background-color: #d6d5c4;
+    }
+    
+    nav.responsive ul{ /*pongo la lista en columnas */
+        display: block !important;
+        
+    }
+    nav.responsive ul li{
+        border-bottom: 1px solid #fff;
+        padding: 10px 0;
+        
+    }
+
+
+    
+}
+.Entrar a{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #8a3924;
+    text-decoration: none;
+}
+.container-registro h2{
+    display: flex;
+    justify-content: center;
+   
+}
+.container-registro form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+   
+}
