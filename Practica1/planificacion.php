@@ -13,14 +13,15 @@
             <?php include("componentes/header.php"); ?>
         </div>
         <h1>Planificacion</h1>
-        <p>En esta página se describe la planificación del proyecto.</p>
+        <p>En esta página se describe la planificación del proyecto. Este proyecto lo que se pretende es realizar una Aplicacion Web completa
+            y funcional, en incremental mediante entregas.</p>
         <section>
             <h2>Planificacion de la practica</h2>
             <table>
                <tbody>
                     <tr>
                         <th>Nombre</th>
-                        <th>Fecha</th>
+                        <th>Fecha de entrega</th>
                         <th>Actividad</th>
                     </tr>
                     <tr>
