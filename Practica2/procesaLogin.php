@@ -14,10 +14,30 @@ if ($result->num_rows > 0) {
     $nombreResult = $conn->query($sql);
     $nombre = $nombreResult->fetch_assoc()["nombre"];
     $_SESSION["nombre"] = $nombre;
+    $sql = "SELECT tipo_user FROM usuarios WHERE NIF = '$NIF'";
     
+    $tipoResult = $conn->query($sql);
+    $tipo = $tipoResult->fetch_assoc()["tipo_user"];
+
     
+    if ($tipo == "admin") {
+        $_SESSION["tipo"]= "admin";
+        $_SESSION["esAdmin"] = true;
+        $_SESSION["esMecanico"] = NULL;
+    } else if ($tipo == "mecanico") {
+        $_SESSION["tipo"]= "mecanico";
+        $_SESSION["esMecanico"] = true;
+        $_SESSION["esAdmin"] = NULL;
+    } else {
+        $_SESSION["esAdmin"] = NULL;
+        $_SESSION["esMecanico"] = NULL;
+        
+    }
+
+
+
 } else {
-    $_SESSION["login"] = false;
+    $_SESSION["login"] = NULL;
     echo "Usuario o contraseña incorrectos";
 }
 

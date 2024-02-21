@@ -45,7 +45,14 @@ $NIF = htmlspecialchars(trim(strip_tags($_REQUEST["NIF"])));
             } else {
                 echo "Error: " . $sql . "<br>" . $conn->error;
             }
+
+            $sql = "SELECT tipo_user FROM usuarios WHERE NIF = '$NIF'";
+            $nombreResult = $conn->query($sql);
+            $tipo = $nombreResult->fetch_assoc()["tipo_user"];
+        
+
             $conn->close();
+
 
         }
 

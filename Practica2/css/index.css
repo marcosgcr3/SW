@@ -134,3 +134,7 @@ width: auto;
     flex-direction: column;
    
 }
+.exit{
+    color: #8a3924;
+    text-decoration: none;
+}

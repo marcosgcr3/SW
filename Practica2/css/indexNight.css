@@ -139,3 +139,7 @@ body{
     flex-direction: column;
    
 }
+.exit{
+    color: #75c3d7;
+    text-decoration: none;
+}

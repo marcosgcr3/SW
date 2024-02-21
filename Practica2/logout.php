@@ -5,6 +5,6 @@ unset($_SESSION['nombre']);
 unset($_SESSION['esAdmin']);
 unset($_SESSION['esMecanico']);
 session_destroy();
-echo "<h2><a href='index.php' >SESION CERRADA</a></h2>";
+header("Location: index.php");
 
 ?>
