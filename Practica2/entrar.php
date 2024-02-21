@@ -30,9 +30,7 @@
             <h2><a href="login.php">INICIAR SESION</a></h2>
             <h2><a href="registro.php">NO TENGO CUENTA</a></h2>
         </div>
-        <footer>
-            <p>&copy; 2024 DriveCrafters - Todos los derechos reservados</p>
-        </footer>
+        <?php include("componentes/pie.php"); ?>
         
         <script src="js/cabecera.js"></script>
         <script src="js/index.js"></script>

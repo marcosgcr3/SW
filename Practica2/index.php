@@ -31,12 +31,9 @@
         
 
        <div class="imagen">
-        <?php
-        if ($modoOscuro) {
-            echo '<img src="img/LogoFondoInvertido.png" id="imagenPrincipal" alt="centrado">';
-        }else{
-            echo '<img src="img/LogoFondo.png" id="imagenPrincipal" alt="centrado">';}
-        ?>
+        
+            <img src="img/foto1.jpg" id="imagenPrincipal" alt="centrado">
+        
         </div>
         
        
@@ -50,10 +47,8 @@
             <p>Para mas informacion pulse <a href="contacto.html">aqui.</a> </p>
         </div>
 
-        <footer>
-            <p>&copy; 2024 DriveCrafters - Todos los derechos reservados</p>
-        </footer>
-        
+       
+        <?php include("componentes/pie.php"); ?>
         <script src="js/cabecera.js"></script>
         <script src="js/index.js"></script>
         

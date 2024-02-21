@@ -7,12 +7,12 @@
     <head>
    
         <?php
-         // Agrega aquí tus estilos adicionales según el estado de $modoOscuro
+        
 
-        if ($modoOscuro) {
-            echo '<link id ="estilo" rel="stylesheet" href="css/indexNight.css">';
-        }else{
-            echo '<link id ="estilo" rel="stylesheet" href="css/index.css">';}
+            if ($modoOscuro) {
+                echo '<link id ="estilo" rel="stylesheet" href="css/indexNight.css">';
+            }else{
+                echo '<link id ="estilo" rel="stylesheet" href="css/index.css">';}
         ?>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -38,9 +38,7 @@
 
        </div> 
        
-        <footer>
-            <p>&copy; 2024 DriveCrafters - Todos los derechos reservados</p>
-        </footer>
+       <?php include("componentes/pie.php"); ?>
         
         <script src="js/cabecera.js"></script>
         <script src="js/index.js"></script>

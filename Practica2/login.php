@@ -27,7 +27,7 @@ $modoOscuro = isset($_COOKIE['modoOscuro']) && $_COOKIE['modoOscuro'] === 'activ
 
         </div> 
 
-        <div class="container-login">
+        <div class="container-registro">
             <h2>Login Usuario</h2>
 
             <form action="ProcesaLogin.php" method="post">
@@ -47,9 +47,7 @@ $modoOscuro = isset($_COOKIE['modoOscuro']) && $_COOKIE['modoOscuro'] === 'activ
        
 
         
-        <footer>
-            <p>&copy; 2024 DriveCrafters - Todos los derechos reservados</p>
-        </footer>
+        <?php include("componentes/pie.php"); ?>
         
         <script src="js/cabecera.js"></script>
         <script src="js/index.js"></script>

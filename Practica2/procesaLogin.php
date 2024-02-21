@@ -6,7 +6,7 @@ $password = htmlspecialchars(trim(strip_tags($_REQUEST["password"])));
 $conn=mysqli_connect("localhost", "root", "", "DriveCrafters");
 $sql = "SELECT * FROM usuarios WHERE NIF = '$NIF' AND password = '$password'";
 $result = $conn->query($sql);
-
+$modoOscuro = isset($_COOKIE['modoOscuro']) && $_COOKIE['modoOscuro'] === 'activado';
 
 if ($result->num_rows > 0) {
     $_SESSION["login"] = true;
@@ -48,7 +48,13 @@ if ($result->num_rows > 0) {
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <link id="estilo" rel="stylesheet" href="css/index.css">
+    <?php
+       
+       if ($modoOscuro) {
+           echo '<link id ="estilo" rel="stylesheet" href="css/indexNight.css">';
+       }else{
+           echo '<link id ="estilo" rel="stylesheet" href="css/index.css">';}
+       ?>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="Index" content="width=device-width, initial-scale=1.0">
@@ -73,9 +79,7 @@ if ($result->num_rows > 0) {
         ?>
     
    
-    <footer>
-        <p>&copy; 2024 DriveCrafters - Todos los derechos reservados</p>
-    </footer>
+    <?php include("componentes/pie.php"); ?>
 
     <script src="js/cabecera.js"></script>
     <script src="js/index.js"></script>

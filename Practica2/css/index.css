@@ -1,6 +1,6 @@
 body{
-    background-color: #d6d5c4;
-    color: #8a3924;
+    background-color: #f5f5f5;
+    color: #000000;
     font-size: 18px;
     font-family: 'Arial';
 }
@@ -16,7 +16,7 @@ body{
 
 .container-encabezado .logo{
     cursor: pointer;
-    margin-right: auto;
+   
 }
   
 .logo img{
@@ -30,15 +30,27 @@ width: auto;
 }
 
 .imagen img{
-    width: 20%;
-    height:20%;
+    width: 80%;
+    height:80%;
 }
 .container-encabezado header{
-    
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+   border-bottom: #000000 2px solid;
+   margin-bottom: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px; /* espacio en la parte superior e inferior de 10px, espacio a los lados de 20 px para centrar un poco mas*/
+}
+
+.container-encabezado .titulo{
+    
+    
+    font-size: 40px;
+    margin-right: auto;
+    color: #000000;
+    text-decoration: none;
 }
 .container-encabezado  header ul{ /*pongo la lista en una fila */
     display: flex;
@@ -46,21 +58,24 @@ width: auto;
 }
 .container-encabezado header ul li a{
     
-    
+    font-size: 20px;
     text-align: none; 
-    color: #8a3924;
+    color: #000000;
     margin: 0 20px; /*espacio entre los elementos de la lista */
     
     
     text-decoration: none;
 }
+.container-encabezado #entrada{
+    color:#77762c
+}
 .container-encabezado header nav ul li a:hover{
-    color: #441d04;
+    color: #000000;
 }
 .nav-responsive{
     
-    background-color: #8a3924;
-    color: #d6d5c4;
+    background-color: #000000;
+    color: #f5f5f5;
     padding: 5px 10px;/*espacio entre los bordes del nav-responsive para que el fondo ocupe mas que los margenes del icono*/
     border-radius: 5px; /*redondeo los bordes*/
     cursor: pointer;
@@ -99,7 +114,7 @@ width: auto;
         top: 140px;
         
         z-index: 1;
-        background-color: #d6d5c4;
+        background-color: #f5f5f5;
     }
     
     nav.responsive ul{ /*pongo la lista en columnas */
@@ -107,7 +122,7 @@ width: auto;
         
     }
     nav.responsive ul li{
-        border-bottom: 1px solid #fff;
+        border-bottom: 1px solid #000000;
         padding: 10px 0;
         
     }
@@ -119,7 +134,7 @@ width: auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #8a3924;
+    color: #000000;
     text-decoration: none;
 }
 .container-registro h2{
@@ -135,6 +150,14 @@ width: auto;
    
 }
 .exit{
-    color: #8a3924;
+    color: #000000;
     text-decoration: none;
+}
+footer{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    bottom: 0;
+    left:0;
+   
 }

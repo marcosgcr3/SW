@@ -4,15 +4,21 @@
         <a href="index.php" title="Home">
             <?php
             if ($modoOscuro) {
-                echo '<img src="img/LogoFondoInvertido.png" id="logoPrincipal"   alt="DriveCrafters">';
+                echo '<img src="img/LogoFondoBNI.png" id="logoPrincipal"   alt="DriveCrafters">';
             }else{
-                echo '<img src="img/LogoFondo.png" id="logoPrincipal"   alt="DriveCrafters">';
+                echo '<img src="img/LogoFondoBN.png" id="logoPrincipal"   alt="DriveCrafters">';
             }
             ?>
         
         </a>
     </div>
+
+    <div class="titulo">
+        DRIVECRAFTERS
+    </div>
+
     <nav id="nav" class="">
+
     <ul>
         <li><a href="ALQUILER.php" >ALQUILER</a></li>
         
@@ -57,18 +63,19 @@
             }
             
             ?>
+        
         </li>
         
          <?php
             if (isset($_SESSION['login'])) {
-                echo "<li><a href='miCuenta.php' >MI CUENTA</a></li>";
+                echo "<li><a id = 'entrada' href='miCuenta.php' >MI CUENTA</a></li>";
                 
                                 
             } else {
-                echo "<li><a href='entrar.php' >ENTRAR</a></li>";
+                echo "<li><a id = 'entrada' href='entrar.php' >ENTRAR</a></li>";
             }
 
-        ?>
+            ?>
         
         
         

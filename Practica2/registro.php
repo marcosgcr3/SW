@@ -1,10 +1,17 @@
 <?php
 session_start();
+$modoOscuro = isset($_COOKIE['modoOscuro']) && $_COOKIE['modoOscuro'] === 'activado';
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <link id="estilo" rel="stylesheet" href="css/index.css">
+    <?php
+       
+       if ($modoOscuro) {
+           echo '<link id ="estilo" rel="stylesheet" href="css/indexNight.css">';
+       }else{
+           echo '<link id ="estilo" rel="stylesheet" href="css/index.css">';}
+    ?>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="Index" content="width=device-width, initial-scale=1.0">
@@ -21,29 +28,25 @@ session_start();
         <h2>Registro de Usuario</h2>
 
         <form action="ProcesaRegistro.php" method="post">
-            <p>Nombre:</p>
-            <input type="text" name="nombre" id="nombre"required>
-            <p>Apellido:</p>
-            <input type="text" name="apellidos" id="apellidos" required>
-            <p>Correo:</p>
-            <input type="email" name="correo" id="correo" required>
-            <p>Usuario:</p>
-            <input type="text" name="usuario" id="usuario" required>
-            <p>NIF:</p>
-            <input type="text" name="NIF" id="NIF" required>
-            <p>Contraseña(minimo 6 caracteres, 1 mayuscula, 1 minuscula y un numero):</p>
             
-            <input type="password" name="password" id="password" required>
+            <input type="text" name="nombre" id="nombre"required autocomplete="off" placeholder="Nombre">
+            
+            <input type="text" name="apellidos" id="apellidos" required autocomplete="off" placeholder="Apellido">
+            
+            <input type="email" name="correo" id="correo" required autocomplete="off" placeholder="Correo">
+            
+            <input type="text" name="NIF" id="NIF" required autocomplete="off" placeholder ="NIF">
+            
+           
+            <input type="password" name="password" id="password" required autocomplete="off" placeholder ="password">
             <p>Confirmar contraseña:</p>
-            <input type="password" name="password2" id="password2" required>
+            <input type="password" name="password2" id="password2" required autocomplete="off" placeholder ="password repite">
             <p></p>
             <input type="submit" value="Registrarse">
         </form>
     </div>
 
-    <footer>
-        <p>&copy; 2024 DriveCrafters - Todos los derechos reservados</p>
-    </footer>
+    <?php include("componentes/pie.php"); ?>
 
     <script src="js/cabecera.js"></script>
     <script src="js/index.js"></script>

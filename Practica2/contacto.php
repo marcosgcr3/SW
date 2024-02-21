@@ -1,6 +1,7 @@
 <?php
+  session_start();
    
-    $modoOscuro = isset($_COOKIE['modoOscuro']) && $_COOKIE['modoOscuro'] === 'activado';
+  $modoOscuro = isset($_COOKIE['modoOscuro']) && $_COOKIE['modoOscuro'] === 'activado';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -101,6 +102,8 @@
         </button>
       </form>
     </div>
+    
+    <?php include("componentes/pie.php"); ?>
     <script src="js/contactos.js"></script>
     <script src="js/cabecera.js"></script>
   </body>
