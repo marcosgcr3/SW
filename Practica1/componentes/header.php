@@ -1,7 +1,13 @@
 <header>
     <div class="logo">
         <a href="index.php" title="Home">
-        <img src="img/LogoFondo.png" id="logoPrincipal"   alt="DriveCrafters">
+        <?php
+        
+            if ($modoOscuro) {
+                echo '<img src="img/LogoFondoInvertido.png" id="imagenPrincipal" alt="centrado">';
+            }else{
+                echo '<img src="img/LogoFondo.png" id="imagenPrincipal" alt="centrado">';}
+        ?>
         </a>
     </div>
     <nav id="nav" class="">
@@ -11,7 +17,14 @@
         <li><a href="planificacion.php" >PLANIFICACION</a></li>
         <li><a href="miembros.php" >MIEMBROS</a></li>
         <li><a href="contacto.php" >CONTACTO</a></li>
-        <li><i id = "icono" class="fa-solid fa-moon" onclick="cambiarTema()"></i></li>
+        <li><?php
+            if($modoOscuro){
+                echo '<i id = "icono" class="fa-solid fa-sun" onclick="cambiarTema()"></i>';
+            }else{
+                echo '<i id = "icono" class="fa-solid fa-moon" onclick="cambiarTema()"></i>';
+            }
+            
+            ?></li>
     </ul>
     </nav>
 

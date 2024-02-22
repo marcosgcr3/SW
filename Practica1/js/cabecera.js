@@ -12,27 +12,18 @@ function mostrarOcultarMenu(){
 
 
 function cambiarTema(){
-    
-   
     cambiarCSS(); 
-    if(document.getElementsByName('Index')){
-        cambiarImagen();
-    }
+    location.reload();
+
 }
 function cambiarCSS(){
     var tema =  document.getElementById('estilo').getAttribute('href');
-    var logo = document.getElementById('logoPrincipal');
+   
     if(tema === 'css/index.css'){
-        document.getElementById('estilo').setAttribute('href','css/indexNight.css');
-        logo.src = 'img/LogoFondoInvertido.png'
-        document.getElementById('icono').className = 'fa-solid fa-sun';
-       
+        document.cookie = "modoOscuro=activado";
     }
     else{
-        document.getElementById('estilo').setAttribute('href','css/index.css');
-        logo.src = 'img/LogoFondo.png';
-        document.getElementById('icono').className = 'fa-solid fa-moon';
-       
+        document.cookie = "modoOscuro=desactivado";
     }
 }
 

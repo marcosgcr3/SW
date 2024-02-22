@@ -1,7 +1,16 @@
+<?php
+    $modoOscuro = isset($_COOKIE['modoOscuro']) && $_COOKIE['modoOscuro'] === 'activado';
+?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
-        <link id ="estilo" rel="stylesheet" href="css/index.css">
+        <?php
+        
+            if ($modoOscuro) {
+                echo '<link id ="estilo" rel="stylesheet" href="css/indexNight.css">';
+            }else{
+                echo '<link id ="estilo" rel="stylesheet" href="css/index.css">';}
+        ?>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="Index" content="width=device-width, initial-scale=1.0">
@@ -18,10 +27,16 @@
        
         
 
-       <div class="imagen">
+        <div class="imagen">
         
-        <img src="img/LogoFondo.png" id="imagenPrincipal" alt="centrado">
-
+        
+        <?php
+        
+            if ($modoOscuro) {
+                echo '<img src="img/LogoFondoInvertido.png" id="imagenPrincipal" alt="centrado">';
+            }else{
+                echo '<img src="img/LogoFondo.png" id="imagenPrincipal" alt="centrado">';}
+        ?>
 
         </div>
 
