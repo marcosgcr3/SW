@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
     <head>
         <link id ="estilo" rel="stylesheet" href="css/index.css">
         <meta charset="UTF-8">
@@ -51,8 +51,8 @@
             <h3>Practica 3</h3>
             <img src="img/gantt3.png" alt="Gantt Practica 3" width="1000" height="220">
         </section>
-        <script src="js/componentes.js"></script>
+        <script src="js/cabecera.js"></script>
     </body>
-
+    
 
 </html>
