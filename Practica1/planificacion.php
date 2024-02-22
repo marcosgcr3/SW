@@ -60,6 +60,8 @@
             <h3>Practica 3</h3>
             <img src="img/gantt3.png" alt="Gantt Practica 3" width="1000" height="220">
         </section>
+    
+        <?php include("componentes/pie.php"); ?>
         <script src="js/cabecera.js"></script>
     </body>
     

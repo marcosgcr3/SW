@@ -128,9 +128,7 @@
         </p>
 
         </div>
-        <footer>
-            <p>&copy; 2024 DriveCrafters - Todos los derechos reservados</p>
-        </footer>
+       <?php include("componentes/pie.php"); ?>
         
         <script src="js/cabecera.js"></script>
         <script src="js/index.js"></script>

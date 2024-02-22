@@ -74,6 +74,8 @@
                     se encarga del inventario de los vehículos.
                 </p>
         </ul>
+    
+    <?php include("componentes/pie.php"); ?>
         <script src="js/cabecera.js"></script>
 </body>
 </html>

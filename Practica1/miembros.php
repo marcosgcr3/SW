@@ -63,6 +63,8 @@
                 <p>Su irregular estructura genética encierra el secreto de su capacidad para adoptar evoluciones de lo más diversas.</p>
             </article>
         </section>
+    
+        <?php include("componentes/pie.php"); ?>
         <script src="js/cabecera.js"></script>
         
     </body>

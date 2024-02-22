@@ -107,6 +107,7 @@
         </button>
       </form>
     </div>
+    <?php include("componentes/pie.php"); ?>
     <script src="js/contactos.js"></script>
     <script src="js/cabecera.js"></script>
   </body>
