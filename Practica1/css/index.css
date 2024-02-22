@@ -29,6 +29,18 @@ width: auto;
     justify-content: center; /*centro la imagen */
 }
 
+.boceto{
+    display: flex; /*pongo la imagen en el centro */
+    justify-content: center; /*centro la imagen */
+    width: 100%;
+    height: 100%;
+}
+
+.boceto img{
+    width: 80%;
+    height:80%;
+}
+
 .imagen img{
     width: 20%;
     height:20%;
