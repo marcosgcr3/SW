@@ -31,7 +31,7 @@
             En nuestro proyecto, nos comprometemos a proporcionar una experiencia sin complicaciones para los propietarios de vehículos, combinando la excelencia técnica con la conveniencia moderna. Implementaremos un sistema de programación en línea fácil de usar que permite a los clientes reservar citas en cualquier momento y desde cualquier lugar. Esto no solo simplifica el proceso, sino que también optimiza la gestión del tiempo tanto para nuestros clientes como para nuestros talleres.
             Esto no solo acelera el proceso de reparación, sino que también mejora la transparencia y la confianza entre nuestros clientes y nuestros técnicos.
             </p>
-            <p>Para mas informacion pulse <a href="contacto.html">aqui.</a> </p>
+            <p>Para mas informacion pulse <a href="contacto.php">aqui.</a> </p>
         </div>
 
         <footer>
