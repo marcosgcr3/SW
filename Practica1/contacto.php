@@ -29,17 +29,22 @@
               size="30"
               placeholder="Ingresa tu nombre"
               class="campo"
+              autocomplete="off"
+              required
+
             />
           </div>
           <div class="email">
             <label for="email">E-mail:</label>
             <input
-              type="text"
+              type="email"
               name="email"
               id="email"
               size="40"
               placeholder="Ingresa tu correo electronico"
               class="campo"
+              autocomplete="off"
+              required
             />
           </div>
         </fieldset>
@@ -51,6 +56,7 @@
               name="motivo"
               id="evaluacion"
               value="Evaluacion"
+              checked
             />
             <label for="evaluacion">Evaluación</label>
           </div>
@@ -73,7 +79,7 @@
             <label for="critica">Crítica</label>
           </div>
           <div class="textbox">
-            <textarea id="consultaBox" name="comentario" rows="15" cols="80" placeholder="Ingresa tu consulta"></textarea>
+            <textarea id="consultaBox" name="comentario" rows="15" cols="80" placeholder="Ingresa tu consulta" autocomplete="off" required></textarea>
           </div>
           <div class="checkbox">
             <input
@@ -81,12 +87,13 @@
               type="checkbox"
               name="Terminos y conndiciones"
               value="on"
-              onclick="activoCheckBox()"
+              autocomplete="off"
+              required
             />
             <label for="mycheckbox">Marque esta casilla para verificar que ha leído nuestros términos y condiciones del servicio</label>
           </div>
         </fieldset>
-        <button class="button" id="myButton" type="submit" name="submit" value="Enviar form." disabled>
+        <button class="button" id="myButton" type="submit" name="submit" value="Enviar form.">
           Enviar
         </button>
       </form>
