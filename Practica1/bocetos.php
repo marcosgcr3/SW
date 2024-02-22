@@ -24,7 +24,7 @@
         <section class="boceto">
             <img src="img/inicio.png" id="inicio" alt="centrado"/>
         </section>
-        <h5>Descripcion inicio</h5>
+        <h3>Descripcion inicio</h3>
         <p>
             Pagina principal de la aplicacion, en ella tendras acceso a todas las funcionalidades en la parte superior, en el medio de la 
             pagina tendras una breve descripcion de esta con un boton permitiendote el registro o inicio de sesion, en caso de estar ya
@@ -37,7 +37,7 @@
         <section class="boceto">
             <img src="img/alquiler2.png" id="alquiler2" alt="centrado"/>
         </section>
-        <h5>Descripcion alquiler</h5>
+        <h3>Descripcion alquiler</h3>
         <p>
             Primeramente tendremos una pagina en la cual apareceran los vehiculos disponibles para el alquiler con una pequeña descripcion
             de sus caracteristicas, ademas en la parte izquierda tendremos un pequeño buscador en el cual podemos aplicar filtros o simplemente
@@ -58,7 +58,7 @@
         <section class="boceto">
             <img src="img/citasuser.png" id="citas usuarios" alt="centrado"/>
         </section>
-        <h5>Descripcion citas</h5>
+        <h3>Descripcion citas</h3>
         <p>
             En el primer boceto observamos la pagina la cual aparece en el apartado de citas cuando no has sido logeado, como este apartado es 
             mas personal no sera posible visualizar nada como se observa.
@@ -75,7 +75,7 @@
         <section class="boceto">
             <img src="img/tienda.png" id="tienda" alt="centrado"/>
         </section>
-        <h5>Descripcion tienda</h5>
+        <h3>Descripcion tienda</h3>
         <p>
             Similar a la apariencia de la seccion de alquiler, pero en este caso para articulos vendidos en la tienda, ademas en la parte superior derecha
             aparecera un simbolo en el cual podras ver el carrito actual del cliente, segun haya ido añadiendo articulos
@@ -87,7 +87,7 @@
         <section class="boceto">
             <img src="img/login.png" id="formulario inicio de sesion" alt="centrado"/>
         </section>
-        <h5>Descripcion registro/inicio sesion</h5>
+        <h3>Descripcion registro/inicio sesion</h3>
         <p>
             Diseño de los respectivos formularios para poder iniciar sesion o registrarse en la pagina
         </p>
@@ -100,7 +100,7 @@
         <section class="boceto">
             <img src="img/mecanico.png" id="perfil mecanico" alt="centrado"/>
         </section>
-        <h5>Descripcion perfiles</h5>
+        <h3>Descripcion perfiles</h3>
         <p>
             En la primera foto observamos el boceto del perfil para el usuario normal en el cual apareceran sus respectivos datos y la posibilidad
             de registrar un nuevo vehiculo, modificar su contraseña y añadir/modificar su direccion. Para el caso del mecanico apareceran sus datos
@@ -111,7 +111,7 @@
         <section class="boceto">
             <img src="img/contacto.png" id="contacto" alt="centrado"/>
         </section>
-        <h5>Descripcion contacto</h5>
+        <h3>Descripcion contacto</h3>
         <p>
             Diseño de la visualizacion del apartado de contacto para poder realizar alguna queja o recibir atencion al cliente
         </p>
