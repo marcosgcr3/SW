@@ -18,7 +18,8 @@
        
         
 
-        <h1>Bocetos</h1>
+        <div class="bocetoTitulo"><h1>Bocetos</h1>
+        </div>
 
 
         <section class="boceto">
