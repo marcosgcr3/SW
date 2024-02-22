@@ -30,7 +30,8 @@
         <div class="bocetoTitulo"><h1>Bocetos</h1>
         </div>
 
-
+        <div class="bocetos">
+            
         <section class="boceto">
             <img src="img/inicio.png" id="inicio" alt="centrado"/>
         </section>
@@ -126,6 +127,7 @@
             Diseño de la visualizacion del apartado de contacto para poder realizar alguna queja o recibir atencion al cliente
         </p>
 
+        </div>
         <footer>
             <p>&copy; 2024 DriveCrafters - Todos los derechos reservados</p>
         </footer>

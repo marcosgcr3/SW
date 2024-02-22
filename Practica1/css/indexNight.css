@@ -31,7 +31,27 @@ body{
     display: flex;
     justify-content: center;
 }
+.boceto {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.bocetos h3{
+    display: flex;
+    justify-content: center;
+}
 
+.boceto img{
+    padding: 20px;
+    width: 80%;
+    height:80%;
+}
+
+.bocetoTitulo{
+    display: flex;
+    justify-content: center;
+}
 .imagen img{
     width: 20%;
     height:20%;
