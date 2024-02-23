@@ -26,7 +26,7 @@
     <h1>Contacto</h1>
     
     <div class="Informacion personal">
-      <form action="mailto:papadial@ucm.es?" id="formulario" method="POST">
+      <form action="mailto:papadial@ucm.es?subject=Consulta" id="formulario" method="POST">
         <fieldset>  
           <legend>Información personal</legend>
           <div class="name">
