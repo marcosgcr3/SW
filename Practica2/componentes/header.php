@@ -35,9 +35,10 @@
                 
                                 
             }
-            
-            else {
-                echo "<li><a href='citas.php' >CITAS</a></li>";
+            else if (isset($_SESSION['login'])){
+                echo "<li ><a href='citas.php' >CITAS</a></li>";
+            }else{
+                echo "<li><a href='noUsuarioAviso.php'>CITAS</a></li>";
             }
 
             

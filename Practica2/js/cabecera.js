@@ -12,8 +12,6 @@ function mostrarOcultarMenu(){
 
  
 function cambiarTema(){
-    
-   
     cambiarCSS(); 
     location.reload();
 
