@@ -1,48 +1,23 @@
+
 <?php
-    session_start();
-    $modoOscuro = isset($_COOKIE['modoOscuro']) && $_COOKIE['modoOscuro'] === 'activado';
-?>
-<!DOCTYPE html>
-<html lang="es">
-    <head>
-   
-        <?php
+
+require_once 'includes/config.php';
+
+$tituloPagina = 'Mi cuenta';
+
+$contenidoPrincipal=<<<EOS
         
+<h1>Bienvenido {$_SESSION['nombre']}</h1>
+<div class = "exit">
 
-            if ($modoOscuro) {
-                echo '<link id ="estilo" rel="stylesheet" href="css/indexNight.css">';
-            }else{
-                echo '<link id ="estilo" rel="stylesheet" href="css/index.css">';}
-        ?>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="miCuenta" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"/>
-        
-        <title>DriveCrafters</title>
-    </head>
-   
-    <body> 
+<a href="logout.php"><i class="fa-solid fa-right-from-bracket"></i></a>
 
-        <div class="container-encabezado">
-          <?php include("componentes/header.php"); ?>
 
-        </div> 
+</div> 
        
+EOS;
+
+require 'includes/componentes/layout.php';
+        
         
 
-       <div class = "exit">
-      
-        <a href="logout.php"><i class="fa-solid fa-right-from-bracket"></i></a>
-        
-
-       </div> 
-       
-       <?php include("componentes/pie.php"); ?>
-        
-        <script src="js/cabecera.js"></script>
-        <script src="js/index.js"></script>
-        
-        
-    </body>
-</html>
