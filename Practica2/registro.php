@@ -22,7 +22,7 @@ $modoOscuro = isset($_COOKIE['modoOscuro']) && $_COOKIE['modoOscuro'] === 'activ
 <body> 
 
     <div class="container-encabezado">
-        <?php include("componentes/header.php"); ?> 
+        <?php include("design/comunes/header.php"); ?> 
     </div> 
     <div class="container-registro">
         <h2>Registro de Usuario</h2>
@@ -46,7 +46,7 @@ $modoOscuro = isset($_COOKIE['modoOscuro']) && $_COOKIE['modoOscuro'] === 'activ
         </form>
     </div>
 
-    <?php include("componentes/pie.php"); ?>
+    <?php include("includes/design/comunes/pie.php"); ?>
 
     <script src="js/cabecera.js"></script>
     <script src="js/index.js"></script>

@@ -18,7 +18,7 @@ if (!$esValido) {
 		<p>El usuario o contraseña no son válidos.</p>
 		$htmlFormLogin
 	EOS;
-	require 'includes/componentes/layout.php';
+	require 'includes/design/comunes/layout.php';
 	exit();
 }
 
@@ -33,7 +33,7 @@ $contenidoPrincipal=<<<EOS
 	<p>Usa el menú de la izquierda para navegar.</p>
 EOS;
 
-require 'includes/componentes/layout.php';
+require 'includes/design/comunes/layout.php';
 
 
 
