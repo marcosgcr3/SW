@@ -2,8 +2,21 @@
 
 require_once 'includes/config.php';
 
-$tituloPagina = 'Portada';
 
+$tituloPagina = 'Portada';
+if( esMecanico() ){
+    $contenidoPrincipal=<<<EOS
+    <h1>Bienvenido mecanico {$_SESSION['nombre']}</h1>
+    EOS;
+    require 'includes/design/comunes/layout.php';
+    exit();
+}else if(esAdmin()){
+    $contenidoPrincipal=<<<EOS
+    <h1>Bienvenido admin {$_SESSION['nombre']}</h1>
+    EOS;
+    require 'includes/design/comunes/layout.php';
+    exit();
+}else{
 $contenidoPrincipal=<<<EOS
 <h1>Página principal</h1> 
 <div class="imagen">
@@ -21,3 +34,6 @@ $contenidoPrincipal=<<<EOS
 EOS;
 
 require 'includes/design/comunes/layout.php';
+
+
+}

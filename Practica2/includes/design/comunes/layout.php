@@ -1,4 +1,5 @@
 <?php
+    require_once 'includes/acceso/autorizacion.php';
     $modoOscuro = isset($_COOKIE['modoOscuro']) && $_COOKIE['modoOscuro'] === 'activado';
 ?>
 <!DOCTYPE html>
