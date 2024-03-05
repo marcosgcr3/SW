@@ -15,10 +15,10 @@ $contenidoPrincipal=<<<EOS
 
             
         </div>
-        <button class="botonIni" onclick="location.href='login.php'">LOGIN/REGISTER</button>
+        <button class="botonIni" onclick="location.href='entrar.php'">LOGIN/REGISTER</button>
 EOS;
 
-require 'includes/componentes/layout.php';
+require 'includes/design/comunes/layout.php';
 
 
 
