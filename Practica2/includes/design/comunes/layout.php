@@ -27,10 +27,6 @@
           <?php require("header.php"); ?>
 
         </div> 
-       
-        
-        
-       
 
         <?= $contenidoPrincipal ?>
        
