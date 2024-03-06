@@ -54,18 +54,18 @@ CREATE TABLE `usuarios` (
   `apellido` text NOT NULL,
   `correo` text NOT NULL,
   `password` text NOT NULL,
-  `tipo_user` text NOT NULL,
-  `id_taller` text NOT NULL
+  `rol` text NOT NULL,
+ 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`NIF`, `nombre`, `apellido`, `correo`, `password`, `tipo_user`, `id_taller`) VALUES
-('1234567', 'cristiano', 'ronaldo', 'elbicho@gmail.com', 'messimalo', 'mecanico', ''),
-('7654321', 'lionel', 'messi', 'lapulga@gmail.com', '202cb962ac59075b964b07152d234b70', '', ''),
-('33', 'fernando', 'alonso', 'elnano@gmail.com', '33', 'admin', '');
+INSERT INTO `usuarios` (`NIF`, `nombre`, `apellido`, `correo`, `password`, `rol` ) VALUES
+('1234567', 'cristiano', 'ronaldo', 'elbicho@gmail.com', 'messimalo', 'mecanico'),
+('7654321', 'lionel', 'messi', 'lapulga@gmail.com', '202cb962ac59075b964b07152d234b70', ''),
+('33', 'fernando', 'alonso', 'elnano@gmail.com', '33', 'admin');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

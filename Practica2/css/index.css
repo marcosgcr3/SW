@@ -197,3 +197,9 @@ footer{
     border: none;
     font-size: 20px;
 }
+
+.centrar h1{
+    display: flex;
+    justify-content: center;
+    
+}
