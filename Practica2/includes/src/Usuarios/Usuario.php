@@ -19,9 +19,9 @@ class Usuario
         return false;
     }
     
-    public static function crea($NIF, $nombre,$apellido, $correo ,$password,$rol)
+    public static function crea($NIF, $nombre,$apellido, $correo ,$password)
     {
-        $user = new Usuario($NIF, $nombre,$apellido, $correo ,self::hashPassword($password),$rol);
+        $user = new Usuario($NIF, $nombre,$apellido, $correo ,self::hashPassword($password),"usuario");
         
         return $user->guarda();
     }
@@ -78,8 +78,8 @@ class Usuario
     }
     public function guarda()
     {
-        if ($this->NIF !== null) {
-            return self::actualiza($this);
+        if ($this->NIF == null) {
+            return self::inserta($this);
         }
         return self::inserta($this);
     }
@@ -113,17 +113,10 @@ class Usuario
         $result = false;
         $conn = BD::getInstance()->getConexionBd();
         $query=sprintf("INSERT INTO Usuarios(NIF, nombre, apellido, correo, password, rol)
-        VALUES ('%s', '%s', '%s', '%s', '%s', '%s')",
-        $conn->real_escape_string($usuario->getNIF()),
-        $conn->real_escape_string($usuario->getNombre()),
-        $conn->real_escape_string($usuario->getApellido()),
-        $conn->real_escape_string($usuario->getCorreo()),
-        $conn->real_escape_string($usuario->password), // No changes here
-        $conn->real_escape_string($usuario->getRol())
-        );
+        VALUES ('$usuario->NIF', '$usuario->nombre', '$usuario->apellido', '$usuario->correo', '$usuario->password', '$usuario->rol')");
         
         if ( $conn->query($query) ) {
-            $usuario->id = $conn->insert_id;
+           
             $result = $usuario;
         } else {
             
@@ -157,7 +150,7 @@ class Usuario
     }
     public function compruebaPassword($password)
     {
-        return $password==$this->password;
+        return password_verify($password, $this->password);
     }
 
 }

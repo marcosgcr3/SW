@@ -4,7 +4,7 @@ require_once 'includes/config.php';
 
 
 $tituloPagina = 'Tienda';
-
+/*
 if( esAdmin() ){
     $contenidoPrincipal=<<<EOS
     <h1>Bienvenido admin {$_SESSION['nombre']}</h1>
@@ -37,14 +37,17 @@ if( esAdmin() ){
     <button class="botonIni" onclick="location.href='entrar.php'">LOGIN/REGISTER</button>
     EOS;
     require 'includes/design/comunes/layout.php';
+    
+}
+*/if( esAdmin() ){
+    $contenidoPrincipal=<<<EOS
+    
+    <button class="botonIni" onclick="location.href='addProducto.php'">Añadir producto</button>
+    EOS;
+    require 'includes/design/comunes/layout.php';
     exit();
 }
 
-$contenidoPrincipal=<<<EOS
-<h1>Tienda</h1> 
 
-EOS;
-
-require 'includes/design/comunes/layout.php';
 
 

@@ -14,27 +14,32 @@ $correo = filter_input(INPUT_POST, 'correo', FILTER_SANITIZE_SPECIAL_CHARS);
 $password = $_POST["password"] ?? null;
 $rol = "usuario";
 
-    $usuario = (Usuario::buscaPorNIF($NIF));
+   
 
-    if($usuario){
-        $this->errores['NIF'] = "Este NIF de usuario ya está en uso";
-    } else {
-        
-        
-        $usuario = Usuario::crea($NIF, $nombre,$apellido,$correo, $password, $rol);
-        $app = BD::getInstance();
-
-        $app->login($usuario);
+    if(Usuario::buscaPorNIF($NIF)){
+        //$this->errores['NIF'] = "Este NIF de usuario ya está en uso";
+    $htmlFormRegistro = buildFormularioRegistro($NIF, $nombre, $apellido, $correo, $password);
         $contenidoPrincipal=<<<EOS
-        <h1>Bienvenido {$_SESSION['nombre']}</h1>
-        <p>Usa el menú de la izquierda para navegar.</p>
-    EOS;
+		<h1>Error</h1>
+		<p>El usuario o contraseña no son válidos.</p>
+		$htmlFormRegistro
+	EOS;
+	require 'includes/design/comunes/layout.php';
+	exit();
+       
+       
+
+       
+    }else{
+        Usuario::crea($NIF, $nombre,$apellido,$correo, $password, $rol);
+        
+       
+        
+        $contenidoPrincipal=<<<EOS
+        <h1>Usuario registrado correctamente</h1>
+        
+        EOS;
         require 'includes/design/comunes/layout.php';
+        
     }
 
-$contenidoPrincipal=<<<EOS
-    <h1>Bienvenido {$_SESSION['nombre']}</h1>
-	<p>Usa el menú de la izquierda para navegar.</p>
-EOS;
-
-require 'includes/design/comunes/layout.php';

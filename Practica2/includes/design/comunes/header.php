@@ -43,7 +43,7 @@
 
             
             if (esAdmin()) {
-                echo "<li><a href='gestionTienda.php' >GESTION TIENDA</a></li>";
+                echo "<li><a href='tienda.php' >GESTION TIENDA</a></li>";
                 
                                 
             }
