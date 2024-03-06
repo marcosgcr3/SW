@@ -25,9 +25,14 @@ EOS;
     exit();
 }else{
     Producto::crea($id_producto, $nombre, $precio, $descripcion, $unidades, $imagen);
-    $contenidoPrincipal=<<<EOS
+    $contenidoPrincipal = <<<EOS
+    <center>
     <h1>Producto añadido correctamente</h1>
+    </center>
+        <button  class="botonIni" onclick="location.href='tienda.php'">Continuar</button>
+
     EOS;
+    
     require 'includes/design/comunes/layout.php';
     
 }
