@@ -30,8 +30,26 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `pedido` (
   `id_pedido` int(11) NOT NULL AUTO_INCREMENT,
   `nif` varchar(9) NOT NULL,
+  `id_usuario` int(11) NOT NULL
   `estado` tinyint(1) NOT NULL,
    PRIMARY KEY (`id_pedido`)
+    FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+
+--
+-- Estructura de tabla para la tabla `pedido_producto`
+--
+
+CREATE TABLE IF NOT EXISTS `pedido_producto` (
+  `id_pedido` int(11) NOT NULL,
+  `id_producto` int(11) NOT NULL,
+  `cantidad` int(100) NOT NULL,
+   PRIMARY KEY (`id_pedido`, `id_producto`),
+    FOREIGN KEY (`id_pedido`) REFERENCES `pedido` (`id_pedido`),
+    FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
