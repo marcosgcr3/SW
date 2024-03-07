@@ -8,15 +8,31 @@ class Producto
     
    
     
-    public static function crea($id_producto, $nombre, $precio, $descripcion, $unidades, $imagen)
+    public static function crea($nombre, $precio, $descripcion, $unidades, $imagen)
     {
-        $producto = new Producto($id_producto, $nombre, $precio, $descripcion, $unidades, $imagen);
+        $producto = new Producto($nombre, $precio, $descripcion, $unidades, $imagen);
         
         return $producto->guarda();
     }
-    
+    public static function buscaPorNombre($nombre)
+    {
+        $conn = BD::getInstance()->getConexionBd();
+        $query = "SELECT * FROM productos WHERE nombre='$nombre'";
+        $rs = $conn->query($query);
+        $result = false;
+        if ($rs) {
+            $fila = $rs->fetch_assoc();
+            if ($fila) {
+                $result = new Producto( $fila['nombre'], $fila['precio'], $fila['descripcion'], $fila['unidades'], $fila['imagen']);
+            }
+            $rs->free();
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $result;
+    }
 
-    public static function buscaPorid($id_producto)
+    public static function buscaPorId($id_producto)
     {
         $conn = BD::getInstance()->getConexionBd();
         $query = "SELECT * FROM productos WHERE id_producto=$id_producto";
@@ -25,7 +41,7 @@ class Producto
         if ($rs) {
             $fila = $rs->fetch_assoc();
             if ($fila) {
-                $result = new Producto($fila['id_producto'], $fila['nombre'], $fila['precio'], $fila['descripcion'], $fila['unidades'], $fila['imagen']);
+                $result = new Producto( $fila['nombre'], $fila['precio'], $fila['descripcion'], $fila['unidades'], $fila['imagen']);
             }
             $rs->free();
         } else {
@@ -33,6 +49,7 @@ class Producto
         }
         return $result;
     }
+    
     
    
 
@@ -49,7 +66,7 @@ class Producto
     private $imagen;
 
 
-    private function __construct($id_producto, $nombre, $precio, $descripcion, $unidades, $imagen)
+    private function __construct($nombre, $precio, $descripcion, $unidades, $imagen,$id_producto = null)
     {
         $this->id_producto = $id_producto;
         $this->nombre = $nombre;
@@ -65,8 +82,8 @@ class Producto
     }
     public function guarda()
     {
-        if ($this->id_producto == null) {
-            return self::inserta($this);
+        if ($this->id_producto != null) {
+            return self::actualiza($this);
         }
         return self::inserta($this);
     }
@@ -90,20 +107,22 @@ class Producto
         return $result;
     }
    
-
     private static function inserta($producto)
     {
         $result = false;
         $conn = BD::getInstance()->getConexionBd();
-        $query=sprintf("INSERT INTO productos(id_producto, nombre, precio, descripcion, unidades, imagen )
-        VALUES ('$producto->id_producto', '$producto->nombre', '$producto->precio', '$producto->descripcion', '$producto->unidades', '$producto->imagen')");
-        
-        if ( $conn->query($query) ) {
-           
+        $query = sprintf("INSERT INTO productos(nombre, precio, descripcion, unidades, imagen)
+            VALUES ('%s', '%s', '%s', '%s', '%s')",
+            $conn->real_escape_string($producto->nombre),
+            $conn->real_escape_string($producto->precio),
+            $conn->real_escape_string($producto->descripcion),
+            $conn->real_escape_string($producto->unidades),
+            $conn->real_escape_string($producto->imagen));
+    
+        if ($conn->query($query)) {
             $result = $producto;
         } else {
-            
-            file_put_contents("falloBD.txt",$query);
+            file_put_contents("falloBD.txt", $query);
             error_log("Error BD ({$conn->errno}): {$conn->error}");
         }
         return $result;

@@ -18,14 +18,14 @@ $rol = "usuario";
 
     if(Usuario::buscaPorNIF($NIF)){
         //$this->errores['NIF'] = "Este NIF de usuario ya está en uso";
-    $htmlFormRegistro = buildFormularioRegistro($NIF, $nombre, $apellido, $correo, $password);
-        $contenidoPrincipal=<<<EOS
-		<h1>Error</h1>
-		<p>El usuario o contraseña no son válidos.</p>
-		$htmlFormRegistro
-	EOS;
-	require 'includes/design/comunes/layout.php';
-	exit();
+        $htmlFormRegistro = buildFormularioRegistro($NIF, $nombre, $apellido, $correo, $password);
+            $contenidoPrincipal=<<<EOS
+            <h1>Error</h1>
+            <p>El usuario o contraseña no son válidos.</p>
+            $htmlFormRegistro
+        EOS;
+        require 'includes/design/comunes/layout.php';
+        
        
        
 

@@ -41,12 +41,13 @@ CREATE TABLE IF NOT EXISTS `pedido` (
 --
 
 CREATE TABLE `productos` (
-  `id_producto` int(11) NOT NULL,
-  `nombre` text NOT NULL,
+ `id_producto` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` text NOT NULL UNIQUE,
   `precio` float NOT NULL,
   `descripcion` text NOT NULL,
   `unidades` int(11) NOT NULL,
-  `imagen` text NOT NULL
+  `imagen` text NOT NULL,
+   PRIMARY KEY (`id_producto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

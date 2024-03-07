@@ -5,14 +5,10 @@ class Usuario
 
     use MagicProperties;
 
-    public const ADMIN_ROLE = 'admin';
-
-    public const USER_ROLE = 'user';
-
-    public const MECANICO_ROLE = 'mecanico';
     
     public static function login($NIF, $password)
-    {$usuario = self::buscaPorNIF($NIF);
+    {
+        $usuario = self::buscaPorNIF($NIF);
         if ($usuario && $usuario->compruebaPassword($password)) {
             return $usuario;
         }
@@ -43,6 +39,23 @@ class Usuario
         }
         return $result;
     }
+    public static function buscaPorId($id)
+    {
+        $conn = BD::getInstance()->getConexionBd();
+        $query = sprintf("SELECT * FROM Usuarios WHERE id=%d", $id);
+        $rs = $conn->query($query);
+        $result = false;
+        if ($rs) {
+            $fila = $rs->fetch_assoc();
+            if ($fila) {
+                $result = new Usuario($fila['id'],$fila['NIF'], $fila['nombre'], $fila['apellido'], $fila['correo'],$fila['password'], $fila['rol']);
+            }
+            $rs->free();
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $result;
+    }
     
     private static function hashPassword($password)
     {
@@ -61,8 +74,10 @@ class Usuario
 
     private $correo;
 
-    private function __construct($NIF, $nombre,$apellido,$correo, $password, $rol )
+    private $id;
+    private function __construct($NIF, $nombre,$apellido,$correo, $password, $rol , $id = null)
     {
+        $this->id = $id;
         $this->NIF = $NIF;
         $this->nombre = $nombre;
         $this->apellido = $apellido;
@@ -78,8 +93,8 @@ class Usuario
     }
     public function guarda()
     {
-        if ($this->NIF == null) {
-            return self::inserta($this);
+        if ($this->id != null) {
+            return self::actualiza($this);
         }
         return self::inserta($this);
     }
