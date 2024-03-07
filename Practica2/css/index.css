@@ -198,8 +198,6 @@ footer{
     font-size: 20px;
 }
 
-.centrar h1{
-    display: flex;
-    justify-content: center;
-    
+.producto{
+    border: #000000 2px solid;
 }
