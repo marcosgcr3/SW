@@ -76,12 +76,21 @@
                 echo "<li><a id = 'entrada' href='entrar.php' >ENTRAR</a></li>";
             }
 
-            ?>
-        
-        
+        ?>
+
+       
         
     </ul>
+    
     </nav>
+    <?php
+            if (estaLogado() && !esAdmin() && !esMecanico()) {
+                echo '<i id = "iconoCarro" class="fa-solid fa-cart-shopping"></i>';
+                
+                                
+            }
+        
+        ?>
 
 
     <div class="nav-responsive" onclick=" mostrarOcultarMenu()">

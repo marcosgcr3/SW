@@ -76,6 +76,10 @@ body{
 .container-encabezado header nav ul li a:hover{
     color: #ffffff;
 }
+i {
+    cursor: pointer;
+}
+
 .nav-responsive{
     
     background-color: #f5f5f5;
@@ -131,7 +135,10 @@ body{
         padding: 10px 0;
         
     }
-
+    i#iconoCarro {
+        
+        margin-right: 30px;
+    }
 
     
 }
