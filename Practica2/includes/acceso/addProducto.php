@@ -1,14 +1,13 @@
 <?php
 
-function buildFormularioProducto($id_producto='', $nombre='', $precio='', $descripcion='', $unidades='', $imagen='')
+function buildFormularioProducto($nombre='', $precio='', $descripcion='', $unidades='', $imagen='')
 {
     return <<<EOS
     <div class="container-registro">
         <h2>Registro Producto</h2>
 
         <form action="procesaRegistroProducto.php" method="post">
-            <p>Id Producto:</p>
-            <input type="text" name="id_producto" id="id_producto" value="$id_producto" required>
+            
             <p>Nombre:</p>
             <input type="text" name="nombre" id="nombre" value="$nombre" required>
             <p>Precio:</p>

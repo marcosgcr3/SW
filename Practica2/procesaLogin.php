@@ -32,7 +32,3 @@ $contenidoPrincipal=<<<EOS
 EOS;
 
 require 'includes/design/comunes/layout.php';
-
-
-
-

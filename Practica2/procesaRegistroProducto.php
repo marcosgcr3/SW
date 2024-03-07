@@ -14,8 +14,8 @@ $descripcion = filter_input(INPUT_POST, 'descripcion', FILTER_SANITIZE_SPECIAL_C
 $unidades = filter_input(INPUT_POST, 'unidades', FILTER_SANITIZE_SPECIAL_CHARS);
 $imagen = filter_input(INPUT_POST, 'imagen', FILTER_SANITIZE_SPECIAL_CHARS);
 
-if(Producto::buscaPorid($id_producto)){
-    $htmlFormProducto = buildFormularioProducto($id_producto, $nombre, $precio, $descripcion, $unidades, $imagen);
+if(Producto::buscaPorNombre($nombre)){
+    $htmlFormProducto = buildFormularioProducto( $nombre, $precio, $descripcion, $unidades, $imagen);
     $contenidoPrincipal=<<<EOS
     <h1>Error</h1>
     <p>El producto ya existe.</p>
@@ -24,7 +24,7 @@ EOS;
     require 'includes/design/comunes/layout.php';
     exit();
 }else{
-    Producto::crea($id_producto, $nombre, $precio, $descripcion, $unidades, $imagen);
+    Producto::crea($nombre, $precio, $descripcion, $unidades, $imagen);
     $contenidoPrincipal = <<<EOS
     <center>
     <h1>Producto añadido correctamente</h1>
