@@ -204,6 +204,7 @@ footer{
     font-size: 20px;
 }
 .producto {
+    position: relative;
     border: #ffffff 2px solid;
     margin-bottom: 20px;
 }
@@ -214,12 +215,13 @@ footer{
 }
 
 .producto-imagen {
-    width: 20%;
-    height: auto;
+    width: 300px;
     margin-right: 20px;
 }
-
-
+.producto-detalle {
+    flex: 1;
+    position: relative;
+}
 
 .botoncarro {
     background-color: #4CAF50;
@@ -237,6 +239,10 @@ footer{
     color: #f5f5f5;
 }
 
-.botoncarro:hover {
-    background-color: #45a049;
+
+#iconoBasura {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: #ec2000;
 }
