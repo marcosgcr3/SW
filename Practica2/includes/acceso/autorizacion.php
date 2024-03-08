@@ -18,7 +18,11 @@ function idUsuarioLogado()
 
 function esAdmin()
 {
-    return estaLogado() && (array_search(Usuario::ADMIN_ROLE, $_SESSION['rol']) !== false);
+    return estaLogado() && ($_SESSION['rol'] == "admin");
+}
+function esMecanico()
+{
+    return estaLogado() && ($_SESSION['rol'] == "mecanico");
 }
 
 function verificaLogado($urlNoLogado)

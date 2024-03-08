@@ -50,6 +50,7 @@ class BD
         return $this->conexion;
     }
     
+
     private function cierraConexion()
     {
         if ($this->conexion != null && !$this->conexion->connect_errno) {

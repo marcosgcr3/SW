@@ -27,23 +27,23 @@
 
 
             
-            if(isset($_SESSION['esMecanico'])){
+            if(esMecanico()){
                 echo "<li><a href='horarioMecanico.php' >HORARIO</a></li>";
 
-            }else if (isset($_SESSION['esAdmin'])) {
+            }else if (esAdmin()) {
                 echo "<li><a href='gestionCitas.php' >GESTION CITAS</a></li>";
                 
                                 
             }
-            else if (isset($_SESSION['login'])){
+            else if (estaLogado()){
                 echo "<li ><a href='citas.php' >CITAS</a></li>";
             }else{
                 echo "<li><a href='noUsuarioAviso.php'>CITAS</a></li>";
             }
 
             
-            if (isset($_SESSION['esAdmin'])) {
-                echo "<li><a href='gestionTienda.php' >GESTION TIENDA</a></li>";
+            if (esAdmin()) {
+                echo "<li><a href='tienda.php' >GESTION TIENDA</a></li>";
                 
                                 
             }
@@ -68,7 +68,7 @@
         </li>
         
          <?php
-            if (isset($_SESSION['login'])) {
+            if (estaLogado()) {
                 echo "<li><a id = 'entrada' href='miCuenta.php' >MI CUENTA</a></li>";
                 
                                 
@@ -76,12 +76,21 @@
                 echo "<li><a id = 'entrada' href='entrar.php' >ENTRAR</a></li>";
             }
 
-            ?>
-        
-        
+        ?>
+
+       
         
     </ul>
+    
     </nav>
+    <?php
+            if (estaLogado() && !esAdmin() && !esMecanico()) {
+                echo '<i id = "iconoCarro" class="fa-solid fa-cart-shopping"></i>';
+                
+                                
+            }
+        
+        ?>
 
 
     <div class="nav-responsive" onclick=" mostrarOcultarMenu()">

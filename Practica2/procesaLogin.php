@@ -12,29 +12,23 @@ $password = $_POST["password"] ?? null;
 
 $esValido = $NIF && $password && ($usuario = Usuario::login($NIF, $password));
 if (!$esValido) {
-	
+	$htmlFormLogin = buildFormularioLogin($NIF, $password);
 	$contenidoPrincipal=<<<EOS
 		<h1>Error</h1>
 		<p>El usuario o contraseña no son válidos.</p>
 		$htmlFormLogin
 	EOS;
-	require 'includes/componentes/layout.php';
+	require 'includes/design/comunes/layout.php';
 	exit();
 }
 
-
 $_SESSION['NIF'] = $usuario->NIF;
-
 $_SESSION['rol'] = $usuario->rol;
-$_SESSION['nombre'] = $usuario;
-    
+$_SESSION['nombre'] = $usuario->nombre;
+
 $contenidoPrincipal=<<<EOS
-    <h1>Bienvenido {$_SESSION['nombre']}</h1>
+	<h1>Bienvenido {$_SESSION['nombre']}</h1>
 	<p>Usa el menú de la izquierda para navegar.</p>
 EOS;
 
-require 'includes/componentes/layout.php';
-
-
-
-
+require 'includes/design/comunes/layout.php';
