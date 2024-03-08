@@ -14,6 +14,21 @@ class Producto
         
         return $producto->guarda();
     }
+    public static function eliminarProducto($producto){
+        $result = false;
+        $conn = BD::getInstance()->getConexionBd();
+        $query = "DELETE FROM productos WHERE id_producto=$producto->id_producto";
+        if ( $conn->query($query) ) {
+            if ( $conn->affected_rows == 0) {
+                error_log("No se ha eliminado el producto");
+            }
+            $result = true;
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $result;
+    }
+   
     public static function buscaPorNombre($nombre)
     {
         $conn = BD::getInstance()->getConexionBd();

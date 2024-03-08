@@ -1,13 +1,14 @@
 <?php
 require_once 'includes/config.php';
 require_once 'includes/acceso/addProducto.php';
+require_once 'includes/src/Producto/producto.php';
 
 
 
 $tituloPagina = 'Producto ';
 function buildArticulo($nombre, $precio, $descripcion, $unidades, $imagen)
 {
-    return <<<EOS
+    $contenido = <<<EOS
 <div class="producto">
     <div class="producto-info">
         <img src="$imagen" alt="imagen" class="producto-imagen">
@@ -19,6 +20,17 @@ function buildArticulo($nombre, $precio, $descripcion, $unidades, $imagen)
             <button class="botoncarro">Añadir al carrito</button>
         </div>
     </div>
-</div>
 EOS;
+
+    
+    if (esAdmin()) {
+        
+        $contenido .= '<i id="iconoBasura" class="fa-solid fa-trash" onclick="location.href=\'borrarProducto.php\'"></i></div></div></div>';
+    }else{
+        $contenido .= '</div></div></div>';
+    }
+
+   
+
+    return $contenido;
 }

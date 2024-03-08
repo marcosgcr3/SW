@@ -20,6 +20,7 @@ function buildFormularioProducto($nombre='', $precio='', $descripcion='', $unida
             <input type="text" name="imagen" id="imagen" value="$imagen" required>
             <p></p>
             <input type="submit" value="Registrar">
+            
         </form>
     </div>
     EOS;
