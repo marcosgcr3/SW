@@ -8,6 +8,7 @@ require_once 'includes/src/Producto/producto.php';
 $tituloPagina = 'Producto ';
 function buildArticulo($nombre, $precio, $descripcion, $unidades, $imagen)
 {
+    $cantidad = 1;
     $contenido = <<<EOS
     <div class="producto">
     <div class="producto-info">
@@ -21,9 +22,10 @@ function buildArticulo($nombre, $precio, $descripcion, $unidades, $imagen)
             <div class="cantidad-botones">
                 <button class="boton-aumentar" onclick="aumentarCantidad('$nombre', $unidades)">+</button>
                 <span id="$nombre">1</span>
-                <button class="boton-disminuir" onclick="disminuirCantidad('$nombre')">-</button>
+                <button class="boton-disminuir" onclick="disminuirCantidad('$nombre', $unidades)">-</button>
             </div>
-            <button class="botoncarro" onclick="agregarAlCarrito()">Añadir al carrito</button>
+            <!-- <p>La cantidad: <span id="mensajeCant_$nombre">1</span></p> -->
+            <button class="botoncarro" onclick="agregarAlCarrito('$nombre')">Añadir al carrito</button>
         </div>
     </div>
 </div>

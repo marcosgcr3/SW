@@ -1,3 +1,4 @@
+
 function aumentarCantidad(nombreProducto, unidadesDisponibles) {
     var cantidadElement = document.getElementById(nombreProducto);
     var cantidad = parseInt(cantidadElement.innerText);
@@ -6,16 +7,28 @@ function aumentarCantidad(nombreProducto, unidadesDisponibles) {
     if (cantidad < unidadesDisponibles) {
         cantidad++;
         cantidadElement.innerText = cantidad;
+        document.getElementById(nombreProducto).innerText = cantidad; // Actualiza el mensaje de cantidad
     }
 }
 
-function disminuirCantidad(nombreProducto) {
+function disminuirCantidad(nombreProducto, unidadesDisponibles) {
     var cantidadElement = document.getElementById(nombreProducto);
     var cantidad = parseInt(cantidadElement.innerText);
 
     // Disminuye la cantidad solo si es mayor que 1
     if (cantidad > 1) {
-        cantidad--;
-        cantidadElement.innerText = cantidad;
+        cantidad--; 
     }
+    else{
+        cantidad = unidadesDisponibles;
+    }
+    cantidadElement.innerText = cantidad;
+    document.getElementById(nombreProducto).innerText = cantidad; // Actualiza el mensaje de cantidad
+}
+
+function agregarAlCarrito(nombreProducto) {
+    var cantE = document.getElementById(nombreProducto);
+    var cant = parseInt(cantE.innerText);
+
+    alert(cant);
 }

@@ -64,6 +64,11 @@ class Producto
         }
         return $result;
     }
+
+    public static function cantidadCompra($cantidad){
+        $cantidad++;
+        return $cantidad;
+    }
     
     
 
@@ -90,6 +95,7 @@ class Producto
         $this->imagen = $imagen;
     }
    
+
     public function getNombre()
     {
         return $this->nombre;
