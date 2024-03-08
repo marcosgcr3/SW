@@ -66,7 +66,6 @@ class Producto
     }
     
     
-   
 
     private $id_producto;
     

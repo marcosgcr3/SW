@@ -9,7 +9,7 @@ $tituloPagina = 'Producto ';
 function buildArticulo($nombre, $precio, $descripcion, $unidades, $imagen)
 {
     $contenido = <<<EOS
-<div class="producto">
+    <div class="producto">
     <div class="producto-info">
         <img src="$imagen" alt="imagen" class="producto-imagen">
         <div class="producto-detalle">
@@ -17,9 +17,17 @@ function buildArticulo($nombre, $precio, $descripcion, $unidades, $imagen)
             <p>$descripcion</p>
             <p>Precio: $precio&euro;</p>
             <p>Unidades disponibles: $unidades</p>
-            <button class="botoncarro">Añadir al carrito</button>
+            <!-- Botones para ajustar cantidad -->
+            <div class="cantidad-botones">
+                <button class="boton-aumentar" onclick="aumentarCantidad('$nombre', $unidades)">+</button>
+                <span id="$nombre">1</span>
+                <button class="boton-disminuir" onclick="disminuirCantidad('$nombre')">-</button>
+            </div>
+            <button class="botoncarro" onclick="agregarAlCarrito()">Añadir al carrito</button>
         </div>
     </div>
+</div>
+<script src="js/contadorProductos.js"></script>
 EOS;
 
     

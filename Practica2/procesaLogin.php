@@ -28,7 +28,7 @@ $_SESSION['nombre'] = $usuario->nombre;
 
 $contenidoPrincipal=<<<EOS
 	<h1>Bienvenido {$_SESSION['nombre']}</h1>
-	<p>Usa el menú de la izquierda para navegar.</p>
+	<p>Gracias por contar con nosotros.</p>
 EOS;
 
 require 'includes/design/comunes/layout.php';

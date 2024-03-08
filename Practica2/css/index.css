@@ -203,6 +203,7 @@ footer{
     color: #f5f5f5;
     border: none;
     font-size: 20px;
+    cursor: pointer;
 }
 
 .producto {
@@ -243,6 +244,19 @@ footer{
 
 }
 
+.cantidad-botones {
+    display: inline-block; 
+    margin-right: 10px; 
+    
+}
+
+.boton-aumentar {
+    cursor: pointer;
+}
+
+.boton-disminuir {
+    cursor: pointer;
+}
 
 #iconoBasura {
     position: absolute;
