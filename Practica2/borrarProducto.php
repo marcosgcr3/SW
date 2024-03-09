@@ -6,13 +6,10 @@ require_once 'includes/acceso/autorizacion.php';
 require_once 'includes/acceso/addProducto.php';
 
 
-$producto = Producto::buscaPorNombre($nombre);
-
-$contenidoPrincipal=<<<EOS
-
-<h1>hola: <?php echo $nombre; ?></h1>
-EOS;
+$nombre = filter_input(INPUT_GET, 'nombre', FILTER_SANITIZE_SPECIAL_CHARS);
 
 
+Producto::borrar($nombre);
+header('Location: tienda.php');
 
-require 'includes/design/comunes/layout.php';
+

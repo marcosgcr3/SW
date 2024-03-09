@@ -107,7 +107,10 @@ class Producto
         
         return $result;
     }
-    public static function eliminarProducto($nombre){
+    public static function borrar($nombre){
+        return self::eliminarProducto($nombre);
+    }
+    private static function eliminarProducto($nombre){
         
         $result = false;
         $conn = BD::getInstance()->getConexionBd();
@@ -122,6 +125,7 @@ class Producto
         }
         return $result;
     }
+    
    
     private static function inserta($producto)
     {
