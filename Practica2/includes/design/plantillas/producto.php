@@ -8,6 +8,7 @@ require_once 'includes/src/Producto/producto.php';
 $tituloPagina = 'Producto ';
 function buildArticulo($nombre, $precio, $descripcion, $unidades, $imagen)
 {
+    $elimina = false;
     $contenido = <<<EOS
 <div class="producto">
     <div class="producto-info">
@@ -25,7 +26,10 @@ EOS;
     
     if (esAdmin()) {
         
-        $contenido .= '<i id="iconoBasura" class="fa-solid fa-trash" onclick="location.href=\'borrarProducto.php\'"></i></div></div></div>';
+        $contenido .= '<i id="iconoBasura" class="fa-solid fa-trash" onclick=\'$elimina = true;\'></i></div></div></div>';
+        if($elimina){
+            Producto::eliminarProducto($nombre);
+        }
     }else{
         $contenido .= '</div></div></div>';
     }

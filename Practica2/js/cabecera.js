@@ -26,3 +26,7 @@ function cambiarCSS(){
         document.cookie = "modoOscuro=desactivado";
     }
 }
+
+function borrar($elimina){
+    return !$elimina;
+}
