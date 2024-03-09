@@ -3,7 +3,7 @@
 class Producto
 {
 
-
+    use MagicProperties;
 
     
    
@@ -14,21 +14,7 @@ class Producto
         
         return $producto->guarda();
     }
-    public static function eliminarProducto($producto){
-        $result = false;
-        $conn = BD::getInstance()->getConexionBd();
-        $query = "DELETE FROM productos WHERE id_producto=$producto->id_producto";
-        if ( $conn->query($query) ) {
-            if ( $conn->affected_rows == 0) {
-                error_log("No se ha eliminado el producto");
-            }
-            $result = true;
-        } else {
-            error_log("Error BD ({$conn->errno}): {$conn->error}");
-        }
-        return $result;
-    }
-   
+    
     public static function buscaPorNombre($nombre)
     {
         $conn = BD::getInstance()->getConexionBd();
@@ -95,6 +81,22 @@ class Producto
     {
         return $this->nombre;
     }
+    public function getPrecio()
+    {
+        return $this->precio;
+    }
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+    public function getUnidades()
+    {
+        return $this->unidades;
+    }
+    public function getImagen()
+    {
+        return $this->imagen;
+    }
     public function guarda()
     {
         if ($this->id_producto != null) {
@@ -121,6 +123,25 @@ class Producto
         
         return $result;
     }
+    public static function borrar($nombre){
+        return self::eliminarProducto($nombre);
+    }
+    private static function eliminarProducto($nombre){
+        
+        $result = false;
+        $conn = BD::getInstance()->getConexionBd();
+        $query = "DELETE FROM productos WHERE nombre='$nombre'";
+        if ( $conn->query($query) ) {
+            if ( $conn->affected_rows == 0) {
+                error_log("No se ha eliminado el producto");
+            }
+            $result = true;
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $result;
+    }
+    
    
     private static function inserta($producto)
     {

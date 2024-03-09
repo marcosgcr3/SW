@@ -75,7 +75,7 @@ CREATE TABLE `productos` (
 INSERT INTO `productos` (`id_producto`, `nombre`, `precio`, `descripcion`, `unidades`, `imagen`) VALUES
 (1, 'Aceite de motor', 22, 'Aceite para todo tipo de motores', 45, 'img/imgProductos/aceite.png'),
 (2, 'frenos', 34, 'liquido de frenos', 67, 'img/imgProductos/frenos.png'),
-(3, 'Neumatico', 23, 'Nuematicos nuevos de 22 pulgadas', 8, '4');
+(3, 'Neumatico', 23, 'Nuematicos nuevos de 22 pulgadas', 8, 'img/imgProductos/neumatico.png');
 
 -- --------------------------------------------------------
 

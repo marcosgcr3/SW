@@ -8,8 +8,11 @@ require_once 'includes/acceso/addProducto.php';
 
 $nombre = filter_input(INPUT_GET, 'nombre', FILTER_SANITIZE_SPECIAL_CHARS);
 
+$unidades = filter_input(INPUT_GET, 'unidades', FILTER_SANITIZE_SPECIAL_CHARS);
 
-Producto::borrar($nombre);
+$producto = Producto::buscaPorNombre($nombre);
+Producto::crea($producto->getNombre(), $producto->getPrecio(), $producto->getDescripcion(), $producto->getUnidades() + $unidades, $producto->getImagen());
+
 header('Location: tienda.php');
 
 
