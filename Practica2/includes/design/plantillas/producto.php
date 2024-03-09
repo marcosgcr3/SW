@@ -22,7 +22,7 @@ function buildArticulo($nombre, $precio, $descripcion, $unidades, $imagen)
             <div class="cantidad-botones">
                <button class="boton-disminuir" onclick="disminuirCantidad('$nombre', $unidades)">-</button>
                 <span id="$nombre"> $cantidad </span> 
-                <button class="boton-aumentar" onclick="aumentarCantidad('$nombre', $unidades)">+</button>
+                <button class="boton-aumentar" onclick="aumentarCantidad('$nombre', $unidades)">+</button>s
                 
             </div> 
            
@@ -31,7 +31,7 @@ EOS;
     if (esAdmin()) {
 
 
-        $contenido .= '<button class="botoncarro">Añadir stock</button>
+        $contenido .= '<button class="botoncarro" onclick="location.href=\'sumarStock.php?nombre=' . $nombre . '&unidades=' . $unidades . '\';">sumar</button>
         </div><i id="iconoBasura" class="fa-solid fa-trash" onclick="location.href=\'borrarProducto.php?nombre=' . $nombre . '\';"></i></div></div>';
     }else{
         $contenido .= '<button class="botoncarro">Añadir al carrito</button></div></div></div>';

@@ -81,6 +81,22 @@ class Producto
     {
         return $this->nombre;
     }
+    public function getPrecio()
+    {
+        return $this->precio;
+    }
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+    public function getUnidades()
+    {
+        return $this->unidades;
+    }
+    public function getImagen()
+    {
+        return $this->imagen;
+    }
     public function guarda()
     {
         if ($this->id_producto != null) {
