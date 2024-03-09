@@ -4,9 +4,17 @@
 /* */
 
 // Parámetros de configuración generales
+define('RUTA_APP', '/SW/Practica2');
+define('RUTA_IMGS', RUTA_APP . '/img');
+define('RUTA_CSS', RITA_APP . '/css');
+define('RUTA_JS', RUTA_APP . '/js');
+define('INSTALADA', false);
 
 // Parámetros de configuración de la BD
-define('RUTA_APP', '/SW/Practica2');
+define('BD_HOST', 'localhost');
+define('BD_NAME', 'drivecrafters');
+define('BD_USER', 'drivecrafters');
+define('BD_PASS', 'drivecrafters');
 /* */
 /* Utilidades básicas de la aplicación */
 /* */
@@ -16,11 +24,15 @@ require_once __DIR__.'/src/Utils.php';
 /* */
 /* Inicialización de la aplicación */
 /* */
-
+if (!INSTALADA) {
+	Utils::paginaError(502, 'Error', 'Oops', 'La aplicación no está configurada. Tienes que modificar el fichero config.php');
+}
 /* */
 /* Configuración de Codificación y timezone */
 /* */
-
+ini_set('default_charset', 'UTF-8');
+setLocale(LC_ALL, 'es_ES.UTF.8');
+date_default_timezone_set('Europe/Madrid');
 
 
 /* */
@@ -54,4 +66,5 @@ Mensaje::init();
 require_once 'acceso/autorizacion.php';
 require_once 'src/BD.php';
 require_once 'src/Usuarios/Usuario.php';
+require_once 'src/Producto/producto.php'
 //require_once 'src/mensajes/bd/Mensaje.php';

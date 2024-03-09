@@ -2,7 +2,7 @@
 require_once 'includes/config.php';
 require_once 'includes/acceso/addProducto.php';
 require_once 'includes/src/Producto/producto.php';
-require_once 'includes/Pedidos.php';
+
 
 
 
