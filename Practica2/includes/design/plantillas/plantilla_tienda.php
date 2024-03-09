@@ -10,7 +10,7 @@
         if ($modoOscuro) {
             echo '<link id ="estilo" rel="stylesheet" href="css/indexNight.css">';
         }else{
-            echo '<link id ="estilo" rel="stylesheet" href="css/index.css">';}
+                }
         ?>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">

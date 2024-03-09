@@ -2,6 +2,7 @@
 require_once 'includes/config.php';
 require_once 'includes/acceso/addProducto.php';
 require_once 'includes/src/Producto/producto.php';
+require_once 'includes/Pedidos.php';
 
 
 
@@ -21,10 +22,9 @@ function buildArticulo($nombre, $precio, $descripcion, $unidades, $imagen)
             <!-- Botones para ajustar cantidad -->
             <div class="cantidad-botones">
                 <button class="boton-aumentar" onclick="aumentarCantidad('$nombre', $unidades)">+</button>
-                <span id="$nombre">1</span>
+                <span id="$nombre"> $cantidad </span>
                 <button class="boton-disminuir" onclick="disminuirCantidad('$nombre', $unidades)">-</button>
-            </div>
-            <!-- <p>La cantidad: <span id="mensajeCant_$nombre">1</span></p> -->
+            </div> 
             <button class="botoncarro" onclick="agregarAlCarrito('$nombre')">Añadir al carrito</button>
         </div>
     </div>

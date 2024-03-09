@@ -6,9 +6,12 @@ function aumentarCantidad(nombreProducto, unidadesDisponibles) {
     // Incrementa la cantidad solo si es menor que las unidades disponibles
     if (cantidad < unidadesDisponibles) {
         cantidad++;
-        cantidadElement.innerText = cantidad;
-        document.getElementById(nombreProducto).innerText = cantidad; // Actualiza el mensaje de cantidad
     }
+    else{
+        cantidad = 1;
+    }
+    cantidadElement.innerText = cantidad;
+    document.getElementById(nombreProducto).innerText = cantidad; // Actualiza el mensaje de cantidad
 }
 
 function disminuirCantidad(nombreProducto, unidadesDisponibles) {
@@ -29,6 +32,5 @@ function disminuirCantidad(nombreProducto, unidadesDisponibles) {
 function agregarAlCarrito(nombreProducto) {
     var cantE = document.getElementById(nombreProducto);
     var cant = parseInt(cantE.innerText);
-
     alert(cant);
 }
