@@ -125,6 +125,14 @@ class Pedidos extends Usuario
     public function setEstado($estado){
         $this->estado = $estado;
     }
+
+    public function getId(){
+        return $this->id_pedido;
+    }
+
+    public function getProductos(){
+        return $this->lista_productos;
+    }
 }
 
 ?>

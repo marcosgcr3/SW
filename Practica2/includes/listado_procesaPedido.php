@@ -1,50 +1,130 @@
 <?php
 
-//use es\ucm\fdi\aw\clases\usuarios\FormularioVenta;
-//use es\ucm\fdi\aw\clases\Item;
+use Pedidos;
 
 function mostrar_pedido()
 {
     $html = listarPedido();  
     echo $html;
 }
-function listarPedido()
+
+function mostrar_carrito()
 {
-    $listaArticulos = Pedidos::listaPedidos($_SESSION['idUsuario']);
+    $html = listarPedido();  
+    echo $html;
+}
+
+function listarPedido() {
+
+    $listaPedidos = Pedidos::listaPedidos($_SESSION['idUsuario']);
     if (empty($listaArticulos)) {
-        return '<p>No hay articulos en tu pedido</p>';
+        return '<p>No hay pedidos anteriores</p>';
     }
 
-    $articulo = '';
-    foreach ($listaArticulos as $articulo) {
+    $pedido = '';
+    $producto = '';
+    foreach ($listaPedidos as $pedido) {
 
-        $articulos .= <<<EOS
-        <div class="item">
+        $pedidos .= <<<EOS
+        <div class="id_pedido">
+            {$pedido->getId()}
+        </div>
+        EOS;
 
-            <div class="foto_articulo">
-                <img src='./css/img/img_items/{$articulo->getNombre()}.png' alt='{$articulo->getNombre()}'/>
+        $listaProductos = $pedido->getProductos();
+
+        foreach($listaProductos as $producto){
+            
+            $productos .= <<<EOS
+            <div class="infoProducto">
+
+                <div class="fotoProducto">
+                    <img src='./img/img_productos/{$producto->getNombre()}.png' alt='{$producto->getNombre()}'/>
+                </div>
+
+                <div class="articulo">
+                    {$producto->getNombre()}
+                </div>
+
+                <div class="precio">
+                    {$producto->getPrecio()}
+                </div>
+
+            </div>
+            EOS;
+
+        }
+
+        $precioTotal .= <<<EOS
+        <div class="precioTotal">
+            // Precio Total 
+        </div>
+    }
+
+
+    $html = <<<EOS
+    <div class="guia">
+        <div>Pedido
+        <div>Foto</div>
+        <div>Nombre producto</div>
+        <div>Precio producto</div>
+        </div>
+    </div>
+    <div class="listaPedidos">
+        {$pedidos}
+        <div class="listaProductos">
+        {$productos}
+        </div>
+    </div>
+    EOS;
+
+    return $html;
+}
+
+function listarCarrito()
+{
+    $carrito = Pedidos::buscarCarrito($_SESSION['idUsuario']);
+    if (empty($carrito)) {
+        return '<p>No hay articulos en el carrito</p>';
+    }
+
+    $producto = '';
+    $listaProductos = $carrito[0]->getProductos();
+    foreach ($listaProductos as $producto) {
+
+        $productos .= <<<EOS
+        <div class="infoProducto">
+
+            <div class="fotoProducto">
+                <img src='./css/img/img_items/{$producto->getNombre()}.png' alt='{$producto->getNombre()}'/>
             </div>
 
-            <div class="articulo">
-                {$articulo->getNombre()}
+            <div class="producto">
+                {$producto->getNombre()}
             </div>
 
-            <div class="vender_articulo">
-                <button class="btn" onclick="window.location.href='ponerPrecio.php?item={$articulo->getNombre()}';">Vender</button>
+            <div class="precio">
+                {$producto->getPrecio()}
             </div>
 
         </div>
         EOS;
     }
 
+    $precioTotal .= <<<EOS
+    <div class="precioTotal">
+        // Precio Total 
+    </div>
+
+
     $html = <<<EOS
     <div class="guia">
         <div>Foto</div>
-        <div class = "div-opacidad">Nombre articulo</div>
-        <div class = "div-opacidad">Venta</div>
+        <div>Nombre Producto</div>
+        <div>Precio Producto</div>
     </div>
-    <div class="lista_articulos">
-        {$articulos}
+    <div class="listaProductos">
+        {$productos}
     </div>
     EOS;
 

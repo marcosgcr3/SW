@@ -33,8 +33,13 @@
 			    <?= $params['contenidoPrincipal'] ?>
 			        <?php 
 				        $id = $params['id'];
-				        //funcion en listado_tienda para mostrar los articulos de la BD
-                        mostrar_pedido();
+                        $carrito = $_GET["carro"]
+                        if(!$carrito){
+                            mostrar_carrito();
+                        }
+                        else{
+                            mostrar_pedido();
+                        }                        
                     ?>
 		    </div>
 	    </main>
