@@ -20,5 +20,5 @@ function añadirProducto(){
     $contenido = <<<EOS
     <button class="botonIni" onclick="location.href='addProducto.php'">Añadir producto</button>
     EOS;
-    return $cotnenido;
+    return $contenido;
 }
