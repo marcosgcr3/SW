@@ -17,7 +17,7 @@ class Usuario
     
     public static function crea($NIF, $nombre,$apellido, $correo ,$password)
     {
-        $user = new Usuario($NIF, $nombre,$apellido, $correo ,self::hashPassword($password),"usuario");
+        $user = new Usuario($id, $NIF, $nombre,$apellido, $correo ,self::hashPassword($password),"usuario");
         
         return $user->guarda();
     }
@@ -31,7 +31,7 @@ class Usuario
         if ($rs) {
             $fila = $rs->fetch_assoc();
             if ($fila) {
-                $result = new Usuario($fila['NIF'], $fila['nombre'], $fila['apellido'], $fila['correo'],$fila['password'], $fila['rol']);
+                $result = new Usuario($fila['NIF'], $fila['nombre'], $fila['apellido'], $fila['correo'],$fila['password'], $fila['rol'], $fila['id']);
             }
             $rs->free();
         } else {
@@ -48,7 +48,7 @@ class Usuario
         if ($rs) {
             $fila = $rs->fetch_assoc();
             if ($fila) {
-                $result = new Usuario($fila['NIF'], $fila['nombre'], $fila['apellido'], $fila['correo'],$fila['password'], $fila['rol']);
+                $result = new Usuario($fila['NIF'], $fila['nombre'], $fila['apellido'], $fila['correo'],$fila['password'], $fila['rol'], $fila['id']);
             }
             $rs->free();
         } else {
@@ -107,6 +107,10 @@ class Usuario
     public function getNombre()
     {
         return $this->nombre;
+    }
+    public function getId()
+    {
+        return $this->id;
     }
     public function guarda()
     {

@@ -137,11 +137,9 @@ class Pedidos
     private static function inserta($pedido){//insertamos pedido en la base de datos 
         $result = false;
         $conn = BD::getInstance()->getConexionBd();
-        $query = sprintf("INSERT INTO pedido (id_usuario, estado, precio_total) VALUES ('%d', '%d', '%d')",
-            $pedido->id_usuario,
-            $pedido->estado,
-            $pedido->precio_total);
-        if ($conn->query($query) === TRUE) {
+        $query = sprintf("INSERT INTO pedido (id_usuario, estado, precio_total) 
+        VALUES ('$pedido->id_usuario', '$pedido->estado', '$pedido->precio_total')");
+        if ($conn->query($query)) {
             $pedido->id_pedido = $pedido->id_usuario + 1;
             $result = $pedido;
         } else {

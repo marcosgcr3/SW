@@ -25,9 +25,11 @@ if (!$esValido) {
 $_SESSION['NIF'] = $usuario->NIF;
 $_SESSION['rol'] = $usuario->rol;
 $_SESSION['nombre'] = $usuario->nombre;
+$_SESSION['id'] = $usuario->id;
 
 $contenidoPrincipal=<<<EOS
 	<h1>Bienvenido {$_SESSION['nombre']}</h1>
+
 	<p>Usa el menú de la izquierda para navegar.</p>
 EOS;
 
