@@ -46,8 +46,9 @@ CREATE TABLE IF NOT EXISTS `pedido` (
   `id_pedido` int(11) NOT NULL AUTO_INCREMENT,
   `id_usuario` int(11) NOT NULL,
   `estado` tinyint(1) NOT NULL,
+  `precio_total` float NOT NULL,
    PRIMARY KEY (`id_pedido`),
-    FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`NIF`)
+    FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -112,9 +113,9 @@ INSERT INTO `usuarios` (`NIF`, `nombre`, `apellido`, `correo`, `password`, `rol`
 --
 -- Indices de la tabla `pedido`
 --
-ALTER TABLE `pedido`
-ADD PRIMARY KEY (`id_pedido`),
-  ADD KEY `FK_pedido_usuario` (`nif`);
+--ALTER TABLE `pedido`
+--ADD PRIMARY KEY (`id_pedido`),
+  --ADD KEY `FK_pedido_usuario` (`nif`);
 
 --
 -- Indices de la tabla `productos`
@@ -131,8 +132,8 @@ ADD PRIMARY KEY (`id_pedido`),
 --
 -- Filtros para la tabla `pedido`
 --
-ALTER TABLE `pedido`
-  ADD CONSTRAINT `FK_pedido_usuario` FOREIGN KEY (`nif`) REFERENCES `usuarios` (`NIF`);
+--ALTER TABLE `pedido`
+  --ADD CONSTRAINT `FK_pedido_usuario` FOREIGN KEY (`nif`) REFERENCES `usuarios` (`NIF`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
