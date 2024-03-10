@@ -17,7 +17,8 @@ class Usuario
     
     public static function crea($NIF, $nombre,$apellido, $correo ,$password)
     {
-        $user = new Usuario($id, $NIF, $nombre,$apellido, $correo ,self::hashPassword($password),"usuario");
+       
+        $user = new Usuario($NIF, $nombre,$apellido, $correo ,self::hashPassword($password),"usuario");
         
         return $user->guarda();
     }
@@ -65,7 +66,7 @@ class Usuario
         if ($rs) {
             $fila = $rs->fetch_assoc();
             if ($fila) {
-                $result = new Usuario($fila['id'],$fila['NIF'], $fila['nombre'], $fila['apellido'], $fila['correo'],$fila['password'], $fila['rol']);
+                $result = new Usuario($fila['NIF'], $fila['nombre'], $fila['apellido'], $fila['correo'],$fila['password'], $fila['rol'],$fila['id']);
             }
             $rs->free();
         } else {

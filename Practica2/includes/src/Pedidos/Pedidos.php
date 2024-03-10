@@ -80,11 +80,11 @@ class Pedidos
         }
     }
 
-    public function anyadirProducto($producto, $cantidad, $carrito){//añade un producto al CARRITO. ademas baja la cantidad de unidades del producto en la BD. actualiza el carrito
+    public function anyadirProducto($nombre, $cantidad, $carrito){//añade un producto al CARRITO. ademas baja la cantidad de unidades del producto en la BD. actualiza el carrito
         $conn = BD::getInstance()->getConexionBd();
-        $query = sprintf("UPDATE productos P SET unidades = '%d' WHERE P.id_producto = '%d' " ,
-            $producto->unidades-$cantidad,
-            $producto->id_producto
+        $producto = Producto::buscaPorNombre($nombre);
+        $query = sprintf("UPDATE productos P SET unidades = '$producto->unidades-$cantidad' WHERE P.id_producto = '$producto->id_producto'" ,
+           
         );
         $query2 = sprintf("INSERT INTO pedido_producto (id_pedido, id_producto, cantidad) VALUES ('%d', '%d', '%d')",
             $carrito->id_pedido,
