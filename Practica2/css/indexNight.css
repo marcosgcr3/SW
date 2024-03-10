@@ -246,3 +246,16 @@ footer{
     right: 15px;
     color: #ec2000;
 }
+.cantidad-botones {
+    display: inline-block; 
+    margin-right: 10px; 
+    
+}
+
+.boton-aumentar {
+    cursor: pointer;
+}
+
+.boton-disminuir {
+    cursor: pointer;
+}

@@ -99,7 +99,7 @@ class Producto
     }
     public function guarda()
     {
-        if ($this->id_producto != null) {
+        if ($this->nombre != null) {
             return self::actualiza($this);
         }
         return self::inserta($this);
@@ -108,7 +108,7 @@ class Producto
     {
         $result = false;
         $conn = BD::getInstance()->getConexionBd();
-        $query=sprintf("UPDATE productos P SET unidades = '$producto->unidades' WHERE p.id=$producto->id_producto"
+        $query=sprintf("UPDATE productos P SET unidades = '$producto->unidades' WHERE p.nombre='$producto->nombre'"
         );
         if ( $conn->query($query) ) {
             if ( $conn->affected_rows == 0) {
