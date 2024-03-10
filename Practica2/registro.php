@@ -5,10 +5,10 @@ require_once 'includes/acceso/registro.php';
 
 $tituloPagina = 'Login';
 
-$htmlFormLogin = buildFormularioRegistro();
+$htmlFormRegistro = buildFormularioRegistro();
 $contenidoPrincipal=<<<EOS
 <h1>Acceso al sistema</h1>
-$htmlFormLogin
+$htmlFormRegistro
 EOS;
 
 require 'includes/design/comunes/layout.php';

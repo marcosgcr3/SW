@@ -26,9 +26,9 @@ function buildArticulo($nombre, $precio, $descripcion, $unidades, $imagen)
             $contenido .= '<button class="botoncarro" onclick="location.href=\'sumarStock.php?nombre=' . $nombre . '&unidades=' . $cantidad . '\';">sumar</button>
             </div><i id="iconoBasura" class="fa-solid fa-trash" onclick="location.href=\'borrarProducto.php?nombre=' . $nombre . '\';"></i></div></div>';
         } else {
-            $contenido .= '<button class="botoncarro">Añadir al carrito</button></div></div></div>';
+            //$contenido .= '<button class="botoncarro">Añadir al carrito</button></div></div></div>';
+            $contenido .= '<button class="botoncarro" onclick="location.href=\'agregarAlCarrito.php?nombre=' . $nombre . '&unidades=' . $cantidad . '\';">Añadir al carrito</button></div></div></div>';
         }
 
         return $contenido;
 }
-

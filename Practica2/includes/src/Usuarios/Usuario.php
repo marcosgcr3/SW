@@ -39,6 +39,23 @@ class Usuario
         }
         return $result;
     }
+    public static function buscaPorCorreo($correo)
+    {
+        $conn = BD::getInstance()->getConexionBd();
+        $query = "SELECT * FROM Usuarios WHERE correo='$correo'";
+        $rs = $conn->query($query);
+        $result = false;
+        if ($rs) {
+            $fila = $rs->fetch_assoc();
+            if ($fila) {
+                $result = new Usuario($fila['NIF'], $fila['nombre'], $fila['apellido'], $fila['correo'],$fila['password'], $fila['rol']);
+            }
+            $rs->free();
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $result;
+    }
     public static function buscaPorId($id)
     {
         $conn = BD::getInstance()->getConexionBd();
