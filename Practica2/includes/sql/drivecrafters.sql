@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `pedido` (
   `id_usuario` int(11) NOT NULL,
   `estado` tinyint(1) NOT NULL,
    PRIMARY KEY (`id_pedido`),
-    FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`)
+    FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`NIF`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
