@@ -24,18 +24,34 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `pedido`
+-- Estructura de tabla para la tabla `usuarios`
 --
 
+CREATE TABLE IF NOT EXISTS `usuarios` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `NIF` varchar(9) NOT NULL UNIQUE,
+  `nombre` text NOT NULL,
+  `apellido` text NOT NULL,
+  `correo` text NOT NULL,
+  `password` text NOT NULL,
+  `rol` text NOT NULL,
+   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+--
+-- Estructura de tabla para la tabla `pedido`
+--
 CREATE TABLE IF NOT EXISTS `pedido` (
   `id_pedido` int(11) NOT NULL AUTO_INCREMENT,
-  `nif` varchar(9) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
   `estado` tinyint(1) NOT NULL,
-   PRIMARY KEY (`id_pedido`)
+  `precio_total` float NOT NULL,
+   PRIMARY KEY (`id_pedido`),
+    FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
-
 --
 -- Estructura de tabla para la tabla `productos`
 --
@@ -51,6 +67,21 @@ CREATE TABLE `productos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Estructura de tabla para la tabla `pedido_producto`
+--
+
+CREATE TABLE IF NOT EXISTS `pedido_producto` (
+  `id_pedido` int(11) NOT NULL,
+  `id_producto` int(11) NOT NULL,
+  `cantidad` int(100) NOT NULL,
+   PRIMARY KEY (`id_pedido`),
+    FOREIGN KEY (`id_pedido`) REFERENCES `pedido` (`id_pedido`),
+    FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Volcado de datos para la tabla `productos`
 --
 
@@ -61,20 +92,6 @@ INSERT INTO `productos` (`id_producto`, `nombre`, `precio`, `descripcion`, `unid
 
 -- --------------------------------------------------------
 
---
--- Estructura de tabla para la tabla `usuarios`
---
-
-CREATE TABLE IF NOT EXISTS `usuarios` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `NIF` varchar(9) NOT NULL UNIQUE,
-  `nombre` text NOT NULL,
-  `apellido` text NOT NULL,
-  `correo` text NOT NULL,
-  `password` text NOT NULL,
-  `rol` text NOT NULL,
-   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
@@ -96,9 +113,9 @@ INSERT INTO `usuarios` (`NIF`, `nombre`, `apellido`, `correo`, `password`, `rol`
 --
 -- Indices de la tabla `pedido`
 --
-ALTER TABLE `pedido`
-  ADD PRIMARY KEY (`id_pedido`),
-  ADD KEY `FK_pedido_usuario` (`nif`);
+--ALTER TABLE `pedido`
+--ADD PRIMARY KEY (`id_pedido`),
+  --ADD KEY `FK_pedido_usuario` (`nif`);
 
 --
 -- Indices de la tabla `productos`
@@ -115,8 +132,8 @@ ALTER TABLE `pedido`
 --
 -- Filtros para la tabla `pedido`
 --
-ALTER TABLE `pedido`
-  ADD CONSTRAINT `FK_pedido_usuario` FOREIGN KEY (`nif`) REFERENCES `usuarios` (`NIF`);
+--ALTER TABLE `pedido`
+  --ADD CONSTRAINT `FK_pedido_usuario` FOREIGN KEY (`nif`) REFERENCES `usuarios` (`NIF`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
