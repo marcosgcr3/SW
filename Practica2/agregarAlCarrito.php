@@ -1,7 +1,7 @@
 <?php
 
 require_once 'includes/config.php';
-require_once 'includes/src/Pedido/pedido.php';
+require_once 'includes/src/Pedidos/Pedidos.php';
 
 $id_usuario = $_SESSION['id'];
 $nombre = filter_input(INPUT_GET, 'nombre', FILTER_SANITIZE_SPECIAL_CHARS);
