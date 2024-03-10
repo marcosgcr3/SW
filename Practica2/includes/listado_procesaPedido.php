@@ -21,15 +21,15 @@ function listarPedido() {
         return '<p>No hay pedidos anteriores</p>';
     }
 
-    $pedido = '';
-    $producto = '';
+    $pedidos = '';
+    $productos = '';
     foreach ($listaPedidos as $pedido) {
 
-        $pedidos .= <<<EOS
-        <div class="id_pedido">
+        $pedidos .= 
+        '<div class="id_pedido">
             {$pedido->getId()}
-        </div>
-        EOS;
+        </div>';
+       
 
         $listaProductos = $pedido->getProductos();
 
@@ -55,10 +55,10 @@ function listarPedido() {
 
         }
 
-        $precioTotal .= <<<EOS
-        <div class="precioTotal">
+        $precioTotal .=
+        '<div class="precioTotal">
             // Precio Total 
-        </div>
+        </div>';
     }
 
 
@@ -88,7 +88,7 @@ function listarCarrito()
         return '<p>No hay articulos en el carrito</p>';
     }
 
-    $producto = '';
+    $productos = '';
     $listaProductos = $carrito[0]->getProductos();
     foreach ($listaProductos as $producto) {
 
