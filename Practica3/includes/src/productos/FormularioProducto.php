@@ -1,10 +1,13 @@
 <?php
-namespace es\ucm\fdi\aw\productos;
 
+namespace es\ucm\fdi\aw\productos;
 
 use es\ucm\fdi\aw\Aplicacion;
 use es\ucm\fdi\aw\Formulario;
-use es\ucm\fdi\aw\productos\Producto;
+
+
+
+
 
 
 class FormularioProducto extends Formulario{
@@ -88,7 +91,7 @@ class FormularioProducto extends Formulario{
         }
         
         if (count($this->errores) === 0) {
-            $producto = Producto::buscaPorNombre($nombre);
+           
             Producto::crea($nombre, $precio, $descripcion, $unidades, $imagen);
         }
     }

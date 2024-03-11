@@ -1,8 +1,9 @@
 <?php
+ namespace es\ucm\fdi\aw\producto;
 
     use es\ucm\fdi\aw\Aplicacion;
     use es\ucm\fdi\aw\MagicProperties;
-
+    
 class Producto
 {
     
