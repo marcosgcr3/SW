@@ -5,7 +5,7 @@ use es\ucm\fdi\aw\Aplicacion;
 require_once 'includes/config.php';
 require_once 'includes/src/Producto/listado_tienda.php';
 
-require_once 'includes/src/Producto/producto.php';
+require_once 'includes/src/Productos/producto.php';
 
 $tituloPagina = 'Tienda';
 

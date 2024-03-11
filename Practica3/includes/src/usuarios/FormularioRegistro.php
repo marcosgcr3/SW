@@ -50,7 +50,7 @@ class FormularioRegistro extends Formulario
                 <input id="password2" type="password" name="password2" />
                 {$erroresCampos['password2']}
             
-                <button type="submit" name="registro">Registrar</button>
+                <button class="botonIni" type="submit" name="registro">Registrar</button>
             
         </div>
         EOF;
