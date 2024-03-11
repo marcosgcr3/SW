@@ -8,10 +8,7 @@ class Usuario
 {
     use MagicProperties;
 
-    public const ADMIN_ROLE = 1;
-
-    public const USER_ROLE = 2;
-
+    
     public static function login($NIF, $password)
     {
         $usuario = self::buscaPorNIF($NIF);

@@ -4,7 +4,7 @@ namespace es\ucm\fdi\aw\productos;
 
 use es\ucm\fdi\aw\Aplicacion;
 use es\ucm\fdi\aw\Formulario;
-
+require_once 'includes/src/productos/producto.php';
 
 
 
@@ -13,7 +13,7 @@ use es\ucm\fdi\aw\Formulario;
 class FormularioProducto extends Formulario{
 
     public function __construct() {
-        parent::__construct('formProducto', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('/index.php')]);
+        parent::__construct('formProducto', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('/tienda.php')]);
     }
     protected function generaCamposFormulario(&$datos)
     {
@@ -93,6 +93,8 @@ class FormularioProducto extends Formulario{
         if (count($this->errores) === 0) {
            
             Producto::crea($nombre, $precio, $descripcion, $unidades, $imagen);
+            
+       
         }
     }
 
