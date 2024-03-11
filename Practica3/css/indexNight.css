@@ -1,0 +1,261 @@
+
+body{
+    background-color: #000000;
+    color: #f5f5f5;
+    font-size: 18px;
+    font-family: 'Arial';
+}
+
+.container-encabezado{
+    
+   
+    
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    
+}
+
+.container-encabezado .logo{
+    cursor: pointer;
+    
+  }
+  
+  .logo img{
+    height: 150px;
+    width: auto;
+  }
+
+.imagen{
+    display: flex;
+    justify-content: center;
+}
+
+.imagen img{
+    width: 80%;
+    height:80%;
+}
+.container-encabezado header{
+    
+    
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+   border-bottom: #ffffff 2px solid;
+   margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+.container-encabezado .titulo{
+    
+    
+    font-size: 40px;
+    margin-right: auto;
+    color: #ffffff;
+    text-decoration: none;
+}
+.container-encabezado  header ul{ /*pongo la lista en una fila */
+    display: flex;
+    list-style: none;
+}
+.container-encabezado header ul li a{
+
+    font-size: 20px;
+    text-align: none;
+    color: #f5f5f5;
+    margin: 0 20px;
+    
+    
+    text-decoration: none;
+}
+.container-encabezado #entrada{
+    color:#77762c
+}
+.container-encabezado header nav ul li a:hover{
+    color: #ffffff;
+}
+i {
+    cursor: pointer;
+}
+
+.nav-responsive{
+    
+    background-color: #f5f5f5;
+    color: #000000;
+    padding: 5px 10px;/*grosor del área de relleno*/
+    border-radius: 5px; /*redondeo los bordes*/
+    cursor: pointer;
+    display: none;
+   
+}
+.name label,
+  .email label {
+    width: 100px; /* Ancho fijo para las etiquetas */
+    display: inline-block;
+    text-align: right;
+  }
+
+.button{
+    width: 100px; /* Ancho del botón */
+    height: 50px; /* Altura del botón */
+    font-size: 18px;
+    font-family: 'Arial';
+}
+ 
+ /*si la screen es menor a 1000 px implementados una nav bar para movernos por el menu
+ quitamos la nav normal y bloqueamos la de navegacion*/   
+@media screen and (max-width: 1000px){
+    nav{
+        display: none;
+        cursor: pointer;
+    }
+    .nav-responsive{
+        display: block;
+        
+    }
+    nav.responsive{
+        display: block;
+        position:absolute ;
+        right: 0px;
+        top: 140px;
+    
+        z-index: 1;
+        background-color: #000000;
+        
+    }
+   
+    nav.responsive ul{ /*pongo la lista en columnas */
+        display: block !important;
+       
+    }
+    nav.responsive ul li{
+        border-bottom: 1px solid #ffffff;
+        padding: 10px 0;
+        
+    }
+    i#iconoCarro {
+        
+        margin-right: 30px;
+    }
+
+    
+}
+.Entrar a{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #f5f5f5;
+    text-decoration: none;
+}
+.container-registro h2{
+    display: flex;
+    justify-content: center;
+   
+}
+.container-registro{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+   
+}
+.exit{
+    color: #f5f5f5;
+    text-decoration: none;
+}
+footer{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    bottom: 0;
+    left:0;
+   
+}
+.noRegistrado{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-size: 30px;
+    margin-left: 60px;
+    margin-right: 60px;
+}
+
+
+.noRegistrado img{
+    filter: invert();
+    width: 20%;
+    height: 20%;
+}
+.botonIni{
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    width: 200px;
+    height: 70px;
+    margin-top: 40px;
+    border-radius:35px;
+    background-color: #902918;
+    color: #f5f5f5;
+    border: none;
+    font-size: 20px;
+}
+.producto {
+    position: relative;
+    border: #ffffff 2px solid;
+    margin-bottom: 20px;
+}
+
+.producto-info {
+    display: flex;
+    align-items: center;
+}
+
+.producto-imagen {
+    width: 300px;
+    margin-right: 20px;
+}
+.producto-detalle {
+    flex: 1;
+    position: relative;
+}
+
+.botoncarro {
+    background-color: #4CAF50;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    border: none;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius:35px;
+    color: #f5f5f5;
+}
+
+
+#iconoBasura {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: #ec2000;
+}
+.cantidad-botones {
+    display: inline-block; 
+    margin-right: 10px; 
+    
+}
+
+.boton-aumentar {
+    cursor: pointer;
+}
+
+.boton-disminuir {
+    cursor: pointer;
+}
