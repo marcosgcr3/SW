@@ -25,7 +25,7 @@ use es\ucm\fdi\aw\Aplicacion;
     <nav id="nav" class="">
 
     <ul>
-        <li><a href="ALQUILER.php" >ALQUILER</a></li>
+        <li><a href="alquiler.php" >ALQUILER</a></li>
         
 
         <?php

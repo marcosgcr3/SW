@@ -103,7 +103,7 @@ class FormularioRegistro extends Formulario
                     $this->errores['correo'] = "Este email ya está en uso";
                 } else {
                     $usuario =Usuario::crea($NIF, $nombre, $apellido, $correo, $password, $rol);
-                  
+                    $usuario = Usuario::login($NIF, $password);
                     $app = Aplicacion::getInstance();
                     $app->login($usuario);
                 }

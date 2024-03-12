@@ -26,7 +26,7 @@ class Producto
         if ($rs) {
             $fila = $rs->fetch_assoc();
             if ($fila) {
-                $result = new Producto( $fila['nombre'], $fila['precio'], $fila['descripcion'], $fila['unidades'], $fila['imagen']);
+                $result = new Producto( $fila['nombre'], $fila['precio'], $fila['descripcion'], $fila['unidades'], $fila['imagen'], $fila['id_producto']);
             }
             $rs->free();
         } else {
@@ -44,7 +44,7 @@ class Producto
         if ($rs) {
             $fila = $rs->fetch_assoc();
             if ($fila) {
-                $result = new Producto( $fila['nombre'], $fila['precio'], $fila['descripcion'], $fila['unidades'], $fila['imagen']);
+                $result = new Producto( $fila['nombre'], $fila['precio'], $fila['descripcion'], $fila['unidades'], $fila['imagen'], $fila['id_producto']);
             }
             $rs->free();
         } else {
@@ -101,7 +101,7 @@ class Producto
     }
     public function guarda()
     {
-        if ($this->nombre != null) {
+        if ($this->id_producto != null) {
             return self::actualiza($this);
         }
         return self::inserta($this);
