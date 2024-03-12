@@ -8,7 +8,7 @@ require_once 'includes/vistas/plantillas/alquiler.php';
 $contenido = '';
 
 function elVehiculoAlquilado($row){
-   $contenido = buildAlquiler($row['id_vehiculo'], $row['fechaIni'], $row['fechaFin'], $row['precio']);
+   $contenido = buildAlquiler($row['id_alquiler'],$row['id_vehiculo'],$row['fecha_inicio'], $row['fecha_fin'], $row['precioFinal']);
    return $contenido;
 }
 

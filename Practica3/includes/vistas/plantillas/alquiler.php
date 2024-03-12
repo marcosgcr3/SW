@@ -4,15 +4,16 @@ require_once 'includes/config.php';
 use es\ucm\fdi\aw\Aplicacion;
 use es\ucm\fdi\aw\vehiculos\Vehiculo;
 
-function buildAlquiler($id_vehiculo,$fechaIni, $fechaFin, $precio)
+function buildAlquiler($id,$id_vehiculo,$fechaIni, $fechaFin, $precio)
 {
     $vehiculo = Vehiculo::buscaPorId($id_vehiculo);
     $contenido=<<<EOF
     <div class="alquiler">
-        <h2>$vehiculo->getMarca():  $vehiculo->getModelo()</h2>
+        <h2>$vehiculo->marca:  $vehiculo->modelo</h2>
         <div class="alquiler-info">
             <p>Fecha de inicio: $fechaIni</p>
             <p>Fecha de fin: $fechaFin</p>
+            <p>Precio: $precio&euro;</p>
         </div>
     </div>
 EOF;    
@@ -20,8 +21,8 @@ EOF;
     if ($app->esAdmin()) {
         //$contenido .='</div><i id="iconoBasura" class="fa-solid fa-trash" onclick="location.href=\'borrarVehiculo.php?matricula=' . $matricula . '\';"></i></div></div>';
     } else {
-        //$contenido .= '<button class="botoncarro">Añadir al carrito</button></div></div></div>';
-        //$contenido .= '<button class="botoncarro" onclick="location.href=\'alquilarVehiculo.php?matricula=' . $matricula . '&id_usuario=' . $_SESSION['id'] . '\';">Alquilar</button></div></div></div>';
+        
+        $contenido .= '<button class="botoncarro" onclick="location.href=\'eliminarAlquiler.php?id=' . $id . '&vehiculo=' . $id_vehiculo . '\';">Eliminar Alquiler</button></div></div></div>';
     }
 
     return $contenido;

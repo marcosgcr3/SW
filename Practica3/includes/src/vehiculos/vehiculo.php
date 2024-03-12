@@ -54,7 +54,7 @@ class Vehiculo
     public static function buscaPorId($id_vehiculo)
     {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "SELECT * FROM vehiculos WHERE id_vehiculo=$id_vehiculo";
+        $query = "SELECT * FROM vehiculos WHERE id_vehiculo='$id_vehiculo'";
         $rs = $conn->query($query);
         $result = false;
         if ($rs) {
