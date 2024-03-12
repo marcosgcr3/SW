@@ -71,6 +71,7 @@ class FormularioAlquiler extends Formulario{
             $fechaFinal = new \DateTime($fechaFin);
             $diferencia = $fechaInicio->diff($fechaFinal);
             $numDias = $diferencia->days;
+            
             Vehiculo::cambiarDisponibilidad($vehiculo);
             Alquilar::crea($this->id_usuario, $this->id_vehiculo, $fechaIni, $fechaFin, $vehiculo->getPrecio()*$numDias);
                  

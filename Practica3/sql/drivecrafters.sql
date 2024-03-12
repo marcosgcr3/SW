@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-03-2024 a las 13:27:22
+-- Tiempo de generación: 12-03-2024 a las 16:34:33
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,6 +20,37 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `drivecrafters`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `alquileres`
+--
+
+CREATE TABLE `alquileres` (
+  `id_alquiler` int(11) NOT NULL,
+  `id_usuario` int(11) DEFAULT NULL,
+  `id_vehiculo` int(11) DEFAULT NULL,
+  `fecha_inicio` date DEFAULT NULL,
+  `fecha_fin` date DEFAULT NULL,
+  `precioFinal` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `alquileres`
+--
+
+INSERT INTO `alquileres` (`id_alquiler`, `id_usuario`, `id_vehiculo`, `fecha_inicio`, `fecha_fin`, `precioFinal`) VALUES
+(3, 2, 26, '0000-00-00', '0000-00-00', 0),
+(4, 2, 24, '0000-00-00', '0000-00-00', 0),
+(5, 2, 21, '0000-00-00', '0000-00-00', 0),
+(6, 2, 2, '0000-00-00', '0000-00-00', 0),
+(7, 2, 4, '0000-00-00', '0000-00-00', 0),
+(8, 2, 5, '0000-00-00', '0000-00-00', 0),
+(9, 2, 7, '0000-00-00', '0000-00-00', 0),
+(10, 2, 8, '2024-03-12', '2024-03-16', 0),
+(11, 2, 10, '2024-03-12', '2024-03-15', 3900),
+(12, 2, 10, '2024-03-13', '2024-03-06', 9100);
 
 -- --------------------------------------------------------
 
@@ -144,15 +175,15 @@ CREATE TABLE `vehiculos` (
 --
 
 INSERT INTO `vehiculos` (`id_vehiculo`, `matricula`, `marca`, `modelo`, `precio`, `year`, `disponibilidad`, `imagen`) VALUES
-(2, '5678DEF', 'Porsche', '911', 1500, 1990, 'si', 'img/imgVehiculos/porsche911.png'),
+(2, '5678DEF', 'Porsche', '911', 1500, 1990, 'no', 'img/imgVehiculos/porsche911.png'),
 (3, '9012GHI', 'BMW', 'M5', 1600, 2020, 'no', 'img/imgVehiculos/bmwm5.png'),
-(4, '3456JKL', 'BMW', 'X3', 1200, 2015, 'si', 'img/imgVehiculos/bmwx3.png'),
-(5, '7890MNO', 'BMW', 'Serie 1', 1100, 2018, 'si', 'img/imgVehiculos/bmwserie1.png'),
+(4, '3456JKL', 'BMW', 'X3', 1200, 2015, 'no', 'img/imgVehiculos/bmwx3.png'),
+(5, '7890MNO', 'BMW', 'Serie 1', 1100, 2018, 'no', 'img/imgVehiculos/bmwserie1.png'),
 (6, '1234PQR', 'BMW', 'Serie 3', 1300, 2019, 'no', 'img/imgVehiculos/bmwserie3.png'),
-(7, '5678STU', 'Audi', 'A3', 1000, 2017, 'si', 'img/imgVehiculos/audia3.png'),
-(8, '9012VWX', 'Audi', 'A4', 1100, 2018, 'si', 'img/imgVehiculos/audia4.png'),
+(7, '5678STU', 'Audi', 'A3', 1000, 2017, 'no', 'img/imgVehiculos/audia3.png'),
+(8, '9012VWX', 'Audi', 'A4', 1100, 2018, 'no', 'img/imgVehiculos/audia4.png'),
 (9, '3456YZA', 'Audi', 'Q3', 1200, 2016, 'no', 'img/imgVehiculos/audiq3.png'),
-(10, '7890BCD', 'Audi', 'Q5', 1300, 2019, 'si', 'img/imgVehiculos/audiq5.png'),
+(10, '7890BCD', 'Audi', 'Q5', 1300, 2019, 'no', 'img/imgVehiculos/audiq5.png'),
 (11, '1234EFG', 'Mercedes', 'Clase A', 1100, 2018, 'si', 'img/imgVehiculos/mercedesclasea.png'),
 (12, '5678HIJ', 'Mercedes', 'Clase B', 1200, 2017, 'si', 'img/imgVehiculos/mercedesclaseb.png'),
 (13, '9012KLM', 'Mercedes', 'Clase C', 1300, 2016, 'no', 'img/imgVehiculos/mercedesclasec.png'),
@@ -163,17 +194,25 @@ INSERT INTO `vehiculos` (`id_vehiculo`, `matricula`, `marca`, `modelo`, `precio`
 (18, '9012ZAB', 'Volkswagen', 'Golf', 900, 2017, 'no', 'img/imgVehiculos/vwgolf.png'),
 (19, '3456CDE', 'Renault', 'Clio', 750, 2020, 'si', 'img/imgVehiculos/renaultclio.png'),
 (20, '7890FGH', 'Seat', 'Ibiza', 700, 2019, 'si', 'img/imgVehiculos/seatibiza.png'),
-(21, '1234IJK', 'Kia', 'Rio', 780, 2018, 'si', 'img/imgVehiculos/kiario.png'),
+(21, '1234IJK', 'Kia', 'Rio', 780, 2018, 'no', 'img/imgVehiculos/kiario.png'),
 (22, '5678LMN', 'Hyundai', 'i30', 820, 2017, 'no', 'img/imgVehiculos/hyundaii30.png'),
 (23, '9012OPQ', 'Citroen', 'C3', 730, 2019, 'si', 'img/imgVehiculos/citroenc3.png'),
-(24, '3456RST', 'Peugeot', '208', 720, 2020, 'si', 'img/imgVehiculos/peugeot208.png'),
+(24, '3456RST', 'Peugeot', '208', 720, 2020, 'no', 'img/imgVehiculos/peugeot208.png'),
 (25, '7890UVW', 'Opel', 'Corsa', 710, 2018, 'si', 'img/imgVehiculos/opelcorsa.png'),
-(26, '1234ABC', 'Ferrari', 'F40', 1000, 1987, 'si', 'img/imgVehiculos/Ferrarif40.png'),
+(26, '1234ABC', 'Ferrari', 'F40', 1000, 1987, 'no', 'img/imgVehiculos/Ferrarif40.png'),
 (27, '0000AAA', 'pedro', 'csdf', 32, 1234, 'si', '2');
 
 --
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `alquileres`
+--
+ALTER TABLE `alquileres`
+  ADD PRIMARY KEY (`id_alquiler`),
+  ADD KEY `id_usuario` (`id_usuario`),
+  ADD KEY `id_vehiculo` (`id_vehiculo`);
 
 --
 -- Indices de la tabla `pedido`
@@ -215,6 +254,12 @@ ALTER TABLE `vehiculos`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `alquileres`
+--
+ALTER TABLE `alquileres`
+  MODIFY `id_alquiler` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
 -- AUTO_INCREMENT de la tabla `pedido`
 --
 ALTER TABLE `pedido`
@@ -241,6 +286,13 @@ ALTER TABLE `vehiculos`
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `alquileres`
+--
+ALTER TABLE `alquileres`
+  ADD CONSTRAINT `alquileres_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`),
+  ADD CONSTRAINT `alquileres_ibfk_2` FOREIGN KEY (`id_vehiculo`) REFERENCES `vehiculos` (`id_vehiculo`);
 
 --
 -- Filtros para la tabla `pedido`
