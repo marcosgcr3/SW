@@ -51,7 +51,23 @@ class Vehiculo
         }
         return $result;
     }
-
+    public static function buscaPorId($id_vehiculo)
+    {
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = "SELECT * FROM vehiculos WHERE id_vehiculo=$id_vehiculo";
+        $rs = $conn->query($query);
+        $result = false;
+        if ($rs) {
+            $fila = $rs->fetch_assoc();
+            if ($fila) {
+                $result = new Vehiculo( $fila['matricula'], $fila['marca'], $fila['modelo'], $fila['precio'], $fila['year'],$fila['disponibilidad'], $fila['imagen'], $fila['id_vehiculo']);
+            }
+            $rs->free();
+        } else {
+            error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
+        }
+        return $result;
+    }
     private $id_vehiculo;
     private $matricula;
     private $marca;
@@ -119,11 +135,19 @@ class Vehiculo
     {
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "UPDATE vehiculos SET matricula='$vehiculo->matricula', marca='$vehiculo->marca', modelo='$vehiculo->modelo', precio='$vehiculo->precio', year = '$vehiculo->year',disponibilidad='$vehiculo->disponibilidad', imagen='$vehiculo->imagen' WHERE matricula='$vehiculo->matricula'";
-        
+        $query = sprintf("UPDATE vehiculos V SET matricula='%s', marca='%s', modelo='%s', precio='%s', year='%s', disponibilidad='%s', imagen='%s' WHERE V.id_vehiculo=%d"
+            , $vehiculo->matricula
+            , $vehiculo->marca
+            , $vehiculo->modelo
+            , $vehiculo->precio
+            , $vehiculo->year
+            , $vehiculo->disponibilidad
+            , $vehiculo->imagen
+            , $vehiculo->id_vehiculo
+        );
         if ( $conn->query($query) ) {
-            if ( $conn->affected_rows == 0) {
-                error_log("No se ha actualizado el vehiculo");
+            if ( $conn->affected_rows != 1) {
+                error_log("Error Aplicacion: No se ha actualizado la disponibilidad");
             }
             $result = true;
         } else {
@@ -132,7 +156,26 @@ class Vehiculo
         return $result;
     }   
 
-    public static function inserta($vehiculo)
+    public static function cambiarDisponibilidad($vehiculo)
+    {
+        if($vehiculo->disponibilidad == 'no'){
+            $vehiculo->disponibilidad = 'si';
+        }else{
+            $vehiculo->disponibilidad = 'no';
+        }
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("UPDATE vehiculos SET disponibilidad='$vehiculo->disponibilidad' WHERE id_vehiculo ='$vehiculo->id_vehiculo'");
+        $rs = $conn->query($query);
+        if ($rs) {
+            if ($conn->affected_rows != 1) {
+                error_log("Error al cambiar la disponibilidad del vehiculo");
+            }
+        } else {
+            error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
+        }
+        return $vehiculo;
+    }
+    private static function inserta($vehiculo)
     {
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();

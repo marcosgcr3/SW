@@ -22,7 +22,7 @@ function buildVehiculo($matricula, $marca, $modelo, $precio, $year, $imagen)
         $contenido .='</div><i id="iconoBasura" class="fa-solid fa-trash" onclick="location.href=\'borrarVehiculo.php?matricula=' . $matricula . '\';"></i></div></div>';
     } else {
         //$contenido .= '<button class="botoncarro">Añadir al carrito</button></div></div></div>';
-        $contenido .= '<button class="botoncarro" onclick="location.href=\'agregarAlCarrito.php?matricula=' . $matricula . '\';">Alquilar</button></div></div></div>';
+        $contenido .= '<button class="botoncarro" onclick="location.href=\'alquilarVehiculo.php?matricula=' . $matricula . '&id_usuario=' . $_SESSION['id'] . '\';">Alquilar</button></div></div></div>';
     }
 
     return $contenido;
