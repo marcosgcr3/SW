@@ -11,8 +11,8 @@ Class Alquilar{
 
     use MagicProperties;
 
-    public static function crea($id_usuarios, $id_vehiculo, $fechaIni,$fechaFin){
-        $alquiler = new Alquilar($id_usuarios, $id_vehiculo, $fechaIni,$fechaFin);
+    public static function crea($id_usuarios, $id_vehiculo, $fechaIni,$fechaFin, $precioFinal){
+        $alquiler = new Alquilar($id_usuarios, $id_vehiculo, $fechaIni,$fechaFin,  $precioFinal);
         return $alquiler->guarda();
     }
 
@@ -20,7 +20,7 @@ Class Alquilar{
         $fechaInicio = $alquiler->fechaIni;
         $fechaFin = $alquiler->fechaFin;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "INSERT INTO Alquileres (id_usuario, id_vehiculo, fecha_inicio, fecha_fin) VALUES ($alquiler->id_usuarios, $alquiler->id_vehiculo, '$fechaInicio', '$fechaFin')";
+        $query = "INSERT INTO Alquileres (id_usuario, id_vehiculo, fecha_inicio, fecha_fin, precioFinal) VALUES ($alquiler->id_usuarios, $alquiler->id_vehiculo, '$fechaInicio', '$fechaFin', $alquiler->precioFinal)";
         $rs = $conn->query($query);
         if ($rs) {
             $alquiler->id = $conn->insert_id;
@@ -65,7 +65,7 @@ Class Alquilar{
         if ($rs) {
             $fila = $rs->fetch_assoc();
             if ($fila) {
-                $result = new Alquilar($fila['id_usuario'], $fila['id_vehiculo'], $fila['fecha_inicio'], $fila['fecha_fin'], $fila['id']);
+                $result = new Alquilar($fila['id_usuario'], $fila['id_vehiculo'], $fila['fecha_inicio'], $fila['fecha_fin'], $fila['precioFinal'],$fila['id']);
             }
             $rs->free();
         } else {
@@ -79,14 +79,15 @@ Class Alquilar{
     private $id_vehiculo;
     private $fechaIni;
     private $fechaFin;
-
-    private function __construct($id_usuarios, $id_vehiculo, $fechaIni,$fechaFin, $id = null)
+    private $precioFinal;
+    private function __construct($id_usuarios, $id_vehiculo, $fechaIni,$fechaFin, $precioFinal,$id = null)
     {   
         $this->id = $id;
         $this->id_usuarios = $id_usuarios;
         $this->id_vehiculo = $id_vehiculo;
         $this->fechaIni = $fechaIni;
         $this->fechaFin = $fechaFin;
+        $this->precioFinal = $precioFinal;
     }
     public function getId(){
         return $this->id;
@@ -102,6 +103,9 @@ Class Alquilar{
     }
     public function getFechaFin(){
         return $this->fechaFin;
+    }
+    public function getPrecioFinal(){
+        return $this->precioFinal;
     }
 
 

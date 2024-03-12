@@ -67,8 +67,12 @@ class FormularioAlquiler extends Formulario{
         }
         if (count($this->errores) === 0) {
             $vehiculo=Vehiculo::buscaPorId($this->id_vehiculo);
+            $fechaInicio = new \DateTime($fechaIni);
+            $fechaFinal = new \DateTime($fechaFin);
+            $diferencia = $fechaInicio->diff($fechaFinal);
+            $numDias = $diferencia->days;
             Vehiculo::cambiarDisponibilidad($vehiculo);
-            Alquilar::crea($this->id_usuario, $this->id_vehiculo, $fechaIni, $fechaFin);
+            Alquilar::crea($this->id_usuario, $this->id_vehiculo, $fechaIni, $fechaFin, $vehiculo->getPrecio()*$numDias);
                  
              
              

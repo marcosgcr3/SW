@@ -1,9 +1,13 @@
 
 <?php
 
+use es\ucm\fdi\aw\Aplicacion;
 require_once 'includes/config.php';
 
 $tituloPagina = 'Mi cuenta';
+
+
+
 
 $contenidoPrincipal=<<<EOS
         

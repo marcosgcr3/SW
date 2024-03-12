@@ -75,7 +75,7 @@ use es\ucm\fdi\aw\Aplicacion;
         
          <?php
             if ($app->usuarioLogueado()) {
-                echo "<li><a id = 'entrada' href='miCuenta.php' >MI CUENTA</a></li>";
+                echo "<li><a id = 'entrada' href='misAlquileres.php' >MI CUENTA</a></li>";
                 
                                 
             } else {
