@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-03-2024 a las 16:34:33
+-- Tiempo de generación: 13-03-2024 a las 17:24:23
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -41,16 +41,33 @@ CREATE TABLE `alquileres` (
 --
 
 INSERT INTO `alquileres` (`id_alquiler`, `id_usuario`, `id_vehiculo`, `fecha_inicio`, `fecha_fin`, `precioFinal`) VALUES
-(3, 2, 26, '0000-00-00', '0000-00-00', 0),
-(4, 2, 24, '0000-00-00', '0000-00-00', 0),
-(5, 2, 21, '0000-00-00', '0000-00-00', 0),
-(6, 2, 2, '0000-00-00', '0000-00-00', 0),
-(7, 2, 4, '0000-00-00', '0000-00-00', 0),
 (8, 2, 5, '0000-00-00', '0000-00-00', 0),
 (9, 2, 7, '0000-00-00', '0000-00-00', 0),
 (10, 2, 8, '2024-03-12', '2024-03-16', 0),
 (11, 2, 10, '2024-03-12', '2024-03-15', 3900),
 (12, 2, 10, '2024-03-13', '2024-03-06', 9100);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `citas`
+--
+
+CREATE TABLE `citas` (
+  `id_cita` int(11) NOT NULL,
+  `id_cliente` int(11) NOT NULL,
+  `id_mecanico` int(11) NOT NULL,
+  `dia` date NOT NULL,
+  `hora` int(11) NOT NULL,
+  `asunto` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `citas`
+--
+
+INSERT INTO `citas` (`id_cita`, `id_cliente`, `id_mecanico`, `dia`, `hora`, `asunto`) VALUES
+(1, 2, 12, '2024-03-13', 12, 'repaarar');
 
 -- --------------------------------------------------------
 
@@ -151,7 +168,7 @@ INSERT INTO `usuarios` (`id`, `NIF`, `nombre`, `apellido`, `correo`, `password`,
 (8, '243524534', 'wedfwaf', 'wsdw', 'wed@gmail.com', '$2y$10$/GQqud7wtaKYez/WSOqSjeB3YmIkoT4ASrMn38I6Eit8eeCQRRsQW', 'usuario'),
 (9, '123987658', 'Marcos', 'ewd', 'papa@gmail.com', '$2y$10$o5scwI8bAQ72gyAWGakVqeggq1mhqiEyJNBnNxrqWdSAnqJz4WGEK', 'usuario'),
 (10, '984759857', 'Marcos', 'ewd', 'paadpa@gmail.com', '$2y$10$im9lPcRt8mNxOlQMF8yRhu9AIn/.7zI/8GY8c5Z4LgG71XkCSQj.m', 'usuario'),
-(12, '000000000', 'Marcos', 'Gomez', 'lagarto@gmail.com', '$2y$10$IGlIFQvB75s3Q6eG1s3GLu5IoI1myTSnD2.t7ulMDv/cL9ug/xt0y', 'usuario');
+(12, '000000000', 'Marcos', 'Gomez', 'lagarto@gmail.com', '$2y$10$IGlIFQvB75s3Q6eG1s3GLu5IoI1myTSnD2.t7ulMDv/cL9ug/xt0y', 'mecanico');
 
 -- --------------------------------------------------------
 
@@ -215,6 +232,12 @@ ALTER TABLE `alquileres`
   ADD KEY `id_vehiculo` (`id_vehiculo`);
 
 --
+-- Indices de la tabla `citas`
+--
+ALTER TABLE `citas`
+  ADD PRIMARY KEY (`id_cita`);
+
+--
 -- Indices de la tabla `pedido`
 --
 ALTER TABLE `pedido`
@@ -258,6 +281,12 @@ ALTER TABLE `vehiculos`
 --
 ALTER TABLE `alquileres`
   MODIFY `id_alquiler` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT de la tabla `citas`
+--
+ALTER TABLE `citas`
+  MODIFY `id_cita` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `pedido`
