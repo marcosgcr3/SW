@@ -32,7 +32,7 @@ class FormularioCita extends Formulario{
                 {$erroresCampos['asunto']}
 
                 <label for="Dia">Dia:</label>
-                <input id="dia" type="date" name="dia" value="$dia" />
+                <input id="dia" type="text" name="dia" value="$dia" />
                 {$erroresCampos['dia']}
                 
                 
@@ -40,9 +40,9 @@ class FormularioCita extends Formulario{
         </div>
         EOF;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $sql = "SELECT hora FROM Citas WHERE id_cliente = {$_SESSION['id']} AND dia = '$dia'";
+        $sql = "SELECT hora FROM Citas WHERE id_cliente = {$_SESSION['id']} AND dia = $dia";
         $result = $conn->query($sql);
-        if (!$result->num_rows > 0){
+        if ($result->num_rows > 0){
 
             $html .= "<div class='container-registro'>";
             $html .= "<label for='Hora'>Hora:</label>";
@@ -62,13 +62,22 @@ class FormularioCita extends Formulario{
     {
         $this->errores = [];
         $dia = $datos['dia'] ?? null;
-        if ( empty($dia) ) {
+        if (empty($dia)) {
             $this->errores['dia'] = "El dia no puede estar vacío";
         }
         $hora = $datos['hora'] ?? null;
-        if ( empty($hora) ) {
+        if (empty($hora)) {
             $this->errores['hora'] = "La hora no puede estar vacía";
         }
+        $asunto = $datos['asunto'] ?? null;
+        if (empty($asunto)) {
+            $this->errores['asunto'] = "El asunto no puede estar vacío";
+        }
+        if (count($this->errores) === 0) {
+            $cita = new Citas($_SESSION['id'], $_SESSION['id_mecanico'], $dia, $hora, $asunto);
+            
+        }
+        
     
     }
            
