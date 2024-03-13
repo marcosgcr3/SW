@@ -37,7 +37,7 @@ use es\ucm\fdi\aw\Aplicacion;
             }
 
             if ($app->esMecanico()) {
-                echo "<li><a href='gestionCitas.php' >GESTION CITAS</a></li>";
+                echo "<li><a href='citas.php' >MI HORARIO</a></li>";
                 
                                 
             }
@@ -75,7 +75,7 @@ use es\ucm\fdi\aw\Aplicacion;
         
          <?php
             if ($app->usuarioLogueado()) {
-                echo "<li><a id = 'entrada' href='misAlquileres.php' >MI CUENTA</a></li>";
+                echo "<li><a id = 'entrada' href='miCuenta.php' >MI CUENTA</a></li>";
                 
                                 
             } else {

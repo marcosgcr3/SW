@@ -292,9 +292,13 @@ class Aplicacion
         $this->compruebaInstanciaInicializada();
         return $this->usuarioLogueado() && ($_SESSION['rol'] == "admin");
     }
-    function esMecanico()
+    public function esMecanico()
     {
         return $this->usuarioLogueado() && ($_SESSION['rol'] == "mecanico");
+    }
+    public function esCliente()
+    {
+        return $this->usuarioLogueado() && ($_SESSION['rol'] == "usuario");
     }
 
     
