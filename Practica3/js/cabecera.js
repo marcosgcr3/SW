@@ -59,3 +59,16 @@ function disminuirCantidad(nombreProducto, unidadesDisponibles) {
     cantidadElement.innerText = cantidad;
     document.getElementById(nombreProducto).innerText = cantidad; // Actualiza el mensaje de cantidad
 }
+function updateHours(date) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `/update_hours.php?dia=${date}`, true);
+    xhr.onload = function () {
+        if (this.status === 200) {
+            const hoursSelect = document.getElementById('hora');
+            hoursSelect.innerHTML = this.responseText;
+        }
+    
+    }
+    xhr.send();
+
+}

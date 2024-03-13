@@ -23,15 +23,28 @@ if( $app->esCliente() ){
     }
     $result->free();
     } else {
-        //$contenidoPrincipal .= sinCitas();
+        $contenidoPrincipal .= sinCitas();
     }
-}else if($app->esMecanico()){
+
    
+    $contenidoPrincipal .= newCita();
+}else if($app->esMecanico()){
+    $sql = "SELECT * FROM Citas WHERE id_mecanico = {$_SESSION['id']}";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $contenidoPrincipal .= misCitas($row);
+        }
+    $result->free();
+    } else {
+        $contenidoPrincipal .= "Notienes citas";
+    }
    
     
     
 }else if( $app->esAdmin() ){
-    $contenidoPrincipal.= añadirProducto();
+    
 }
 
 

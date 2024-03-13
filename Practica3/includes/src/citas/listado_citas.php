@@ -8,7 +8,7 @@ require_once 'includes/vistas/plantillas/citas.php';
 $contenido = '';
 
 function misCitas($row){
-   $contenido = buildCita($row['id_cita'],$row['fecha'], $row['asunto']);
+   $contenido = buildCita($row['id_cita'],$row['dia'], $row['hora'],$row['asunto']);
    return $contenido;
 }
 
@@ -20,9 +20,9 @@ function sinCitas(){
     return $contenido;
 }
 
-function añadirProducto(){
+function newCita(){
     $contenido = <<<EOS
-    <button class="botonIni" onclick="location.href='addProducto.php'">Añadir producto</button>
+    <button class="botonIni" onclick="location.href='addCita.php'">Agendar Cita</button>
     EOS;
     return $contenido;
 }

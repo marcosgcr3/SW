@@ -10,15 +10,15 @@ use es\ucm\fdi\aw\vehiculos\Vehiculo;
 Class Citas{
     use MagicProperties;
 
-    public static function crea($id_cliente, $id_mecanico, $fecha,$asunto){
-        $alquiler = new Citas($id_cliente, $id_mecanico, $fecha,$asunto);
+    public static function crea($id_cliente, $id_mecanico, $dia,$hora,$asunto){
+        $alquiler = new Citas($id_cliente, $id_mecanico, $dia,$hora,$asunto);
         return $alquiler->guarda();
     }
 
     private static function crearCita($cita){
-        $fecha = $cita->fecha;
+        $dia = $cita->dia;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "INSERT INTO Citas (id_cliente, id_mecanico, fecha, asunto) VALUES ($cita->id_cliente, $cita->id_mecanico, '$fecha', '$cita->asunto')";
+        $query = "INSERT INTO Citas (id_cliente, id_mecanico, fecha, asunto) VALUES ($cita->id_cliente, $cita->id_mecanico, '$dia',$cita->hora, '$cita->asunto')";
         $rs = $conn->query($query);
         if ($rs) {
             $cita->id = $conn->insert_id;
@@ -55,11 +55,17 @@ Class Citas{
     private $id_mecanico;
     private $fecha;
     private $asunto;
-    private function __construct($id_cliente, $id_mecanico, $fecha,$asunto, $id=null){
+    private $dia;
+    private $hora;
+    private function __construct($id_cliente, $id_mecanico, $dia,$hora,$asunto, $id=null){
         $this->id = $id;
         $this->id_cliente = $id_cliente;
         $this->id_mecanico = $id_mecanico;
-        $this->fecha = $fecha;
+       
+        $this->dia = $dia;
+        $this->hora = $hora;
+
+
         $this->asunto = $asunto;
     }
     public function getId(){
@@ -77,6 +83,12 @@ Class Citas{
     public function getAsunto(){
         return $this->asunto;
     }
+    public function getDia(){
+        return $this->dia;
+    }
+    public function getHora(){
+        return $this->hora;
+    }
     public static function buscaPorId($id){
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = "SELECT * FROM Citas WHERE id_cita=$id";
@@ -87,7 +99,7 @@ Class Citas{
             }
             $cita = $rs->fetch_assoc();
             $rs->free();
-            return new Citas($cita['id_cliente'], $cita['id_mecanico'], $cita['fecha'], $cita['asunto'], $cita['id_cita']);
+            return new Citas($cita['id_cliente'], $cita['id_mecanico'], $cita['dia'],  $cita['hora'],$cita['asunto'], $cita['id_cita']);
         } else {
             error_log("Error al consultar la base de datos: $conn->error ");
             return null;
@@ -100,7 +112,7 @@ Class Citas{
         $result = [];
         if ($rs) {
             while($cita = $rs->fetch_assoc()){
-                $result[] = new Citas($cita['id_cliente'], $cita['id_mecanico'], $cita['fecha'], $cita['asunto'], $cita['id_cita']);
+                $result[] = new Citas($cita['id_cliente'], $cita['id_mecanico'], $cita['dia'], $cita['hora'], $cita['asunto'], $cita['id_cita']);
             }
             $rs->free();
         } else {
