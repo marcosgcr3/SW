@@ -124,17 +124,15 @@ class Pedidos
         return $precio_total;
     }
 
-    //---------------------------------------------------------------------------------------
     private static function inserta($pedido){//insertamos pedido en la base de datos 
         $result = false;
-        $conn = BD::getInstance()->getConexionBd();
+        $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("INSERT INTO pedido (id_usuario, estado, precio_total) 
         VALUES ('$pedido->id_usuario', '$pedido->estado', '$pedido->precio_total')");
         if ($conn->query($query)) {
             $pedido->id_pedido = $pedido->id_usuario + 1;
             $result = $pedido;
         } else {
-            file_put_contents("falloBD.txt",$query);
             echo "Error al insertar en la BD: " . $conn->errno . "<br>" . utf8_encode($conn->error);
             exit();
         }
@@ -143,7 +141,7 @@ class Pedidos
 
     private static function actualiza($pedido){//actualizamos el pedido en la base de datos
         $result = false;
-        $conn = BD::getInstance()->getConexionBd();
+        $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("UPDATE pedido P SET id_usuario = '%d', estado = '%d', precio_total = '%d' WHERE P.id_pedido = '%d'",
             $pedido->real_escape_string($pedido->id_usuario),
             $pedido->real_escape_string($pedido->estado),
@@ -156,7 +154,6 @@ class Pedidos
             }
             $result = true;
         } else {
-            file_put_contents("falloBD.txt",$query);
             error_log("Error BD ({$conn->errno}): {$conn->error}");
         }
         return $result;
