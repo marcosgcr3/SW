@@ -2,16 +2,25 @@
 
 require_once 'includes/config.php';
 use es\ucm\fdi\aw\Aplicacion;
-use es\ucm\fdi\aw\Pedido;
+use es\ucm\fdi\aw\pedidos\Pedidos;
+use es\ucm\fdi\aw\productos\producto;
 
-function buildPedido0($id_user,$estado)
+function buildPedido($id_user,$estado)
 {
     if($estado === TRUE){   //Carrito
-        $carrito = Pedido::buscarPorEstado($id_user,$estado);
-        $contenido = mostrarCarrito($carrito);
+        $id_carro = Pedidos::buscarCarrito($id_user); //Devuelve el id del pedido
+        if($id_carro === NULL){
+            $contenido = '<p>El carrito esta vacio</p>';
+        }
+        else{
+            $carrito = Producto::listaProductos($id_carro->getId_pedido());
+            //Llamar a producto para que me devuelva la lista de los articulos
+            $contenido = mostrarCarrito($carrito);
+        }
     }
     else{                   //Historial de pedidos del usuario
-        $pedidos = Pedido::buscarPorUser($id_user);
+        $pedidos = Pedidos::listaPedidos($id_user);  //Devuelve la lista de los pedidos del user
+        //Hacer un foreach llamando a la funcion de productos que me devuelve la lista de los productos y luego otro foreach para sacar la lista
         mostrarPedidos($pedidos);
 
     }   
@@ -27,17 +36,21 @@ function buildPedido0($id_user,$estado)
 
 function mostrarCarrito($carrito)
 {
-    $html = listaCarrito($carrito);
+    $html = listarPedido($carrito);
     echo $html;
 }
 
 function mostrarPedidos($pedidos)
 {
-    $html = listaPedidos($pedidos);
-    echo $html;
+    foreach($pedidos as $pedido){
+        $aux = Producto::listaProductos($pedido->getId_pedido());
+        $html = listarPedido($aux);
+        echo $html;
+    }
+
 }
 
-function listaCarrito($carrito)
+function listarPedido($carrito)
 {
     if(empty($carrito)){
         return '<p>El carrito esta vacio</p>';
@@ -45,16 +58,17 @@ function listaCarrito($carrito)
     else{
         $productos = '';
         foreach($carrito as $producto){
-            $nombre = $getNombre();
-            $cantidad = $getCantidad();
-            $precio = $getPrecio();
+            $nombre = $producto->getNombre();
+            $cantidad = $producto->getUnidades();
+            $precio = $producto->getPrecio();
             $precio2 = $precio*$cantidad;
+            $imagen = $producto->getImagen();
 
             $productos .= <<<EOS
             <div class="producto">
 
             <div class="fotoProducto">
-                <img src='./img/imgProductos/{$nombre}.png' />
+                <img src='./img/imgProductos/{$imagen}.png' />
             </div>
 
             <div class="nombreProducto">
@@ -86,6 +100,3 @@ function listaCarrito($carrito)
     }
     
 }
-
-function listaPedidos($pedidos)
-{

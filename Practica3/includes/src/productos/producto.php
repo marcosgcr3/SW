@@ -1,5 +1,10 @@
 <?php
+    namespace es\ucm\fdi\aw\productos;
 
+    use es\ucm\fdi\aw\Aplicacion;
+    use es\ucm\fdi\aw\MagicProperties;
+
+    
 class Producto
 {
 
@@ -17,7 +22,7 @@ class Producto
     
     public static function buscaPorNombre($nombre)
     {
-        $conn = BD::getInstance()->getConexionBd();
+        $conn = Aplicacion::getInstance()->getConexionBd();
         $query = "SELECT * FROM productos WHERE nombre='$nombre'";
         $rs = $conn->query($query);
         $result = false;
@@ -35,7 +40,7 @@ class Producto
 
     public static function buscaPorId($id_producto)
     {
-        $conn = BD::getInstance()->getConexionBd();
+        $conn = Aplicacion::getInstance()->getConexionBd();
         $query = "SELECT * FROM productos WHERE id_producto=$id_producto";
         $rs = $conn->query($query);
         $result = false;
@@ -53,7 +58,7 @@ class Producto
     
     public static function listaProductos($id_pedido){//devuelve una lista con todos los productos del pedido
         $lista_productos = array();
-        $conn = BD::getInstance()->getConexionBd();
+        $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("SELECT p.id_producto, p.nombre, p.precio, p.descripcion, p.unidades, p.imagen
                             FROM productos p 
                             INNER JOIN pedido_producto pp ON p.id_producto = pp.id_producto
@@ -149,7 +154,7 @@ class Producto
     private static function eliminarProducto($nombre){
         
         $result = false;
-        $conn = BD::getInstance()->getConexionBd();
+        $conn = Aplicacion::getInstance()->getConexionBd();
         $query = "DELETE FROM productos WHERE nombre='$nombre'";
         if ( $conn->query($query) ) {
             if ( $conn->affected_rows == 0) {
@@ -166,7 +171,7 @@ class Producto
     private static function inserta($producto)
     {
         $result = false;
-        $conn = BD::getInstance()->getConexionBd();
+        $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("INSERT INTO productos(nombre, precio, descripcion, unidades, imagen)
             VALUES ('%s', '%s', '%s', '%s', '%s')",
             $conn->real_escape_string($producto->nombre),

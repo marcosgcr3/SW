@@ -1,6 +1,9 @@
 <?php
 
+namespace es\ucm\fdi\aw\pedidos;
 
+use es\ucm\fdi\aw\Aplicacion;
+use es\ucm\fdi\aw\MagicProperties;
 class Pedidos 
 {
     use MagicProperties;
@@ -22,7 +25,7 @@ class Pedidos
     }
 
     public static function buscarCarrito($id_usuario){//busca en la BD el unico pedido sin finalizar aka el Carrito del usuario. Solo devuelve un pedido
-        $conn = BD::getInstance()->getConexionBd();
+        $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("SELECT p.id_pedido, p.id_usuario, p.estado
                             FROM pedido p 
                             WHERE p.id_usuario = '%d' AND p.estado = '0'", $id_usuario);
@@ -35,13 +38,14 @@ class Pedidos
         }
         else{
             echo "No existe el carrito en la base de datos";
+            $pedido = NULL;
         }
         return $pedido;
     }	
 
     public static function listaPedidos($id_usuario){//devuelve una lista con todos los pedidos del usuario
         $lista_pedidos = array();
-        $conn = BD::getInstance()->getConexionBd();
+        $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("SELECT p.id_pedido, p.id_usuario, p.estado
                             FROM pedido p 
                             WHERE P.id_usuario = '%d'", $id_usuario );
@@ -60,7 +64,7 @@ class Pedidos
     }
 
     public static function borrarPedido($id_pedido){//borra un pedido de la base de datos
-        $conn = BD::getInstance()->getConexionBd();
+        $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("DELETE FROM pedido WHERE id_pedido = '%d'", $id_pedido);
         //eliminar de pedido_producto tambien
 
@@ -73,7 +77,7 @@ class Pedidos
     }
 
     public function anyadirProducto($id_pedido,$id_producto, $cantidad){//añade un producto al CARRITO
-        $conn = BD::getInstance()->getConexionBd();
+        $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("INSERT INTO pedido_producto (id_pedido, id_producto, cantidad) VALUES ('%d', '%d', '%d')",
             $id_pedido,
             $id_producto,
@@ -90,7 +94,7 @@ class Pedidos
     
 
     public function eliminarProducto($id_pedido,$id_producto){//elimina un producto del carrito y devuelve la cantidad al producto a la BD 
-        $conn = BD::getInstance()->getConexionBd();
+        $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("DELETE FROM pedido_producto WHERE id_pedido = '%d' AND id_producto = '%d'",
             $id_pedido,
             $id_producto,
@@ -105,7 +109,7 @@ class Pedidos
     }
 
     public function calculaPrecioTotal($id_pedido){//calcula el precio total del carrito
-        $conn = BD::getInstance()->getConexionBd();
+        $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("SELECT SUM(PR.precio * PP.cantidad) as precio_total
                            FROM pedido P
                             INNER JOIN pedido_producto PP ON P.id_pedido = PP.id_pedido

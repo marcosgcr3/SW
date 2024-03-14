@@ -38,7 +38,7 @@ if( $app->esCliente() ){
         }
     $result->free();
     } else {
-        $contenidoPrincipal .= "Notienes citas";
+        $contenidoPrincipal .= "No tienes citas";
     }
    
     
