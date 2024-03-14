@@ -51,7 +51,27 @@ class Producto
         return $result;
     }
     
-    
+    public static function listaProductos($id_pedido){//devuelve una lista con todos los productos del pedido
+        $lista_productos = array();
+        $conn = BD::getInstance()->getConexionBd();
+        $query = sprintf("SELECT p.id_producto, p.nombre, p.precio, p.descripcion, p.unidades, p.imagen
+                            FROM productos p 
+                            INNER JOIN pedido_producto pp ON p.id_producto = pp.id_producto
+                            WHERE pp.id_pedido = '%d'", $id_pedido );
+        $rs = $conn->query($query);
+        if($rs -> num_rows > 0){
+            while($row = $rs->fetch_assoc()){
+                $producto = new Producto($row['nombre'], $row['precio'], $row['descripcion'], $row['unidades'], $row['imagen']);
+                array_push($lista_productos, $producto);
+            }
+            $rs->free();
+        }
+        else{
+            echo "No hay productos en la base de datos";
+        }
+        return $lista_productos;
+
+    }
    
 
     private $id_producto;
@@ -69,7 +89,7 @@ class Producto
 
     private function __construct($nombre, $precio, $descripcion, $unidades, $imagen,$id_producto = null)
     {
-        $this->id_producto = $id_producto;
+        $this->id_producto = $id_producto !== null ? intval($id_producto) : null;
         $this->nombre = $nombre;
         $this->precio = $precio;
         $this->descripcion = $descripcion;

@@ -2,12 +2,18 @@
 
 require_once 'includes/config.php';
 require_once 'includes/src/Pedidos/Pedidos.php';
+use es\ucm\fdi\aw\BD;
 
 $id_usuario = $_SESSION['id'];
-$nombre = filter_input(INPUT_GET, 'nombre', FILTER_SANITIZE_SPECIAL_CHARS);
-$unidades = filter_input(INPUT_GET, 'unidades', FILTER_SANITIZE_SPECIAL_CHARS);
+$nombre = $_POST["nombre"] ?? null;
+$unidades = $_POST["unidades"] ?? null;
 
-$carrito = Pedidos::crea($id_usuario, FALSE, 0);
+//si no tiene un carrito, se lo creamos
+$carrito = Pedidos::buscarCarrito(2);
+if($carrito == NULL){
+    $carrito = Pedidos::crea(2, FALSE, 0);
+}
 
-$carrito->anyadirProducto($nombre, $unidades, $carrito);
-header('Location: tienda.php');
+
+$carrito -> anyadirProducto("6", '1', "1");
+$carrito -> eliminarProducto("6", '1', "1");

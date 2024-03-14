@@ -74,7 +74,6 @@ CREATE TABLE IF NOT EXISTS `pedido_producto` (
   `id_pedido` int(11) NOT NULL,
   `id_producto` int(11) NOT NULL,
   `cantidad` int(100) NOT NULL,
-   PRIMARY KEY (`id_pedido`),
     FOREIGN KEY (`id_pedido`) REFERENCES `pedido` (`id_pedido`),
     FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
