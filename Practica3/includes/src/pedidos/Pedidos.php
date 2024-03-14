@@ -124,6 +124,7 @@ class Pedidos
         return $precio_total;
     }
 
+    //---------------------------------------------------------------------------------------
     private static function inserta($pedido){//insertamos pedido en la base de datos 
         $result = false;
         $conn = BD::getInstance()->getConexionBd();
