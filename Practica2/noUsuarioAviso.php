@@ -21,5 +21,7 @@ EOS;
 require 'includes/design/comunes/layout.php';
 
 
+$params = ['tituloPagina' => $tituloPagina, 'contenidoPrincipal' => $contenidoPrincipal];
+$app->generaVista('/plantillas/plantilla.php', $params);
 
 

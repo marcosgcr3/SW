@@ -85,7 +85,7 @@
     </nav>
     <?php
             if (estaLogado() && !esAdmin() && !esMecanico()) {
-                echo '<i id="iconoCarro" onclick="location.href=\'includes/design/plantillas/plantilla_procesaPedido.php\'" class="fa-solid fa-cart-shopping"></i>';
+                echo '<i id="iconoCarro" onclick="location.href=\'carrito.php\'" class="fa-solid fa-cart-shopping"></i>';
                 
                                 
             }

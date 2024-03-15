@@ -32,31 +32,16 @@ class FormularioCita extends Formulario{
                 {$erroresCampos['asunto']}
 
                 <label for="Dia">Dia:</label>
-                <input id="dia" type="text" name="dia" value="$dia" />
+                <input id="dia" type="date" name="dia" value="$dia" />
                 {$erroresCampos['dia']}
                 
                 
+                <label for="Hora">Hora:</label>
+                <input id="hora" type="text" name="hora" value="$hora" />
+                {$erroresCampos['hora']}
         
         </div>
         EOF;
-        $conn = Aplicacion::getInstance()->getConexionBd();
-        $sql = "SELECT hora FROM Citas WHERE id_cliente = {$_SESSION['id']} AND dia = $dia";
-        $result = $conn->query($sql);
-        if ($result->num_rows > 0){
-
-            $html .= "<div class='container-registro'>";
-            $html .= "<label for='Hora'>Hora:</label>";
-            $html .= "<select id='hora' name='hora'>";
-            $html .= "<option value=''>Selecciona una hora</option>";
-            while ($row = $result->fetch_assoc()) {
-                $html .= "<option value='{$row['hora']}'>{$row['hora']}</option>";
-            }
-            $html .= "</select>";
-            $html .= "{$erroresCampos['hora']}";
-            $html .= "</div>";
-
-        }
-
         return $html;
     }protected function procesaFormulario(&$datos)
     {

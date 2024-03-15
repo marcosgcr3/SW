@@ -7,7 +7,7 @@ $tituloPagina = 'Mi cuenta';
 
 $contenidoPrincipal=<<<EOS
         
-<h1>Bienvenido {$_SESSION['nombre']}</h1>
+<h1>Bienvenido {$_SESSION['id']} </h1>
 
 <div class = "exit">
 

@@ -29,7 +29,7 @@ $_SESSION['id'] = $usuario->id;
 
 $contenidoPrincipal=<<<EOS
 	<h1>Bienvenido {$_SESSION['nombre']}</h1>
-
+	
 	<p>Usa el menú de la izquierda para navegar.</p>
 EOS;
 
