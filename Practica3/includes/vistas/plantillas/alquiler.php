@@ -4,12 +4,13 @@ require_once 'includes/config.php';
 use es\ucm\fdi\aw\Aplicacion;
 use es\ucm\fdi\aw\vehiculos\Vehiculo;
 
-function buildAlquiler($id,$id_vehiculo,$fechaIni, $fechaFin, $precio)
+function buildAlquiler($id,$id_vehiculo,$fechaIni, $fechaFin, $precio, $imagen)
 {
     $vehiculo = Vehiculo::buscaPorId($id_vehiculo);
     $contenido=<<<EOF
     <div class="alquiler">
         <h2>$vehiculo->marca:  $vehiculo->modelo</h2>
+        <img src="$imagen" alt="imagen" class="producto-imagen">
         <div class="alquiler-info">
             <p>Fecha de inicio: $fechaIni</p>
             <p>Fecha de fin: $fechaFin</p>

@@ -74,6 +74,23 @@ Class Alquilar{
         return $result;
     }
     
+    public static function buscaPorIdAlquiler($id_alquiler){
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT * FROM Alquileres WHERE id_alquiler=%d", $id_alquiler);
+        $rs = $conn->query($query);
+        $result = false;
+        if ($rs) {
+            $fila = $rs->fetch_assoc();
+            if ($fila) {
+                $result = new Alquilar($fila['id_usuario'], $fila['id_vehiculo'], $fila['fecha_inicio'], $fila['fecha_fin'], $fila['precioFinal'],$fila['id']);
+            }
+            $rs->free();
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $result;
+    }
+
     private $id;
     private $id_usuarios;
     private $id_vehiculo;

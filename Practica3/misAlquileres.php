@@ -11,7 +11,10 @@ $tituloPagina = 'Tienda';
 
 $contenidoPrincipal = '';
 $conn = Aplicacion::getInstance()->getConexionBd();
-$sql = "SELECT * FROM alquileres WHERE id_usuario = {$_SESSION['id']}";
+$sql = "SELECT alquileres.*, vehiculos.imagen
+        FROM alquileres
+        INNER JOIN vehiculos ON alquileres.id_vehiculo = vehiculos.id_vehiculo
+        WHERE id_usuario = {$_SESSION['id']}";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {

@@ -16,6 +16,9 @@ $contenidoPrincipal=<<<EOS
 <div class = "exit">
 
 <a href="logout.php"><i class="fa-solid fa-right-from-bracket"></i></a>
+<a href="misAlquileres.php">Mis Alquileres</a>
+<a href="misCitas.php">Mis Citas</a>
+
 
 
 </div> 
