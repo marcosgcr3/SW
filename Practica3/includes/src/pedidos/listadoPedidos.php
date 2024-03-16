@@ -8,11 +8,11 @@ require_once 'includes/vistas/plantillas/plantillaPedidos.php';
 $contenido = '';
 
 function pedido(){
-   $contenido = buildPedido($_SESSION['id'], FALSE);
+   $contenido = buildPedido($_SESSION['id'], TRUE);
    return $contenido;
 }
 
 function carrito(){
-    $contenido = buildPedido($_SESSION['id'], TRUE);
+    $contenido = buildPedido($_SESSION['id'], FALSE);
     return $contenido;
  }

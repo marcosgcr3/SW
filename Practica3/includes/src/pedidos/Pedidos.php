@@ -12,7 +12,7 @@ class Pedidos
     private $estado;//FALSE == en carrito TRUE == comprado
     private $precio_total;
 
-    private function __construct($id_pedido, $id_usuario, $estado, $precio_total, $producto){
+    private function __construct($id_pedido, $id_usuario, $estado, $precio_total){
         $this->id_pedido = $id_pedido;
         $this->id_usuario = $id_usuario;
         $this->estado = $estado;
@@ -41,7 +41,7 @@ class Pedidos
             $pedido = NULL;
         }
         return $pedido;
-    }	
+    }
 
     public static function listaPedidos($id_usuario){//devuelve una lista con todos los pedidos del usuario
         $lista_pedidos = array();
@@ -128,13 +128,42 @@ class Pedidos
         return $precio_total;
     }
 
+    public function insertaPrecioTotal($id_pedido, $precio_total){//inserta el precio total en la base de datos
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("UPDATE pedido SET precio_total = '%u' WHERE id_pedido = '%d'",
+            $precio_total,
+            $id_pedido
+        );
+        if($conn->query($query)){
+            return true;
+        }
+        else{
+            echo "Error en la BD: " . $conn->errno . "<br>" . utf8_encode($conn->error);
+            return false;
+        }
+    }
+
+    public function finalizarPedido($id_pedido){//cambia el estado del pedido a finalizado, hemos comprado el pedido
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("UPDATE pedido SET estado = '1' WHERE id_pedido = '%d'",
+            $id_pedido
+        );
+        if($conn->query($query)){
+            return true;
+        }
+        else{
+            echo "Error en la BD: " . $conn->errno . "<br>" . utf8_encode($conn->error);
+            return false;
+        }
+    }
+
     private static function inserta($pedido){//insertamos pedido en la base de datos 
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("INSERT INTO pedido (id_usuario, estado, precio_total) 
         VALUES ('$pedido->id_usuario', '$pedido->estado', '$pedido->precio_total')");
         if ($conn->query($query)) {
-            $pedido->id_pedido = $pedido->id_usuario + 1;
+            $pedido->id_pedido = $conn->insert_id;
             $result = $pedido;
         } else {
             echo "Error al insertar en la BD: " . $conn->errno . "<br>" . utf8_encode($conn->error);
@@ -170,24 +199,16 @@ class Pedidos
         return self::inserta($this);
     }
 
+    public function getId_pedido(){
+        return $this->id_pedido;
+    }
+
     public function getEstado(){
         return $this->estado;
-    }
-    
-    public function setEstado($estado){
-        $this->estado = $estado;
     }
 
     public function getPrecioTotal(){
         return $this->precio_total;
-    }
-
-    public function setPrecioTotal($precio_total){
-        $this->precio_total = $precio_total;
-    }
-
-    public function getId_pedido(){
-        return $this->id_pedido;
     }
 
     public function getId_usuario(){

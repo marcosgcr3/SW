@@ -7,7 +7,7 @@ use es\ucm\fdi\aw\productos\producto;
 
 function buildPedido($id_user,$estado)
 {
-    if($estado === TRUE){   //Carrito
+    if($estado === FALSE){   //Carrito
         $id_carro = Pedidos::buscarCarrito($id_user); //Devuelve el id del pedido
         if($id_carro === NULL){
             $contenido = '<p>El carrito esta vacio</p>';
@@ -15,7 +15,7 @@ function buildPedido($id_user,$estado)
         else{
             $carrito = Producto::listaProductos($id_carro->getId_pedido());
             //Llamar a producto para que me devuelva la lista de los articulos
-            $contenido = mostrarCarrito($carrito);
+            $contenido = mostrarCarrito($carrito);//$carrito array
         }
     }
     else{                   //Historial de pedidos del usuario
@@ -36,7 +36,7 @@ function buildPedido($id_user,$estado)
 
 function mostrarCarrito($carrito)
 {
-    $html = listarPedido($carrito);
+    $html = listarPedido($carrito);//$carrito array
     echo $html;
 }
 
@@ -96,7 +96,7 @@ function listarPedido($carrito)
             {$carrito->getPrecioTotal()}
             </div>
         EOS;
-        
+        //error en la linea 96...no puedes llamar getPrecioTotal a un array
     }
     
 }
