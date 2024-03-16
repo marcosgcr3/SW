@@ -1,73 +1,74 @@
 <?php
-session_start();
-$usuario = htmlspecialchars(trim(strip_tags($_REQUEST["usuario"])));
-$password = htmlspecialchars(trim(strip_tags(md5($_REQUEST["password"]))));
-$password2 = htmlspecialchars(trim(strip_tags(md5($_REQUEST["password2"]))));
-$nombre = htmlspecialchars(trim(strip_tags($_REQUEST["nombre"])));
-$apellidos = htmlspecialchars(trim(strip_tags($_REQUEST["apellidos"])));
-$correo = htmlspecialchars(trim(strip_tags($_REQUEST["correo"])));
-$NIF = htmlspecialchars(trim(strip_tags($_REQUEST["NIF"]))); 
-$modoOscuro = isset($_COOKIE['modoOscuro']) && $_COOKIE['modoOscuro'] === 'activado';
 
-?>
-<!DOCTYPE html>
-<html lang="es">
-    <head>
-    <?php
-       
-       if ($modoOscuro) {
-           echo '<link id ="estilo" rel="stylesheet" href="css/indexNight.css">';
-       }else{
-           echo '<link id ="estilo" rel="stylesheet" href="css/index.css">';}
-       ?>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="Index" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"/>
-        <title>DriveCrafters</title>
-    </head>
-   
-    <body> 
+require_once 'includes/config.php';
+require_once 'includes/src/Usuarios/usuario.php';
+require_once 'includes/acceso/autorizacion.php';
+require_once 'includes/acceso/registro.php';
 
-        <div class="container-encabezado">
-          <?php include("componentes/header.php"); ?>
+$tituloPagina = 'Registro';
 
-        </div> 
-       
-         <?php
+$NIF = filter_input(INPUT_POST, 'NIF', FILTER_SANITIZE_SPECIAL_CHARS);
+$nombre = filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_SPECIAL_CHARS);
+$apellido = filter_input(INPUT_POST, 'apellidos', FILTER_SANITIZE_SPECIAL_CHARS);
+$correo = filter_input(INPUT_POST, 'correo', FILTER_SANITIZE_SPECIAL_CHARS);
+$password = $_POST["password"] ?? null;
+$password2 = $_POST["password2"] ?? null;
+$rol = "usuario";
+$contenidoPrincipal = "";
+$errores = array();
 
-            if($password != $password2) {
-                echo "Las contraseñas no coinciden";
-                
-            }else{
-                $conn = mysqli_connect("localhost", "root", "", "DriveCrafters");
-                if($conn->connect_error) {
-                    die("Connection failed: " . $conn->connect_error);
-                }
-                $sql = "INSERT INTO usuarios (NIF, nombre, apellido, correo, password) VALUES ('$NIF', '$nombre', '$apellidos', '$correo','$password')";
-                if($conn->query($sql) === TRUE) {
-                    echo "Usuario registrado correctamente";
-                    $_SESSION["login"] = true;
-                } else {
-                    echo "Error: " . $sql . "<br>" . $conn->error;
-                }
+$NIF = ($NIF === '') ? null : filter_var($NIF, FILTER_VALIDATE_INT);
+if ( ! $NIF || mb_strlen($NIF) < 9) {
+    $errores['NIF'] = "El NIF tiene que tener una longitud de al menos 9 caracteres";
+}
+$correo = ($correo === '') ? null : filter_var($correo, FILTER_VALIDATE_EMAIL);
+if (!$correo) {
+    $errores['correo'] = "Introduce un correo válido";
+}
 
-                $sql = "SELECT tipo_user FROM usuarios WHERE NIF = '$NIF'";
-                $nombreResult = $conn->query($sql);
-                $tipo = $nombreResult->fetch_assoc()["tipo_user"];
-            
+$password = ($password === '') ? null : filter_var($password, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+if (!$password || mb_strlen($password) < 5) {
+    $errores['password'] = "La contraseña tiene que tener una longitud de al menos 5 caracteres";
+}
 
-                $conn->close();
-                header("Location: index.php");
+$password2 = ($password2 === '') ? null : filter_var($password2, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+if ($password != $password2) {
+    $errores['password2'] = "Los passwords deben coincidir";
+}
 
-            }
+if (count($errores) == 0) {
+    $usuario = Usuario::buscaPorNIF($NIF);
 
-         ?>
-      <?php include("componentes/pie.php"); ?>
-        
-        <script src="js/cabecera.js"></script>
-        <script src="js/index.js"></script>
-        
-        
-    </body>
-</html>
+    if ($usuario) {
+        $errores['NIF'] = "Este NIF ya está en uso";
+    } else {
+        $usuario = Usuario::buscaPorCorreo($correo);
+        if ($usuario) {
+            $errores['correo'] = "Este email ya está en uso";
+        } else {
+            Usuario::crea($NIF, $nombre, $apellido, $correo, $password, $rol);
+            $contenidoPrincipal .= "<h1>Usuario registrado correctamente</h1>";
+        }
+
+    }
+    if (count($errores) != 0){
+        foreach ($errores as $error) {
+            $contenidoPrincipal .= "<p>$error</p>";
+        }
+        $htmlFormRegistro = buildFormularioRegistro($nombre, $apellido, $correo,$NIF, $password, $password2);
+        $contenidoPrincipal .= $htmlFormRegistro;
+    }
+    
+
+} else {
+    foreach ($errores as $error) {
+        $contenidoPrincipal .= "<p>$error</p>";
+    }
+    $htmlFormRegistro = buildFormularioRegistro($nombre, $apellido, $correo,$NIF, $password, $password2);
+    $contenidoPrincipal .= $htmlFormRegistro;
+}
+
+
+
+require 'includes/design/comunes/layout.php';
+

@@ -1,57 +1,49 @@
 <?php
-    session_start();
-    $modoOscuro = isset($_COOKIE['modoOscuro']) && $_COOKIE['modoOscuro'] === 'activado';
-?>
-<!DOCTYPE html>
-<html lang="es">
-    <head>
-       <?php
-       
-        if ($modoOscuro) {
-            echo '<link id ="estilo" rel="stylesheet" href="css/indexNight.css">';
-        }else{
-            echo '<link id ="estilo" rel="stylesheet" href="css/index.css">';}
-        ?>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="Index" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"/>
-        
-        
-        <title>DriveCrafters</title>
-    </head>
+
+require_once 'includes/config.php';
+
+
+$tituloPagina = 'Portada';
+if( esMecanico() ){
+    $contenidoPrincipal=<<<EOS
+    <h1>Bienvenido mecanico {$_SESSION['nombre']}</h1>
+    EOS;
+    require 'includes/design/comunes/layout.php';
+    exit();
+}else if(esAdmin()){
+    $contenidoPrincipal=<<<EOS
+    <h1>Bienvenido admin {$_SESSION['nombre']}</h1>
+    EOS;
+    require 'includes/design/comunes/layout.php';
+    exit();
+}else if(estaLogado()){
    
-    <body> 
+    $contenidoPrincipal=<<<EOS
+    <h1>Bienvenido usuario {$_SESSION['nombre']}</h1>
 
-        <div class="container-encabezado">
-          <?php include("componentes/header.php"); ?>
+    EOS;
+    
+    require 'includes/design/comunes/layout.php';
+    exit();
 
-        </div> 
-       
-        
 
-       <div class="imagen">
-        
-            <img src="img/foto1.jpg" id="imagenPrincipal" alt="centrado">
-        
-        </div>
-        
-       
+}
+else{
+    $contenidoPrincipal=<<<EOS
+    <h1>Página principal</h1> 
+    <div class="imagen">
+    <img src="img/foto_mecanico.jpg" id="imagenPrincipal" alt="centrado">
+    </div>
+    <p> 
+        Los mejores artículos para tu coche al mejor precio del mercado.
+        Podrás ser recomendado por nuestros increibles mecánicos expertos en mantenimieto
+        y acondicionamiento de automóviles. Además, estos podrán repara tu vehículo, 
+        realizarle algunas mejoras técnicas o hacerle la revisión de la ITV. También puedes disponer 
+        de un servicio de alquiler de automóviles en caso de no disponer de uno o simplemente 
+        poder conducir el coche que siempre deseaste. No lo dudes y confía en DRIVECRAFTERS.
+    </p>
+    <button class="botonIni" onclick="location.href='entrar.php'">LOGIN/REGISTER</button>
+    EOS;
 
-        <div class="text">
-            <h1>DriveCrafters</h1>
-            <p>Estamos entusiasmados de presentar una iniciativa innovadora que revolucionará la forma en que experimentamos el mantenimiento y reparación de vehículos. Nuestra cadena de talleres está diseñada para ofrecer un servicio integral y eficiente, aprovechando la tecnología de vanguardia y un enfoque centrado en la comodidad del cliente.
-            En nuestro proyecto, nos comprometemos a proporcionar una experiencia sin complicaciones para los propietarios de vehículos, combinando la excelencia técnica con la conveniencia moderna. Implementaremos un sistema de programación en línea fácil de usar que permite a los clientes reservar citas en cualquier momento y desde cualquier lugar. Esto no solo simplifica el proceso, sino que también optimiza la gestión del tiempo tanto para nuestros clientes como para nuestros talleres.
-            Esto no solo acelera el proceso de reparación, sino que también mejora la transparencia y la confianza entre nuestros clientes y nuestros técnicos.
-            </p>
-            <p>Para mas informacion pulse <a href="contacto.html">aqui.</a> </p>
-        </div>
-
-       
-        <?php include("componentes/pie.php"); ?>
-        <script src="js/cabecera.js"></script>
-        <script src="js/index.js"></script>
-        
-        
-    </body>
-</html>
+    require 'includes/design/comunes/layout.php';
+}

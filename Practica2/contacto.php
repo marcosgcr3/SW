@@ -1,34 +1,14 @@
 <?php
-  session_start();
-   
-  $modoOscuro = isset($_COOKIE['modoOscuro']) && $_COOKIE['modoOscuro'] === 'activado';
-?>
-<!DOCTYPE html>
-<html lang="es">
-  <head>
-    <?php 
-        
-      if ($modoOscuro) {
-          echo '<link id ="estilo" rel="stylesheet" href="css/indexNight.css">';
-      }else{
-          echo '<link  id ="estilo"rel="stylesheet" href="css/index.css">';}
-    ?>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"/>
-    <title>Contacto</title>
-  </head>
-  
-  <body>
-    <div class="container-encabezado">
-    <?php include("componentes/header.php"); ?>
 
-    </div>
+require_once 'includes/config.php';
+
+$tituloPagina = 'contacto';
+
+$contenidoPrincipal=<<<EOS
     <h1>Contacto</h1>
     
     <div class="Informacion personal">
-      <form action="mailto:papadial@ucm.es?" id="formulario" method="POST">
+      <form action="mailto:papadial@ucm.es?subject=Consulta" id="formulario" method="POST">
         <fieldset>  
           <legend>Información personal</legend>
           <div class="name">
@@ -40,17 +20,22 @@
               size="30"
               placeholder="Ingresa tu nombre"
               class="campo"
+              autocomplete="off"
+              required
+
             />
           </div>
           <div class="email">
             <label for="email">E-mail:</label>
             <input
-              type="text"
+              type="email"
               name="email"
               id="email"
               size="40"
               placeholder="Ingresa tu correo electronico"
               class="campo"
+              autocomplete="off"
+              required
             />
           </div>
         </fieldset>
@@ -62,6 +47,7 @@
               name="motivo"
               id="evaluacion"
               value="Evaluacion"
+              checked
             />
             <label for="evaluacion">Evaluación</label>
           </div>
@@ -84,7 +70,7 @@
             <label for="critica">Crítica</label>
           </div>
           <div class="textbox">
-            <textarea id="consultaBox" name="comentario" rows="15" cols="80" placeholder="Ingresa tu consulta"></textarea>
+            <textarea id="consultaBox" name="comentario" rows="15" cols="80" placeholder="Ingresa tu consulta" autocomplete="off" required></textarea>
           </div>
           <div class="checkbox">
             <input
@@ -92,19 +78,17 @@
               type="checkbox"
               name="Terminos y conndiciones"
               value="on"
-              onclick="activoCheckBox()"
+              autocomplete="off"
+              required
             />
             <label for="mycheckbox">Marque esta casilla para verificar que ha leído nuestros términos y condiciones del servicio</label>
           </div>
         </fieldset>
-        <button class="button" id="myButton" type="submit" name="submit" value="Enviar form." disabled>
+        <button class="button" id="myButton" type="submit" name="submit" value="Enviar form.">
           Enviar
         </button>
       </form>
     </div>
-    
-    <?php include("componentes/pie.php"); ?>
-    <script src="js/contactos.js"></script>
-    <script src="js/cabecera.js"></script>
-  </body>
-</html>
+    EOS;
+
+    require 'includes/design/comunes/layout.php';
