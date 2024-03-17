@@ -1,14 +1,27 @@
 <?php 
 
-//Hay que implementar clases articuloTienda y una para el formulario de la compra
-//Tambien hay que hacer el objeto articulo para poder mostrarlos bien en la tienda
+
 require_once 'includes/config.php';
 require_once 'includes/vistas/plantillas/vehiculo.php';
+use es\ucm\fdi\aw\vehiculos\vehiculo;
 
-$contenido = '';
+function listavehiculos()
+{
+    $vehiculos = Vehiculo::listaVehiculos();
+    $contenido = '';
+    if (empty($vehiculos)) {
+        return sinVehiculo();
+    }
 
-function elVehiculo($row){
-   $contenido = buildVehiculo( $row['matricula'],$row['marca'], $row['modelo'], $row['precio'], $row['year'],$row['imagen']);
+    foreach ($vehiculos as $vehiculo) {
+        $contenido .= elVehiculo($vehiculo);
+    }
+
+    return $contenido;
+}
+
+function elVehiculo($vehiculo){
+   $contenido = buildVehiculo($vehiculo);
    return $contenido;
 }
 

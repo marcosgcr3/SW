@@ -37,7 +37,22 @@ class Producto
         }
         return $result;
     }
-
+    public static function devolverId($nombre){
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = "SELECT id_producto FROM productos WHERE nombre='$nombre'";
+        $rs = $conn->query($query);
+        $result = false;
+        if ($rs) {
+            $fila = $rs->fetch_assoc();
+            if ($fila) {
+                $result = $fila['id_producto'];
+            }
+            $rs->free();
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $result;
+    }
     public static function buscaPorId($id_producto)
     {
         $conn = Aplicacion::getInstance()->getConexionBd();
@@ -77,7 +92,25 @@ class Producto
         return $lista_productos;
 
     }
-   
+    public static function listaProducto(){//devuelve una lista con todos los productos de la BD
+
+        $lista_productos = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = "SELECT * FROM productos";
+        $rs = $conn->query($query);
+        
+        if($rs -> num_rows > 0){
+            while($row = $rs->fetch_assoc()){
+                $producto = new Producto($row['nombre'], $row['precio'], $row['descripcion'], $row['unidades'], $row['imagen'], $row['id_producto']);
+                array_push($lista_productos, $producto);
+            }
+            $rs->free();
+        }
+        else{
+            echo "No hay productos en la base de datos";
+        }
+        return $lista_productos;
+    }
 
     private $id_producto;
     
@@ -132,7 +165,7 @@ class Producto
     private static function actualiza($producto)
     {
         $result = false;
-        $conn = BD::getInstance()->getConexionBd();
+        $conn = Aplicacion::getInstance()->getConexionBd();
         $query=sprintf("UPDATE productos P SET unidades = '$producto->unidades' WHERE p.nombre='$producto->nombre'"
         );
         if ( $conn->query($query) ) {

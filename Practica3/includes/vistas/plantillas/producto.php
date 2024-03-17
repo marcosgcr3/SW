@@ -3,10 +3,18 @@
 require_once 'includes/config.php';
 use es\ucm\fdi\aw\Aplicacion;
 
-function buildArticulo($nombre, $precio, $descripcion, $unidades, $imagen)
+function buildArticulo($producto)
 {
-        $cantidad = 1;
-        $contenido = <<<EOS
+    $productos = '';
+        
+    $cantidad = 1;
+    $nombre = $producto->getNombre();
+    $unidades = $producto->getUnidades();
+    $precio = $producto->getPrecio();
+   
+    $imagen = $producto->getImagen();
+    $descripcion = $producto->getDescripcion();
+    $productos .=  <<<EOS
     <div class="producto">
         <div class="producto-info">
             <img src="$imagen" alt="imagen" class="producto-imagen">
@@ -26,12 +34,13 @@ function buildArticulo($nombre, $precio, $descripcion, $unidades, $imagen)
     EOS;
         $app = Aplicacion::getInstance();
         if ($app->esAdmin()) {
-            $contenido .= '<button class="botoncarro" onclick="location.href=\'sumarStock.php?nombre=' . $nombre . '&unidades=\' + document.getElementById(\''.$nombre.'\').innerHTML;">sumar</button>
+            $productos .= '<button class="botoncarro" onclick="location.href=\'sumarStock.php?nombre=' . $nombre . '&unidades=\' + document.getElementById(\''.$nombre.'\').innerHTML;">sumar</button>
             </div><i id="iconoBasura" class="fa-solid fa-trash" onclick="location.href=\'borrarProducto.php?nombre=' . $nombre . '\';"></i></div></div>';
         } else {
             //$contenido .= '<button class="botoncarro">Añadir al carrito</button></div></div></div>';
-            $contenido .= '<button class="botoncarro" onclick="location.href=\'agregarAlCarrito.php?nombre=' . $nombre . '&unidades=' . $cantidad . '\';">Añadir al carrito</button></div></div></div>';
+            $productos .= '<button class="botoncarro" onclick="location.href=\'addProductoAlCarro.php?nombre=' . $nombre . '&unidades=' . $cantidad . '\';">Añadir al carrito</button></div></div></div>';
         }
-
-        return $contenido;
+        
+                
+    return $productos;
 }

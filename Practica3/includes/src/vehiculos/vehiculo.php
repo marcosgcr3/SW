@@ -68,6 +68,23 @@ class Vehiculo
         }
         return $result;
     }
+    public static function listaVehiculos()
+    {
+        $lista_vehiculos = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = "SELECT * FROM vehiculos";
+        $rs = $conn->query($query);
+        if ($rs) {
+            while($fila = $rs->fetch_assoc()) {
+                $vehiculo = new Vehiculo( $fila['matricula'], $fila['marca'], $fila['modelo'], $fila['precio'], $fila['year'],$fila['disponibilidad'], $fila['imagen'], $fila['id_vehiculo']);
+                array_push($lista_vehiculos, $vehiculo);
+            }
+            $rs->free();
+        } else {
+            error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_vehiculos;
+    }
     private $id_vehiculo;
     private $matricula;
     private $marca;

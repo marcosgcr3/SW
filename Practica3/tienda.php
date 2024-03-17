@@ -10,18 +10,13 @@ require_once 'includes/src/productos/producto.php';
 $tituloPagina = 'Tienda';
 
 $contenidoPrincipal = '';
-$conn = Aplicacion::getInstance()->getConexionBd();
-$sql = "SELECT * FROM productos";
-$result = $conn->query($sql);
 
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $contenidoPrincipal .= elArticulo($row);
-    }
-    $result->free();
-} else {
-    $contenidoPrincipal .= sinArticulos();
-}
+
+
+   
+$contenidoPrincipal .= listaproductos();
+   
+
 
 if( $app->esAdmin() ){
     $contenidoPrincipal.= añadirProducto();

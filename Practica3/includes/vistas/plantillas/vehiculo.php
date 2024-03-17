@@ -3,9 +3,17 @@
 require_once 'includes/config.php';
 use es\ucm\fdi\aw\Aplicacion;
 
-function buildVehiculo($matricula, $marca, $modelo, $precio, $year, $imagen)
+function buildVehiculo($vehiculo)
 {
-    $contenido = <<<EOS
+    $contenido = '';
+    $matricula = $vehiculo->getMatricula();
+    $marca = $vehiculo->getMarca();
+    $modelo = $vehiculo->getModelo();
+    $precio = $vehiculo->getPrecio();
+    $year = $vehiculo->getYear();
+    $imagen = $vehiculo->getImagen();
+
+    $contenido .= <<<EOS
     <div class="producto">
         <div class="producto-info">
             <img src="$imagen" alt="imagen" class="producto-imagen">

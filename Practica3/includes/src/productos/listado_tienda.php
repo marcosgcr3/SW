@@ -1,14 +1,28 @@
 <?php 
 
-//Hay que implementar clases articuloTienda y una para el formulario de la compra
-//Tambien hay que hacer el objeto articulo para poder mostrarlos bien en la tienda
+
 require_once 'includes/config.php';
 require_once 'includes/vistas/plantillas/producto.php';
 
-$contenido = '';
+use es\ucm\fdi\aw\productos\producto;
 
-function elArticulo($row){
-   $contenido = buildArticulo($row['nombre'], $row['precio'], $row['descripcion'], $row['unidades'], $row['imagen']);
+function listaproductos()
+{
+    $productos = Producto::listaProducto();
+    $contenido = '';
+    if (empty($productos)) {
+        return sinArticulos();
+    }
+
+    foreach ($productos as $producto) {
+        $contenido .= elArticulo($producto);
+    }
+
+    return $contenido;
+}
+
+function elArticulo($producto){
+   $contenido = buildArticulo($producto);
    return $contenido;
 }
 
