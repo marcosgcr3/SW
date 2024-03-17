@@ -4,22 +4,32 @@
 //Tambien hay que hacer el objeto articulo para poder mostrarlos bien en la tienda
 require_once 'includes/config.php';
 require_once 'includes/vistas/plantillas/alquiler.php';
-
+use es\ucm\fdi\aw\alquilar\alquilar;
 $contenido = '';
 
-function elVehiculoAlquilado($row){
-   $contenido = buildAlquiler($row['id_alquiler'],$row['id_vehiculo'],$row['fecha_inicio'], $row['fecha_fin'], $row['precioFinal'], $row['imagen']);
+function listaAlquileres()
+{
+    
+    $alquileres = Alquilar::listaAlquileres($_SESSION['id']);
+    $contenido = '';
+    if (empty($alquileres)) {
+        return sinAlquiler();
+    }
+
+    foreach ($alquileres as $alquiler) {
+        $contenido .= elVehiculoAlquilado($alquiler);
+    }
+
+    return $contenido;
+}
+
+function elVehiculoAlquilado($alquiler){
+   $contenido = buildAlquiler($alquiler);
    return $contenido;
 }
 
-function sinArticulos(){
-    $contenido = "<tr><td colspan='4'>No hay productos disponibles</td></tr>";
+function sinAlquiler(){
+    $contenido = "<tr><td colspan='4'>No hay alquileres</td></tr>";
     return $contenido;
 }
 
-function añadirProducto(){
-    $contenido = <<<EOS
-    <button class="botonIni" onclick="location.href='addProducto.php'">Añadir producto</button>
-    EOS;
-    return $contenido;
-}

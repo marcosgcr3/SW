@@ -7,27 +7,17 @@ require_once 'includes/src/alquilar/listaAlquileres.php';
 
 require_once 'includes/src/productos/producto.php';
 
-$tituloPagina = 'Tienda';
+$tituloPagina = 'Mis Alquileres';
 
 $contenidoPrincipal = '';
-$conn = Aplicacion::getInstance()->getConexionBd();
-$sql = "SELECT alquileres.*, vehiculos.imagen
-        FROM alquileres
-        INNER JOIN vehiculos ON alquileres.id_vehiculo = vehiculos.id_vehiculo
-        WHERE id_usuario = {$_SESSION['id']}";
-$result = $conn->query($sql);
 
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $contenidoPrincipal .= elVehiculoAlquilado($row);
-    }
-    $result->free();
-} else {
-    $contenidoPrincipal .= sinArticulos();
-}
 
-if( $app->esAdmin() ){
-    $contenidoPrincipal.= añadirProducto();
-}
+
+    $contenidoPrincipal .= listaAlquileres();
+    
+ 
+
+    
+
 $params = ['tituloPagina' => $tituloPagina, 'contenidoPrincipal' => $contenidoPrincipal];
 $app->generaVista('/plantillas/plantilla.php', $params);

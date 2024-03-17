@@ -65,7 +65,7 @@ Class Alquilar{
         if ($rs) {
             $fila = $rs->fetch_assoc();
             if ($fila) {
-                $result = new Alquilar($fila['id_usuario'], $fila['id_vehiculo'], $fila['fecha_inicio'], $fila['fecha_fin'], $fila['precioFinal'],$fila['id']);
+                $result = new Alquilar($fila['id_usuario'], $fila['id_vehiculo'], $fila['fecha_inicio'], $fila['fecha_fin'], $fila['precioFinal'],$fila['id_alquiler']);
             }
             $rs->free();
         } else {
@@ -82,13 +82,32 @@ Class Alquilar{
         if ($rs) {
             $fila = $rs->fetch_assoc();
             if ($fila) {
-                $result = new Alquilar($fila['id_usuario'], $fila['id_vehiculo'], $fila['fecha_inicio'], $fila['fecha_fin'], $fila['precioFinal'],$fila['id']);
+                $result = new Alquilar($fila['id_usuario'], $fila['id_vehiculo'], $fila['fecha_inicio'], $fila['fecha_fin'], $fila['precioFinal'],$fila['id_alquiler']);
             }
             $rs->free();
         } else {
             error_log("Error BD ({$conn->errno}): {$conn->error}");
         }
         return $result;
+    }
+    public static function listaAlquileres($id_usuarios){
+        $lista_alquileres = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+
+        $query = "SELECT * FROM Alquileres WHERE id_usuario=$id_usuarios";
+        $rs = $conn->query($query);
+        
+        if ($rs) {
+            while($fila = $rs->fetch_assoc()){
+                $result = new Alquilar($fila['id_usuario'], $fila['id_vehiculo'], $fila['fecha_inicio'], $fila['fecha_fin'], $fila['precioFinal'],$fila['id_alquiler']);
+                array_push($lista_alquileres, $result);
+            }
+            $rs->free();
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_alquileres;
+        
     }
 
     private $id;
