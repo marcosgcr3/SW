@@ -50,6 +50,25 @@ Class Citas{
         }
         return self::crearCita($this);
     }
+
+    public static function listaCitas($id_usuario){
+        $lista_citas = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $sql = "SELECT * FROM Citas WHERE id_cliente = {$_SESSION['id']}";
+        $rs = $conn->query($sql);
+
+        if($rs){
+            while($fila = $rs->fetch_assoc()){
+                $result = new Citas($fila['id_cliente'], $fila['id_mecanico'], $fila['dia'], $fila['hora'], $fila['asunto']);
+                array_push($lista_citas, $result);
+            }
+            $rs->free();
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_citas;
+    }
+
     private $id;
     private $id_cliente;
     private $id_mecanico;
@@ -120,4 +139,26 @@ Class Citas{
         }
         return $result;
     }
+
+    public static function borrar($id){
+        return self::eliminarCitas($id);
+    }
+    private static function eliminarCitas($id){
+        
+        $result = false;
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = "DELETE FROM Citas WHERE id_cita='$id'";
+        if ( $conn->query($query) ) {
+            if ( $conn->affected_rows == 0) {
+                error_log("No se ha eliminado el alquiler");
+            }
+            $result = true;
+        } else {
+            error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
+        }
+        return $result;
+
+
+    }
+
 }

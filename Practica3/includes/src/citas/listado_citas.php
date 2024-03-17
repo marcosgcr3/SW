@@ -4,11 +4,25 @@
 //Tambien hay que hacer el objeto articulo para poder mostrarlos bien en la tienda
 require_once 'includes/config.php';
 require_once 'includes/vistas/plantillas/citas.php';
+use es\ucm\fdi\aw\citas\Citas;
 
 $contenido = '';
 
-function misCitas($row){
-   $contenido = buildCita($row['id_cita'],$row['dia'], $row['hora'],$row['asunto']);
+function listaCitas(){
+    $citas = Citas::listaCitas($_SESSION['id']);
+    $contenido = '';
+    if(empty($citas)){
+        return sinCitas();
+    }
+    
+    foreach ($citas as $cita){
+        $contenido .= misCitas($cita);
+    }
+    return $contenido;
+}
+
+function misCitas($cita){
+   $contenido = buildCita($cita);
    return $contenido;
 }
 

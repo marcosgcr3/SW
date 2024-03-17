@@ -4,11 +4,8 @@ namespace es\ucm\fdi\aw\citas;
 
 use es\ucm\fdi\aw\Aplicacion;
 use es\ucm\fdi\aw\Formulario;
-
-
-
-
-
+use es\ucm\fdi\aw\citas\Citas;
+require_once 'procesaHorarioDisp.php';
 
 class FormularioCita extends Formulario{
     public function __construct() {
@@ -20,10 +17,8 @@ class FormularioCita extends Formulario{
         $dia = $datos['dia'] ?? '';
         $hora = $datos['hora'] ?? '';
         $asunto = $datos['asunto'] ?? '';
-
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
         $erroresCampos = self::generaErroresCampos(['dia', 'hora', 'asunto'], $this->errores, 'span', array('class' => 'error'));
-        
         $html = <<<EOF
         $htmlErroresGlobales
         <div class="container-registro">
@@ -33,13 +28,15 @@ class FormularioCita extends Formulario{
 
                 <label for="Dia">Dia:</label>
                 <input id="dia" type="date" name="dia" value="$dia" />
+                <p>Dia: $dia</p>
                 {$erroresCampos['dia']}
                 
-                
-                <label for="Hora">Hora:</label>
-                <input id="hora" type="text" name="hora" value="$hora" />
-                {$erroresCampos['hora']}
-        
+                <label for='Hora'>Horario:</label>
+                <select id='hora' name='hora'>
+                <option value=''>Seleccione una hora</option>
+
+
+
         </div>
         EOF;
         return $html;
@@ -62,8 +59,6 @@ class FormularioCita extends Formulario{
             $cita = new Citas($_SESSION['id'], $_SESSION['id_mecanico'], $dia, $hora, $asunto);
             
         }
-        
-    
     }
            
 
