@@ -10,18 +10,9 @@ require_once 'includes/src/vehiculos/vehiculo.php';
 $tituloPagina = 'Alquiler';
 
 $contenidoPrincipal = '';
-$conn = Aplicacion::getInstance()->getConexionBd();
-$sql = "SELECT * FROM vehiculos WHERE disponibilidad='si'";
-$result = $conn->query($sql);
 
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $contenidoPrincipal .= elVehiculo($row);
-    }
-    $result->free();
-} else {
-    $contenidoPrincipal .= sinVehiculo();
-}
+    $contenidoPrincipal .= listavehiculos();
+
 
 if( $app->esAdmin() ){
     $contenidoPrincipal.= añadirVehiculo();
