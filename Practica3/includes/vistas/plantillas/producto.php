@@ -11,7 +11,7 @@ function buildArticulo($producto)
     $nombre = $producto->getNombre();
     $unidades = $producto->getUnidades();
     $precio = $producto->getPrecio();
-   
+    
     $imagen = $producto->getImagen();
     $descripcion = $producto->getDescripcion();
     $productos .=  <<<EOS
@@ -26,18 +26,19 @@ function buildArticulo($producto)
                 <!-- Botones para ajustar cantidad -->
                 <div class="cantidad-botones">
                     <button class="boton-disminuir" onclick="disminuirCantidad('$nombre', $unidades)">-</button>
-                    <span id="$nombre"> $cantidad </span> 
+                    <span id="$nombre"> $cantidad </span>
+                    
                     <button class="boton-aumentar" onclick="aumentarCantidad('$nombre', $unidades)">+</button>
                 </div> 
     EOS;
-
+       
     $app = Aplicacion::getInstance();
     if ($app->esAdmin()) {
         // Enlace para sumar stock con método POST
         $productos .= <<<EOS
             <form action="sumarStock.php" method="post">
                 <input type="hidden" name="nombre" value="$nombre">
-                <input type="hidden" name="unidades" value="$cantidad">
+                <input type="hidden" name="cantidad" value="$cantidad">
                 <button class="botoncarro" type="submit">Sumar</button>
             </form>
             <form id="formBorrarProducto_$nombre" action="borrarProducto.php" method="post">
