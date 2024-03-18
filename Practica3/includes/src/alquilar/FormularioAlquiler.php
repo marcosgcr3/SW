@@ -16,7 +16,7 @@ class FormularioAlquiler extends Formulario{
         parent::__construct('formAlquiler', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('/alquiler.php')]);
         $this->id_usuario = $id_usuario;
         $this->matricula = $matricula;
-        $this->vehiculo = \es\ucm\fdi\aw\vehiculos\Vehiculo::buscaPorMatricula($matricula);
+        $this->vehiculo = Vehiculo::buscaPorMatricula($matricula);
         $this->id_vehiculo = $this->vehiculo->getId();
     }
     
@@ -24,7 +24,7 @@ class FormularioAlquiler extends Formulario{
     protected function generaCamposFormulario(&$datos){
         $fechaIni = $datos['fechaIni'] ?? '';
         $fechaFin = $datos['fechaFin'] ?? '';
-        $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
+        $htmlErroresGlobales =  self::generaListaErroresGlobales($this->errores);
         $erroresCampos = self::generaErroresCampos(['fechaIni', 'fechaFin'], $this->errores, 'span', array('class' => 'error'));
         
         $html = <<<EOF

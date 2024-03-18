@@ -29,7 +29,7 @@ class Vehiculo
             }
             $rs->free();
         } else {
-            error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
+            error_log("No se encontró ningún vehículo con la matrícula: $matricula");
         }
         return $result;
     }
