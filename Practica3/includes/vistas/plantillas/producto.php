@@ -25,22 +25,34 @@ function buildArticulo($producto)
                 <p>Unidades disponibles: $unidades</p>
                 <!-- Botones para ajustar cantidad -->
                 <div class="cantidad-botones">
-                <button class="boton-disminuir" onclick="disminuirCantidad('$nombre', $unidades)">-</button>
+                    <button class="boton-disminuir" onclick="disminuirCantidad('$nombre', $unidades)">-</button>
                     <span id="$nombre"> $cantidad </span> 
                     <button class="boton-aumentar" onclick="aumentarCantidad('$nombre', $unidades)">+</button>
-                    
                 </div> 
-            
     EOS;
-        $app = Aplicacion::getInstance();
-        if ($app->esAdmin()) {
-            $productos .= '<button class="botoncarro" onclick="location.href=\'sumarStock.php?nombre=' . $nombre . '&unidades=\' + document.getElementById(\''.$nombre.'\').innerHTML;">sumar</button>
-            </div><i id="iconoBasura" class="fa-solid fa-trash" onclick="location.href=\'borrarProducto.php?nombre=' . $nombre . '\';"></i></div></div>';
-        } else {
-            //$contenido .= '<button class="botoncarro">Añadir al carrito</button></div></div></div>';
-            $productos .= '<button class="botoncarro" onclick="location.href=\'addProductoAlCarro.php?nombre=' . $nombre . '&unidades=' . $cantidad . '\';">Añadir al carrito</button></div></div></div>';
-        }
-        
+
+    $app = Aplicacion::getInstance();
+    if ($app->esAdmin()) {
+        // Enlace para sumar stock con método POST
+        $productos .= <<<EOS
+            <form action="sumarStock.php" method="post">
+                <input type="hidden" name="nombre" value="$nombre">
+                <input type="hidden" name="unidades" value="$cantidad">
+                <button class="botoncarro" type="submit">Sumar</button>
+            </form>
+            <form id="formBorrarProducto_$nombre" action="borrarProducto.php" method="post">
+                <input type="hidden" name="nombre" value="$nombre">
+            </form>
+            <i id="iconoBasura" class="fa-solid fa-trash" onclick="document.getElementById('formBorrarProducto_$nombre').submit();"></i>
+        </div></div></div>
+        EOS;
+    } else {
+        // Botón para añadir al carrito
+        $productos .= <<<EOS
+            <button class="botoncarro" onclick="location.href='addProductoAlCarro.php?nombre=$nombre&unidades=$cantidad';">Añadir al carrito</button>
+        </div></div></div>
+        EOS;
+    }
                 
     return $productos;
 }
