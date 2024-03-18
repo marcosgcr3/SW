@@ -8,7 +8,7 @@ require_once 'includes/src/vehiculos/vehiculo.php';
 
 
 
-$matricula = filter_input(INPUT_GET, 'matricula', FILTER_SANITIZE_SPECIAL_CHARS);
+$matricula = filter_input(INPUT_POST, 'matricula', FILTER_SANITIZE_SPECIAL_CHARS);
 
 
 
