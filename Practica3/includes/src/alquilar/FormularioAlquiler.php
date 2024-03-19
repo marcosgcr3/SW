@@ -7,16 +7,16 @@ use es\ucm\fdi\aw\Formulario;
 use es\ucm\fdi\aw\vehiculos\Vehiculo;
 
 class FormularioAlquiler extends Formulario{
-    private $id_usuario;
+    
     private $matricula;
     private $id_vehiculo;
     private $vehiculo;
-
-    public function __construct($id_usuario, $matricula) {
+    
+    public function __construct($matricula) {
         parent::__construct('formAlquiler', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('/alquiler.php')]);
-        $this->id_usuario = $id_usuario;
+       
         $this->matricula = $matricula;
-        $this->vehiculo = \es\ucm\fdi\aw\vehiculos\Vehiculo::buscaPorMatricula($matricula);
+        $this->vehiculo = Vehiculo::buscaPorMatricula($matricula);
         $this->id_vehiculo = $this->vehiculo->getId();
     }
     
@@ -24,14 +24,14 @@ class FormularioAlquiler extends Formulario{
     protected function generaCamposFormulario(&$datos){
         $fechaIni = $datos['fechaIni'] ?? '';
         $fechaFin = $datos['fechaFin'] ?? '';
-        $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
+        $htmlErroresGlobales =  self::generaListaErroresGlobales($this->errores);
         $erroresCampos = self::generaErroresCampos(['fechaIni', 'fechaFin'], $this->errores, 'span', array('class' => 'error'));
         
         $html = <<<EOF
         $htmlErroresGlobales
         <div class="container-registro">
                 <h2>Alquilar vehiculo con matricula: $this->matricula</h2>
-                
+                <input type="hidden" name="matricula" value="$this->matricula">
 
                 <label for="FechaIni">Fecha de inicio:</label>
                 <input id="fechaIni" type="date" name="fechaIni" value="$fechaIni" />
@@ -73,7 +73,7 @@ class FormularioAlquiler extends Formulario{
             $numDias = $diferencia->days;
             
             Vehiculo::cambiarDisponibilidad($vehiculo);
-            Alquilar::crea($this->id_usuario, $this->id_vehiculo, $fechaIni, $fechaFin, $vehiculo->getPrecio()*$numDias);
+            Alquilar::crea($_SESSION['id'], $this->id_vehiculo, $fechaIni, $fechaFin, $vehiculo->getPrecio()*$numDias);
                  
              
              

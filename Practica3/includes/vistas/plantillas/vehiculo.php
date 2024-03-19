@@ -37,7 +37,7 @@ function buildVehiculo($vehiculo)
         EOS;
     } else {
         $contenido .= <<<EOS
-        
+            
             <form action="alquilarVehiculo.php" method="post">
                 <input type="hidden" name="matricula" value="$matricula">
                 <button class="botoncarro" type="submit">Alquilar</button>
