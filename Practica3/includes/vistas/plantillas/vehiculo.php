@@ -27,11 +27,23 @@ function buildVehiculo($vehiculo)
     EOS;
     $app = Aplicacion::getInstance();
     if ($app->esAdmin()) {
-        $contenido .='</div><i id="iconoBasura" class="fa-solid fa-trash" onclick="location.href=\'borrarVehiculo.php?matricula=' . $matricula . '\';"></i></div></div>';
+        $contenido .= <<<EOS
+            </div>
+            <form id="formBorrarVehiculo_$matricula" action="borrarVehiculo.php" method="post">
+                <input type="hidden" name="matricula" value="$matricula">
+            </form>
+            <i id="iconoBasura" class="fa-solid fa-trash" onclick="document.getElementById('formBorrarVehiculo_$matricula').submit();"></i>
+        </div></div>
+        EOS;
     } else {
-        //$contenido .= '<button class="botoncarro">Añadir al carrito</button></div></div></div>';
-       
-        $contenido .= '<button class="botoncarro" onclick="location.href=\'alquilarVehiculo.php?matricula=' . $matricula . '&id_usuario=' . $_SESSION['id'] . '\';">Alquilar</button></div></div></div>';
+        $contenido .= <<<EOS
+            
+            <form action="alquilarVehiculo.php" method="post">
+                <input type="hidden" name="matricula" value="$matricula">
+                <button class="botoncarro" type="submit">Alquilar</button>
+            </form>
+        </div></div></div>
+        EOS;
     }
 
     return $contenido;

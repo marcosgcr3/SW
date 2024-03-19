@@ -18,6 +18,9 @@ function listaCitas(){
     foreach ($citas as $cita){
         $contenido .= misCitas($cita);
     }
+    $contenido .= <<<EOS
+    <button class="botonIni" onclick="location.href='addCita.php'">Agendar Cita</button>
+    EOS;
     return $contenido;
 }
 

@@ -3,12 +3,11 @@ use es\ucm\fdi\aw\productos\Producto;
 
 require_once __DIR__.'/includes/config.php';
 
-require_once 'includes/src/productos/producto.php';
 
 
 
 
-$nombre = filter_input(INPUT_GET, 'nombre', FILTER_SANITIZE_SPECIAL_CHARS);
+$nombre = filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_SPECIAL_CHARS);
 
 
 Producto::borrar($nombre);

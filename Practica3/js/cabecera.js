@@ -72,3 +72,4 @@ function updateHours(date) {
     xhr.send();
 
 }
+
