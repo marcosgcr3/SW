@@ -68,11 +68,11 @@ class Vehiculo
         }
         return $result;
     }
-    public static function listaVehiculos()
+    public static function listaVehiculosDisponibles()
     {
         $lista_vehiculos = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "SELECT * FROM vehiculos";
+        $query = "SELECT * FROM vehiculos WHERE disponibilidad='si'";
         $rs = $conn->query($query);
         if ($rs) {
             while($fila = $rs->fetch_assoc()) {

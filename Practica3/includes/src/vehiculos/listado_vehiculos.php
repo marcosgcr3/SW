@@ -7,7 +7,7 @@ use es\ucm\fdi\aw\vehiculos\vehiculo;
 
 function listavehiculos()
 {
-    $vehiculos = Vehiculo::listaVehiculos();
+    $vehiculos = Vehiculo::listaVehiculosDisponibles();
     $contenido = '';
     if (empty($vehiculos)) {
         return sinVehiculo();

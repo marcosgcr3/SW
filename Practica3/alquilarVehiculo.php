@@ -2,10 +2,10 @@
 
 require_once __DIR__.'/includes/config.php';
 if($app->usuarioLogueado()){
-    $id_usuario = $_SESSION['id'];
+    
     $matricula = filter_input(INPUT_POST, 'matricula', FILTER_SANITIZE_SPECIAL_CHARS);
 
-    $formAlquiler = new \es\ucm\fdi\aw\alquilar\FormularioAlquiler($id_usuario, $matricula);
+    $formAlquiler = new \es\ucm\fdi\aw\alquilar\FormularioAlquiler($matricula);
     $formAlquiler = $formAlquiler->gestiona();
 
 
