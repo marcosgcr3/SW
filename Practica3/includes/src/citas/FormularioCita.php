@@ -14,6 +14,7 @@ class FormularioCita extends Formulario{
 
 
     protected function generaCamposFormulario(&$datos){
+        $elDia = '';
         $dia = $datos['dia'] ?? '';
         $hora = $datos['hora'] ?? '';
         $asunto = $datos['asunto'] ?? '';
@@ -27,8 +28,7 @@ class FormularioCita extends Formulario{
                 {$erroresCampos['asunto']}
 
                 <label for="Dia">Dia:</label>
-                <input id="dia" type="date" name="dia" value="$dia" />
-                <p>Dia: $dia</p>
+                <input id="dia" type="date" name="dia" value="$dia" onchange="actualizarDia()" />
                 {$erroresCampos['dia']}
                 
                 <label for='Hora'>Horario:</label>
@@ -36,9 +36,13 @@ class FormularioCita extends Formulario{
                 <option value=''>Seleccione una hora</option>
 
 
-
         </div>
+
         EOF;
+        if (isset($_POST['dia'])) {
+            $elDia = $_POST['dia'];
+            echo "<p>El dia es: $elDia</p>";
+        }
         return $html;
     }protected function procesaFormulario(&$datos)
     {
@@ -61,6 +65,6 @@ class FormularioCita extends Formulario{
         }
     }
            
-
+    
 
 }

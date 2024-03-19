@@ -11,7 +11,7 @@ function buildArticulo($producto)
     $nombre = $producto->getNombre();
     $unidades = $producto->getUnidades();
     $precio = $producto->getPrecio();
-    
+    $idCantidad = "cantidad_$nombre"; // Identificador único para el campo de cantidad
     $imagen = $producto->getImagen();
     $descripcion = $producto->getDescripcion();
     $productos .=  <<<EOS
@@ -25,10 +25,10 @@ function buildArticulo($producto)
                 <p>Unidades disponibles: $unidades</p>
                 <!-- Botones para ajustar cantidad -->
                 <div class="cantidad-botones">
-                    <button class="boton-disminuir" onclick="disminuirCantidad('$nombre', $unidades)">-</button>
+                    <button class="boton-disminuir" onclick="disminuirCantidad('$idCantidad', $unidades)">-</button>
                     <span id="$nombre"> $cantidad </span>
-                    
-                    <button class="boton-aumentar" onclick="aumentarCantidad('$nombre', $unidades)">+</button>
+                    <button class="boton-aumentar" onclick="aumentarCantidad('$idCantidad', $unidades)">+</button>
+                    <p>$cantidad</p>
                 </div> 
     EOS;
        
@@ -36,10 +36,11 @@ function buildArticulo($producto)
     if ($app->esAdmin()) {
         // Enlace para sumar stock con método POST
         $productos .= <<<EOS
-            <form action="sumarStock.php" method="post">
+            <form id="formSumarStock_$nombre" action="sumarStock.php" method="post">
                 <input type="hidden" name="nombre" value="$nombre">
-                <input type="hidden" name="cantidad" value="$cantidad">
-                <button class="botoncarro" type="submit">Sumar</button>
+                <input type="hidden" name="cantidad" id="$idCantidad" value="$cantidad"> <!-- Agrega un ID al campo de cantidad -->
+                sumarStock('$nombre')
+                <button type="submit" class="botoncarro">Sumar</button>
             </form>
             <form id="formBorrarProducto_$nombre" action="borrarProducto.php" method="post">
                 <input type="hidden" name="nombre" value="$nombre">
@@ -57,3 +58,5 @@ function buildArticulo($producto)
                 
     return $productos;
 }
+
+
