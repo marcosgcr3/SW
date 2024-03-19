@@ -2,18 +2,21 @@
 
 require_once 'includes/config.php';
 use es\ucm\fdi\aw\Aplicacion;
+use es\ucm\fdi\aw\productos\Producto;
+use es\ucm\fdi\aw\pedidos\Pedidos;
+
 
 function buildArticulo($producto)
 {
     $productos = '';
         
-    $cantidad = 1;
     $nombre = $producto->getNombre();
     $unidades = $producto->getUnidades();
     $precio = $producto->getPrecio();
-   
+    $id_producto = $producto->getId();
     $imagen = $producto->getImagen();
     $descripcion = $producto->getDescripcion();
+    $id_usuario = $_SESSION['id'];
     $productos .=  <<<EOS
     <div class="producto">
         <div class="producto-info">
@@ -23,23 +26,17 @@ function buildArticulo($producto)
                 <p>$descripcion</p>
                 <p>Precio: $precio&euro;</p>
                 <p>Unidades disponibles: $unidades</p>
-                <!-- Botones para ajustar cantidad -->
-                <div class="cantidad-botones">
-                <button class="boton-disminuir" onclick="disminuirCantidad('$nombre', $unidades)">-</button>
-                    <span id="$nombre"> $cantidad </span> 
-                    <button class="boton-aumentar" onclick="aumentarCantidad('$nombre', $unidades)">+</button>
-                    
-                </div> 
+                <!-- FORM -->
+                <form action="addProductoAlCarro.php" method="POST">
+                    <input type="hidden" name="id" value={$_SESSION['id']}>
+                    <input type="hidden" name="id_producto" value="$id_producto">
+                    <input type="number" name="unidades" min="1" max="$unidades">
+                    <button type="submit">Añadir al carrito</button>
+                </form>
+            </div>
             
+    </div></div></div>';
     EOS;
-        $app = Aplicacion::getInstance();
-        if ($app->esAdmin()) {
-            $productos .= '<button class="botoncarro" onclick="location.href=\'sumarStock.php?nombre=' . $nombre . '&unidades=\' + document.getElementById(\''.$nombre.'\').innerHTML;">sumar</button>
-            </div><i id="iconoBasura" class="fa-solid fa-trash" onclick="location.href=\'borrarProducto.php?nombre=' . $nombre . '\';"></i></div></div>';
-        } else {
-            //$contenido .= '<button class="botoncarro">Añadir al carrito</button></div></div></div>';
-            $productos .= '<button class="botoncarro" onclick="location.href=\'addProductoAlCarro.php?nombre=' . $nombre . '&unidades=' . $cantidad . '\';">Añadir al carrito</button></div></div></div>';
-        }
         
                 
     return $productos;

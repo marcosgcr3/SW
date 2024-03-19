@@ -37,7 +37,7 @@ class Pedidos
             $rs->free();
         }
         else{
-            echo "No existe el carrito en la base de datos";
+            //echo "No existe el carrito en la base de datos";
             $pedido = NULL;
         }
         return $pedido;

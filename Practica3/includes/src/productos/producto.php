@@ -134,6 +134,11 @@ class Producto
         $this->unidades = $unidades;
         $this->imagen = $imagen;
     }
+
+    public function getId()
+    {
+        return $this->id_producto;
+    }
    
     public function getNombre()
     {
