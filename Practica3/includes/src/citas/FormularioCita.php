@@ -14,7 +14,6 @@ class FormularioCita extends Formulario{
 
 
     protected function generaCamposFormulario(&$datos){
-        $elDia = '';
         $dia = $datos['dia'] ?? '';
         $hora = $datos['hora'] ?? '';
         $asunto = $datos['asunto'] ?? '';
@@ -28,7 +27,7 @@ class FormularioCita extends Formulario{
                 {$erroresCampos['asunto']}
 
                 <label for="Dia">Dia:</label>
-                <input id="dia" type="date" name="dia" value="$dia" onchange="actualizarDia()" />
+                <input id="dia" type="date" name="dia" value="$dia" />
                 {$erroresCampos['dia']}
                 
                 <label for='Hora'>Horario:</label>
