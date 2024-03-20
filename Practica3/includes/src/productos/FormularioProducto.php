@@ -91,8 +91,14 @@ class FormularioProducto extends Formulario{
         }
         
         if (count($this->errores) === 0) {
-           
-            Producto::crea($nombre, $precio, $descripcion, $unidades, $imagen);
+            $producto = Producto::buscaPorNombre($nombre);
+            if ($producto) {
+                $this->errores['nombre'] = 'Ya existe un producto con ese nombre';
+               
+            }else{
+              Producto::crea($nombre, $precio, $descripcion, $unidades, $imagen);  
+            }
+            
             
        
         }

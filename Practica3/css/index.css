@@ -255,24 +255,7 @@ footer{
     
 }
 
-.boton-aumentar {
-    cursor: pointer;
-}
 
-.boton-disminuir {
-    cursor: pointer;
-}
-table {
-    border-collapse: collapse;
-    width: 100%;
-}
-
-th, td {
-    border: 1px solid black;
-    padding: 8px;
-    text-align: center;
-}
-
-th {
-    background-color: #f2f2f2;
+input[type="number"] {
+    width: 32px;
 }

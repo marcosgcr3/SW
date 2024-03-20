@@ -16,7 +16,8 @@ function buildArticulo($producto)
     $id_producto = $producto->getId();
     $imagen = $producto->getImagen();
     $descripcion = $producto->getDescripcion();
-    $id_usuario = $_SESSION['id'];
+   
+    
     $productos .=  <<<EOS
     <div class="producto">
         <div class="producto-info">
@@ -26,18 +27,36 @@ function buildArticulo($producto)
                 <p>$descripcion</p>
                 <p>Precio: $precio&euro;</p>
                 <p>Unidades disponibles: $unidades</p>
-                <!-- FORM -->
-                <form action="addProductoAlCarro.php" method="POST">
-                    <input type="hidden" name="id" value={$_SESSION['id']}>
-                    <input type="hidden" name="id_producto" value="$id_producto">
-                    <input type="number" name="unidades" min="1" max="$unidades">
-                    <button type="submit">Añadir al carrito</button>
-                </form>
-            </div>
-            
-    </div></div></div>';
+               
     EOS;
-        
+    $app = Aplicacion::getInstance();
+    if ($app->esAdmin()) {
+        // Enlace para sumar stock con método POST
+        $productos .= <<<EOS
+            <form action="sumarStock.php" method="post">
+                <input type="hidden" name="nombre" value="$nombre">
+                <input type="number" name="cantidad" min="1" value="1">
+                <button type="submit" class="botoncarro">Sumar</button>
+            </form>
+            <form id="formBorrarProducto_$nombre" action="borrarProducto.php" method="post">
+                <input type="hidden" name="nombre" value="$nombre">
+            </form></div>
+            <i id="iconoBasura" class="fa-solid fa-trash" onclick="document.getElementById('formBorrarProducto_$nombre').submit();"></i>
+        </div></div>
+        EOS;
+    } else {
+        // Botón para añadir al carrito
+        $productos .= <<<EOS
+                <form action="addProductoAlCarro.php" method="POST">
+                <input type="hidden" name="id_producto" value="$id_producto">
+                <input type="number" name="unidades" min="1" max="$unidades" value="1">
+                <button type="submit" class="botoncarro">Añadir al carrito</button>
+            </form>
+        </div>
+
+        </div></div></div>
+        EOS;
+    }
                 
     return $productos;
 }

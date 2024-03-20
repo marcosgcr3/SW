@@ -253,10 +253,7 @@ footer{
     
 }
 
-.boton-aumentar {
-    cursor: pointer;
-}
 
-.boton-disminuir {
-    cursor: pointer;
+input[type="number"] {
+    width: 32px;
 }

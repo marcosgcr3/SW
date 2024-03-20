@@ -12,8 +12,8 @@ $tituloPagina = 'Mis Citas';
 
 $contenidoPrincipal = '';
 
-    $contenidoPrincipal .= listaCitas();
-
+$contenidoPrincipal .= listaCitas();
+$contenidoPrincipal .= newCita();
 
 $params = ['tituloPagina' => $tituloPagina, 'contenidoPrincipal' => $contenidoPrincipal];
 $app->generaVista('/plantillas/plantilla.php', $params);
