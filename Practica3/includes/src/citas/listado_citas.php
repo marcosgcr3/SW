@@ -9,7 +9,22 @@ use es\ucm\fdi\aw\citas\Citas;
 $contenido = '';
 
 function listaCitas(){
-    $citas = Citas::listaCitas($_SESSION['id']);
+    $citas = Citas::listaCitas();
+    $contenido = '';
+    if(empty($citas)){
+        return sinCitas();
+    }
+    
+    foreach ($citas as $cita){
+        $contenido .= misCitas($cita);
+    }
+    $contenido .= <<<EOS
+    <button class="botonIni" onclick="location.href='addCita.php'">Agendar Cita</button>
+    EOS;
+    return $contenido;
+}
+function listaCitasMecanico($id){
+    $citas = Citas::listaCitasM($id);
     $contenido = '';
     if(empty($citas)){
         return sinCitas();
