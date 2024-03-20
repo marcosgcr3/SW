@@ -163,6 +163,24 @@ class Usuario
         return true;
     }
 
+    public static function listaMecanicos(){
+        $lista_mecanicos = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = "SELECT * FROM Usuarios WHERE rol='mecanico'";
+        $rs = $conn->query($query);
+        
+        if ($rs) {
+            while($fila = $rs->fetch_assoc()){
+                $mecanico = new Usuario($fila['NIF'], $fila['nombre'], $fila['apellido'], $fila['correo'],$fila['password'], $fila['rol'],$fila['id']);
+                array_push($lista_mecanicos, $mecanico);
+            }
+            $rs->free();
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_mecanicos;
+
+    }
     private $NIF;
 
     private $nombre;

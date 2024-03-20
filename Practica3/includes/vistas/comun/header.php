@@ -33,15 +33,15 @@ use es\ucm\fdi\aw\Aplicacion;
 
             
             if ($app->esAdmin()) {
-                echo "<li><a href='horarioMecanico.php' >HORARIO</a></li>";
+                echo "<li><a href='gestionCitas.php' >GESTION DE CITAS</a></li>";
             }
 
-            if ($app->esMecanico()) {
+            else if ($app->esMecanico()) {
                 echo "<li><a href='citas.php' >MI HORARIO</a></li>";
                 
                                 
             }
-            else if ($app->usuarioLogueado()){
+            else if ($app->usuarioLogueado() && !$app->esAdmin() && !$app->esMecanico()){
                 echo "<li ><a href='citas.php' >CITAS</a></li>";
             }else{
                 echo "<li><a href='noUsuarioAviso.php'>CITAS</a></li>";

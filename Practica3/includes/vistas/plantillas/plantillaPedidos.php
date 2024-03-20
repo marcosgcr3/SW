@@ -93,7 +93,7 @@ function listarPedido($carrito)
 
         $productos .= <<<EOS
             <div class="precioCarritoTotal">
-            {$carrito->getPrecioTotal()}
+           
             </div>
         EOS;
         //error en la linea 96...no puedes llamar getPrecioTotal a un array
