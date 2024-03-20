@@ -18,8 +18,14 @@ Class Citas{
     private static function crearCita($cita){
         $dia = $cita->dia;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "INSERT INTO Citas (id_cliente, id_mecanico, fecha, asunto) VALUES ($cita->id_cliente, $cita->id_mecanico, '$dia',$cita->hora, '$cita->asunto')";
-        $rs = $conn->query($query);
+        $query = sprintf("INSERT INTO Citas (id_cliente, id_mecanico, dia, hora, asunto)
+                      VALUES ('%s', '%s', '%s', '%s', '%s')",
+                      $conn->real_escape_string($cita->id_cliente),
+                      $conn->real_escape_string($cita->id_mecanico),
+                      $conn->real_escape_string($cita->dia),
+                      $conn->real_escape_string($cita->hora), 
+                      $conn->real_escape_string($cita->asunto));
+    $rs = $conn->query($query);
         if ($rs) {
             $cita->id = $conn->insert_id;
         } else {

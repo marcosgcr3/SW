@@ -45,7 +45,7 @@ function generarDesplegableHorario($dia) {
     $horasDisp = horarioDisponible($dia);
     $html = "";
     foreach ($horasDisp as $hora) {
-        $html .= "<option value='$hora'>$hora</option>";
+        $html .= "<option value='$hora'>$hora:00</option>";
     }
     $html .= "</select>";
     return $html;
