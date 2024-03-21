@@ -186,28 +186,23 @@ class Usuario
     
         // Obtener todos los mecánicos
         $mecanicos = self::listaMecanicos();
+        $mecanicoDisponible = null;
+        $citasMenosCitas = PHP_INT_MAX;
     
-        // Inicializar variables para almacenar el mecánico disponible con menos citas
-        $mecanicoMenosCitas = null;
-        $menosCitas = PHP_INT_MAX;
-    
-        // Recorrer cada mecánico
         foreach ($mecanicos as $mecanico) {
-            // Verificar si el mecánico está disponible en la hora y día dados
             if (self::estaDisponible($mecanico, $hora, $fecha)) {
-                // Contar el número de citas del mecánico en el día dado
-                $numCitas = self::numCitasEnDia($mecanico, $fecha);
-                // Actualizar el mecánico con menos citas si corresponde
-                if ($numCitas < $menosCitas) {
-                    $mecanicoMenosCitas = $mecanico;
-                    $menosCitas = $numCitas;
+                $numCitas = self::numCitasTotales($mecanico);
+                if ($numCitas < $citasMenosCitas) {
+                    $citasMenosCitas = $numCitas;
+                    $mecanicoDisponible = $mecanico;
                 }
             }
         }
     
-        return $mecanicoMenosCitas;
+        return $mecanicoDisponible;
     }
     // Función para verificar si un mecánico está disponible en una hora y día específicos
+// Función para verificar si un mecánico está disponible en una hora y día específicos
 // Función para verificar si un mecánico está disponible en una hora y día específicos
 private static function estaDisponible($mecanico, $hora, $dia) {
     $conn = Aplicacion::getInstance()->getConexionBd();
@@ -233,13 +228,13 @@ private static function estaDisponible($mecanico, $hora, $dia) {
     }
 }
 
-// Función para contar el número de citas de un mecánico en un día específico
-private static function numCitasEnDia($mecanico, $dia) {
+// Función para contar el número total de citas de un mecánico
+private static function numCitasTotales($mecanico) {
     $conn = Aplicacion::getInstance()->getConexionBd();
     $idMecanico = $mecanico->getId();
 
-    // Consultar el número de citas para el mecánico en el día dado
-    $query = "SELECT COUNT(*) AS numCitas FROM Citas WHERE id_mecanico = $idMecanico AND dia = '$dia'";
+    // Consultar el número total de citas para el mecánico
+    $query = "SELECT COUNT(*) AS numCitas FROM Citas WHERE id_mecanico = $idMecanico";
     $rs = $conn->query($query);
 
     if ($rs) {
@@ -253,6 +248,7 @@ private static function numCitasEnDia($mecanico, $dia) {
         return 0;
     }
 }
+
     private $NIF;
 
     private $nombre;
