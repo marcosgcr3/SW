@@ -192,7 +192,7 @@ class Usuario
     $query = "SELECT COUNT(*) as num_citas, U.id as id_mecanico
               FROM Usuarios U
               LEFT JOIN Citas C ON U.id = C.id_mecanico
-              WHERE C.fecha = '$fecha' AND C.hora = '$hora'
+              WHERE C.dia = '$fecha' AND C.hora = '$hora'
               GROUP BY U.id";
     
     $rs = $conn->query($query);
@@ -207,6 +207,7 @@ class Usuario
         $mecanicoMenosCitas = null;
         $minNumCitas = PHP_INT_MAX;
         foreach ($listaMecanicos as $mecanico) {
+            echo $mecanico->getId();
             $idMecanico = $mecanico->getId();
             $numCitas = isset($numCitasMecanico[$idMecanico]) ? $numCitasMecanico[$idMecanico] : 0;
             if ($numCitas < $minNumCitas) {
