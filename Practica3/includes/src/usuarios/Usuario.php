@@ -182,44 +182,75 @@ class Usuario
 
     }
     public static function obtenerMecanicoDisponible($fecha, $hora)
-{
-    $conn = Aplicacion::getInstance()->getConexionBd();
+    {
     
-    // Obtener la lista de mecánicos
-    $listaMecanicos = self::listaMecanicos();
+        // Obtener todos los mecánicos
+        $mecanicos = self::listaMecanicos();
     
-    // Consulta para contar el número de citas asignadas a cada mecánico en la fecha y hora especificadas
-    $query = "SELECT COUNT(*) as num_citas, U.id as id_mecanico
-              FROM Usuarios U
-              LEFT JOIN Citas C ON U.id = C.id_mecanico
-              WHERE C.dia = '$fecha' AND C.hora = '$hora'
-              GROUP BY U.id";
-    
-    $rs = $conn->query($query);
-    
-    if ($rs) {
-        $numCitasMecanico = [];
-        while ($fila = $rs->fetch_assoc()) {
-            $numCitasMecanico[$fila['id_mecanico']] = $fila['num_citas'];
-        }
-        
-        // Encontrar el mecánico con el menor número de citas asignadas
+        // Inicializar variables para almacenar el mecánico disponible con menos citas
         $mecanicoMenosCitas = null;
-        $minNumCitas = PHP_INT_MAX;
-        foreach ($listaMecanicos as $mecanico) {
-            echo $mecanico->getId();
-            $idMecanico = $mecanico->getId();
-            $numCitas = isset($numCitasMecanico[$idMecanico]) ? $numCitasMecanico[$idMecanico] : 0;
-            if ($numCitas < $minNumCitas) {
-                $minNumCitas = $numCitas;
-                $mecanicoMenosCitas = $mecanico;
+        $menosCitas = PHP_INT_MAX;
+    
+        // Recorrer cada mecánico
+        foreach ($mecanicos as $mecanico) {
+            // Verificar si el mecánico está disponible en la hora y día dados
+            if (self::estaDisponible($mecanico, $hora, $fecha)) {
+                // Contar el número de citas del mecánico en el día dado
+                $numCitas = self::numCitasEnDia($mecanico, $fecha);
+                // Actualizar el mecánico con menos citas si corresponde
+                if ($numCitas < $menosCitas) {
+                    $mecanicoMenosCitas = $mecanico;
+                    $menosCitas = $numCitas;
+                }
             }
         }
-        
+    
         return $mecanicoMenosCitas;
+    }
+    // Función para verificar si un mecánico está disponible en una hora y día específicos
+// Función para verificar si un mecánico está disponible en una hora y día específicos
+private static function estaDisponible($mecanico, $hora, $dia) {
+    $conn = Aplicacion::getInstance()->getConexionBd();
+    $idMecanico = $mecanico->getId();
+
+    // Formatear la fecha y hora para compararla con las citas del mecánico
+    $fechaHora = $dia . ' ' . $hora;
+
+    // Consultar si hay citas para el mecánico en la hora y día dados
+    $query = "SELECT COUNT(*) AS numCitas FROM Citas WHERE id_mecanico = $idMecanico AND dia = '$dia' AND hora = '$hora'";
+    $rs = $conn->query($query);
+
+    if ($rs) {
+        $fila = $rs->fetch_assoc();
+        $numCitas = $fila['numCitas'];
+        $rs->free();
+
+        // Si el número de citas es 0, el mecánico está disponible
+        return $numCitas == 0;
     } else {
         error_log("Error BD ({$conn->errno}): {$conn->error}");
-        return null;
+        return false;
+    }
+}
+
+// Función para contar el número de citas de un mecánico en un día específico
+private static function numCitasEnDia($mecanico, $dia) {
+    $conn = Aplicacion::getInstance()->getConexionBd();
+    $idMecanico = $mecanico->getId();
+
+    // Consultar el número de citas para el mecánico en el día dado
+    $query = "SELECT COUNT(*) AS numCitas FROM Citas WHERE id_mecanico = $idMecanico AND dia = '$dia'";
+    $rs = $conn->query($query);
+
+    if ($rs) {
+        $fila = $rs->fetch_assoc();
+        $numCitas = $fila['numCitas'];
+        $rs->free();
+
+        return $numCitas;
+    } else {
+        error_log("Error BD ({$conn->errno}): {$conn->error}");
+        return 0;
     }
 }
     private $NIF;
