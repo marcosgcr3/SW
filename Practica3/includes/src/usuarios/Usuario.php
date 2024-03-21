@@ -181,6 +181,46 @@ class Usuario
         return $lista_mecanicos;
 
     }
+    public static function obtenerMecanicoDisponible($fecha, $hora)
+{
+    $conn = Aplicacion::getInstance()->getConexionBd();
+    
+    // Obtener la lista de mecánicos
+    $listaMecanicos = self::listaMecanicos();
+    
+    // Consulta para contar el número de citas asignadas a cada mecánico en la fecha y hora especificadas
+    $query = "SELECT COUNT(*) as num_citas, U.id as id_mecanico
+              FROM Usuarios U
+              LEFT JOIN Citas C ON U.id = C.id_mecanico
+              WHERE C.fecha = '$fecha' AND C.hora = '$hora'
+              GROUP BY U.id";
+    
+    $rs = $conn->query($query);
+    
+    if ($rs) {
+        $numCitasMecanico = [];
+        while ($fila = $rs->fetch_assoc()) {
+            $numCitasMecanico[$fila['id_mecanico']] = $fila['num_citas'];
+        }
+        
+        // Encontrar el mecánico con el menor número de citas asignadas
+        $mecanicoMenosCitas = null;
+        $minNumCitas = PHP_INT_MAX;
+        foreach ($listaMecanicos as $mecanico) {
+            $idMecanico = $mecanico->getId();
+            $numCitas = isset($numCitasMecanico[$idMecanico]) ? $numCitasMecanico[$idMecanico] : 0;
+            if ($numCitas < $minNumCitas) {
+                $minNumCitas = $numCitas;
+                $mecanicoMenosCitas = $mecanico;
+            }
+        }
+        
+        return $mecanicoMenosCitas;
+    } else {
+        error_log("Error BD ({$conn->errno}): {$conn->error}");
+        return null;
+    }
+}
     private $NIF;
 
     private $nombre;
