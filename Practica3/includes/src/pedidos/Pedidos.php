@@ -108,7 +108,7 @@ class Pedidos
         }
     }
 
-    public function calculaPrecioTotal($id_pedido){//calcula el precio total del carrito
+    public static function calculaPrecioTotal($id_pedido){//calcula el precio total del carrito
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("SELECT SUM(PR.precio * PP.cantidad) as precio_total
                            FROM pedido P
@@ -192,7 +192,7 @@ class Pedidos
         return $result;
     }
 
-    public function guarda(){//guarda el pedido en la base de datos
+    public function guarda_producto(){
         if ($this->id_pedido != null) {
             return self::actualiza($this);
         }

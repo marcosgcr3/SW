@@ -13,6 +13,7 @@ function pedido(){
 }
 
 function carrito(){
+
     $contenido = buildPedido($_SESSION['id'], FALSE);
     return $contenido;
  }

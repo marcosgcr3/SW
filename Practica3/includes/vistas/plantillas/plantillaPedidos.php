@@ -15,7 +15,7 @@ function buildPedido($id_user,$estado)
         else{
             $carrito = Producto::listaProductos($id_carro->getId_pedido());
             //Llamar a producto para que me devuelva la lista de los articulos
-            $contenido = mostrarCarrito($carrito, $id_carro);//$carrito array y carrito id
+            $contenido = mostrarCarrito($carrito, $id_carro->getId_pedido());//$carrito array y carrito id
         }
     }
     else{                   //Historial de pedidos del usuario
@@ -57,6 +57,7 @@ function listarPedido($carrito, $id_pedido)
     }
     else{
         $productos = '';
+        $precio_total = '';
         foreach($carrito as $producto){
             $nombre = $producto->getNombre();
             $cantidad = $producto->getUnidades();
@@ -69,7 +70,7 @@ function listarPedido($carrito, $id_pedido)
             <div class="producto">
 
             <div class="fotoProducto">
-                <img src='./img/imgProductos/{$imagen}.png' />
+                <img src="$imagen" alt="imagen" class="producto-imagen">
             </div>
 
             <div class="nombreProducto">
@@ -81,7 +82,7 @@ function listarPedido($carrito, $id_pedido)
             </div>
 
             <div class="precio">
-                {$precio} 
+                {$precio}
             </div>
 
             <div class="precio2">
@@ -92,21 +93,18 @@ function listarPedido($carrito, $id_pedido)
             EOS;
         }
 
-        $precio_total = Pedidos::getPrecioTotal($id_pedido);
+        $id_usuario = $_SESSION['id'];
+        $precio_total .= Pedidos::calculaPrecioTotal($id_pedido);
         $productos .= <<<EOS
             <div class="precioCarritoTotal">
                 {$precio_total} <!-- Aqui el precio total del carrito -->
             <form action="comprarCarro.php" method="post">
-                <input type="hidden" name="id_pedido" value="{$id_pedido}">
                 <input type="hidden" name="id_usuario" value="{$id_usuario}">
-                <input type="hidden" name="estado" value="{$estado}">
                 <button type="submit">Comprar</button>
             </form>
            
             </div>
         EOS;
-
-        //error en la linea 96...no puedes llamar getPrecioTotal a un array
     }
-    
+    return $productos;
 }

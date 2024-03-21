@@ -74,14 +74,14 @@ class Producto
     public static function listaProductos($id_pedido){//devuelve una lista con todos los productos del pedido
         $lista_productos = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("SELECT p.id_producto, p.nombre, p.precio, p.descripcion, p.unidades, p.imagen
+        $query = sprintf("SELECT p.id_producto, p.nombre, p.precio, p.descripcion, p.imagen, pp.cantidad
                             FROM productos p 
                             INNER JOIN pedido_producto pp ON p.id_producto = pp.id_producto
                             WHERE pp.id_pedido = '%d'", $id_pedido );
         $rs = $conn->query($query);
         if($rs -> num_rows > 0){
             while($row = $rs->fetch_assoc()){
-                $producto = new Producto($row['nombre'], $row['precio'], $row['descripcion'], $row['unidades'], $row['imagen']);
+                $producto = new Producto($row['nombre'], $row['precio'], $row['descripcion'], $row['cantidad'], $row['imagen']);
                 array_push($lista_productos, $producto);
             }
             $rs->free();

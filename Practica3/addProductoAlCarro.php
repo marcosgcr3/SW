@@ -9,8 +9,10 @@ use es\ucm\fdi\aw\pedidos\Pedidos;
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $id_usuario =$_SESSION['id'];
-    $id_producto = $_POST['id_producto'];
-    $unidades = $_POST['unidades'];
+    $id_producto = filter_input(INPUT_POST, 'id_producto', FILTER_SANITIZE_SPECIAL_CHARS);
+    $unidades = filter_input(INPUT_POST, 'unidades', FILTER_SANITIZE_SPECIAL_CHARS);
+    //$id_producto = $_POST['id_producto'];
+    //$unidades = $_POST['unidades'];
    
     $pedido = Pedidos::buscarCarrito($id_usuario); 
     if($pedido == NULL){//si no existe el carrito, lo creo
