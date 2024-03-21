@@ -5,6 +5,7 @@ namespace es\ucm\fdi\aw\citas;
 use es\ucm\fdi\aw\Aplicacion;
 use es\ucm\fdi\aw\Formulario;
 use es\ucm\fdi\aw\citas\Citas;
+require_once 'procesaHorarioDisp.php';
 
 class FormularioCita extends Formulario{
 

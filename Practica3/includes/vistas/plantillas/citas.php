@@ -16,9 +16,13 @@ function buildCita($citas)
         <div class="producto-detalle">
             <h2>$asunto</h2>
             <p>Fecha: $dia, $hora:00</p>
+            <p>ID: $id_cita</p>
             </div>
             
-        </div><i id="iconoBasura" class="fa-solid fa-trash" onclick="location.href='eliminarCita.php?id=$id_cita';"></i></div></div>
+        <form id="formBorrarCita_$id_cita" action="eliminarCita.php" method="post">
+            <input type="hidden" name="id_cita" value="$id_cita">
+        </form></div>
+        <i id="iconoBasura" class="fa-solid fa-trash" onclick="document.getElementById('formBorrarCita_$id_cita').submit();"></i>
     </div>
 EOS;
     return $contenido;
