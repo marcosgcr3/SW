@@ -37,7 +37,7 @@ use es\ucm\fdi\aw\Aplicacion;
             }
 
             else if ($app->esMecanico()) {
-                echo "<li><a href='citas.php' >MI HORARIO</a></li>";
+                echo "<li><a href='horarioMecanico.php' >MI HORARIO</a></li>";
                 
                                 
             }

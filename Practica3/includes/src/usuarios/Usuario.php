@@ -162,6 +162,7 @@ class Usuario
         }
         return true;
     }
+    
 
     public static function listaMecanicos(){
         $lista_mecanicos = array();

@@ -56,7 +56,40 @@ Class Citas{
         }
         return self::crearCita($this);
     }
+    public static function listaCitasMecanico($id_mecanico){
+        $lista_citas = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $sql = "SELECT * FROM Citas WHERE id_mecanico = $id_mecanico";
+        $rs = $conn->query($sql);
 
+        if($rs){
+            while($fila = $rs->fetch_assoc()){
+                $result = new Citas($fila['id_cliente'], $fila['id_mecanico'], $fila['dia'], $fila['hora'], $fila['asunto'], $fila['id_cita']);
+                array_push($lista_citas, $result);
+            }
+            $rs->free();
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_citas;
+    }
+    public static function listaCitasMecanicoEnUnDia($id_mecanico, $dia){
+        $lista_citas = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $sql = "SELECT * FROM Citas WHERE id_mecanico = $id_mecanico AND dia = '$dia'";
+        $rs = $conn->query($sql);
+
+        if($rs){
+            while($fila = $rs->fetch_assoc()){
+                $result = new Citas($fila['id_cliente'], $fila['id_mecanico'], $fila['dia'], $fila['hora'], $fila['asunto'], $fila['id_cita']);
+                array_push($lista_citas, $result);
+            }
+            $rs->free();
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_citas;
+    }
     public static function listaCitas(){
         $lista_citas = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
