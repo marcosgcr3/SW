@@ -5,6 +5,8 @@ namespace es\ucm\fdi\aw\citas;
 use es\ucm\fdi\aw\Aplicacion;
 use es\ucm\fdi\aw\Formulario;
 use es\ucm\fdi\aw\citas\Citas;
+use es\ucm\fdi\aw\usuarios\Usuario;
+require_once 'procesaHorarioDisp.php';
 
 class FormularioCita extends Formulario{
 
@@ -68,7 +70,9 @@ class FormularioCita extends Formulario{
             $this->errores['asunto'] = "El asunto no puede estar vacío";
         }
         if (count($this->errores) === 0) {
-            Citas::crea($_SESSION['id'], '3', $dia, $hora, $asunto);
+            $mecanico = Usuario::obtenerMecanicoDisponible($dia, $hora);
+            echo $mecanico->getId();
+            Citas::crea($_SESSION['id'], $mecanico->getId(), $dia, $hora, $asunto);
             
         }
     }

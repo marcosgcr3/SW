@@ -36,7 +36,7 @@ Class Citas{
     }
     private static function actualiza($cita){
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "UPDATE Citas SET fecha=$cita->fecha, asunto=$cita->asunto WHERE id=$cita->id";
+        $query = "UPDATE Citas SET fecha=$cita->fecha, asunto=$cita->asunto WHERE id_cita=$cita->id";
         $rs = $conn->query($query);
         if ($rs) {
             if ($conn->affected_rows != 1) {
@@ -65,7 +65,7 @@ Class Citas{
 
         if($rs){
             while($fila = $rs->fetch_assoc()){
-                $result = new Citas($fila['id_cliente'], $fila['id_mecanico'], $fila['dia'], $fila['hora'], $fila['asunto']);
+                $result = new Citas($fila['id_cliente'], $fila['id_mecanico'], $fila['dia'], $fila['hora'], $fila['asunto'], $fila['id_cita']);
                 array_push($lista_citas, $result);
             }
             $rs->free();
@@ -82,7 +82,7 @@ Class Citas{
 
         if($rs){
             while($fila = $rs->fetch_assoc()){
-                $result = new Citas($fila['id_cliente'], $fila['id_mecanico'], $fila['dia'], $fila['hora'], $fila['asunto']);
+                $result = new Citas($fila['id_cliente'], $fila['id_mecanico'], $fila['dia'], $fila['hora'], $fila['asunto'], $fila['id_cita']);
                 array_push($lista_citas, $result);
             }
             $rs->free();
