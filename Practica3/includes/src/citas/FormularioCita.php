@@ -71,7 +71,7 @@ class FormularioCita extends Formulario{
         }
         if (count($this->errores) === 0) {
             $mecanico = Usuario::obtenerMecanicoDisponible($dia, $hora);
-            echo $mecanico->getId();
+           
             Citas::crea($_SESSION['id'], $mecanico->getId(), $dia, $hora, $asunto);
             
         }
