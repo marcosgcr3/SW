@@ -17,23 +17,35 @@ function buildAlquiler($alquiler)
     $imagen = $vehiculo->getImagen();
     $marca = $vehiculo->getMarca();
     $modelo = $vehiculo->getModelo();
-    $contenido=<<<EOF
-    <div class="alquiler">
-        <h2>$marca:  $modelo</h2>
+    $contenido="";
+    $contenido.=<<<EOS
+    <div class="producto">
+    
+        <div class="producto-info">
+        
         <img src="$imagen" alt="imagen" class="producto-imagen">
-        <div class="alquiler-info">
+        <div class="producto-detalle">
+        <h2>$marca:  $modelo</h2>
             <p>Fecha de inicio: $fechaIni</p>
             <p>Fecha de fin: $fechaFin</p>
             <p>Precio: $precio&euro;</p>
-        </div>
-    </div>
-EOF;    
+       
+    
+EOS;    
     $app = Aplicacion::getInstance();
     if ($app->esAdmin()) {
         //$contenido .='</div><i id="iconoBasura" class="fa-solid fa-trash" onclick="location.href=\'borrarVehiculo.php?matricula=' . $matricula . '\';"></i></div></div>';
     } else {
         
-        $contenido .= '<button class="botoncarro" onclick="location.href=\'eliminarAlquiler.php?id=' . $id . '&vehiculo=' . $id_vehiculo . '\';">Eliminar Alquiler</button></div></div></div>';
+        $contenido .= <<<EOS
+            </div>
+            <form id="formBorrarAlquiler_$id" action="eliminarAlquiler.php" method="post">
+                <input type="hidden" name="id_alquiler" value="$id">
+            </form>
+            <i id="iconoBasura" class="fa-solid fa-trash" onclick="document.getElementById('formBorrarAlquiler_$id').submit();"></i>
+            </div></div>
+       
+            EOS;
     }
 
     return $contenido;
