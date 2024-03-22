@@ -250,6 +250,7 @@ private static function numCitasTotales($mecanico) {
     }
 }
 
+
     private $NIF;
 
     private $nombre;

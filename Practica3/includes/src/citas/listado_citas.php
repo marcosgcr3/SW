@@ -38,6 +38,20 @@ function listaCitasMecanico($id){
     EOS;
     return $contenido;
 }
+function listaCitasMecanicoDias($id){
+    $dias = Citas::diasConCitas($id);
+    $contenido = '';
+    foreach ($dias as $dia){
+        $contenido .= "<h2>$dia</h2>";
+        $citas = Citas::listaCitasMecanicoEnUnDia($id, $dia);
+        foreach ($citas as $cita){
+            $contenido .= misCitas($cita);
+        }
+       
+    }
+    return $contenido;
+
+}
 
 function misCitas($cita){
    $contenido = buildCita($cita);

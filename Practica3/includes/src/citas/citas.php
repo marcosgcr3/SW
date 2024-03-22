@@ -124,7 +124,29 @@ Class Citas{
         }
         return $lista_citas;
     }
-
+    public static function diasConCitas($idMecanico) {
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        
+    
+        // Consultar los días en los que el mecánico tiene citas programadas
+        $query = "SELECT DISTINCT dia FROM Citas WHERE id_mecanico = $idMecanico";
+        $rs = $conn->query($query);
+    
+        if ($rs) {
+            $diasConCitas = array();
+            while ($fila = $rs->fetch_assoc()) {
+                $diasConCitas[] = $fila['dia'];
+            }
+            $rs->free();
+    
+           
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+            return array();
+        } 
+        return $diasConCitas;
+    }
+    
     private $id;
     private $id_cliente;
     private $id_mecanico;
