@@ -136,7 +136,7 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`id_producto`, `nombre`, `precio`, `descripcion`, `unidades`, `imagen`) VALUES
-(3, 'Neumatico', 23, 'Nuematicos nuevos de 22 pulgadas', 8, 'img/imgProductos/neumatico.png').
+(3, 'Neumatico', 23, 'Nuematicos nuevos de 22 pulgadas', 8, 'img/imgProductos/neumatico.png'),
 (4, 'Aceite', 12, 'Aceite para motor de coche', 10, 'img/imgProductos/aceite.png'),
 (5, 'Frenos', 150, 'Frenos para coche', 15, 'img/imgProductos/frenos.png');
 
