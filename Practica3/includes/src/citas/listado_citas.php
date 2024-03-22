@@ -52,12 +52,64 @@ function listaCitasMecanicoDias($id){
     return $contenido;
 
 }
+function mostrarCalendarioCitas($idMecanico) {
+     // Obtener los días y citas del mecánico
+    $dias = Citas::diasConCitas($idMecanico);
+    $citasPorDia = [];
+    foreach ($dias as $dia) {
+        $citasPorDia[$dia] = Citas::listaCitasMecanicoEnUnDia($idMecanico, $dia);
+    }
+
+    // Crear la estructura HTML del calendario
+    $html = '<table>';
+    $html .= '<thead><tr><th>Hora</th>';
+    foreach ($dias as $dia) {
+        // Obtener el día de la semana
+        $nombreDia = strftime('%A', strtotime($dia));
+        $html .= "<th>$nombreDia</th>";
+    }
+    $html .= '</tr></thead>';
+    $html .= '<tbody>';
+
+    // Definir las horas del día
+    $horasDia = range(9, 17);
+
+    // Iterar sobre cada hora del día
+    foreach ($horasDia as $hora) {
+        $html .= '<tr>';
+        $html .= "<td>$hora:00</td>";
+
+        // Iterar sobre cada día y mostrar la cita correspondiente
+        foreach ($dias as $dia) {
+            $html .= '<td>';
+            $citaEnHora = null;
+            foreach ($citasPorDia[$dia] as $cita) {
+                if ($cita->getHora() == $hora) {
+                    $citaEnHora = $cita;
+                    break;
+                }
+            }
+            if ($citaEnHora) {
+                $html .= misCitas($citaEnHora);
+            }
+            $html .= '</td>';
+        }
+        $html .= '</tr>';
+    }
+
+    $html .= '</tbody></table>';
+
+    return $html;
+}
 
 function misCitas($cita){
    $contenido = buildCita($cita);
    return $contenido;
 }
-
+function misCitasH($cita){
+    $contenido = buildCitaH($cita);
+    return $contenido;
+ }
 function sinCitas(){
     $contenido = <<<EOS
     <h2>No tienes citas</h2>

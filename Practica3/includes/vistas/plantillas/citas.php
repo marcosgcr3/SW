@@ -35,3 +35,17 @@ function buildCita($citas)
 
     return $contenido;
 }
+function buildCitaH($citas)
+{
+    $asunto = $citas->getAsunto();
+    $contenido = <<<EOS
+    <div class="producto">
+        <h2>$asunto</h2>
+    </div>
+    EOS;
+
+
+
+
+    return $contenido;
+}
