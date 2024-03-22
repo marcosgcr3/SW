@@ -53,7 +53,7 @@ function listaCitasMecanicoDias($id){
 
 }
 function mostrarCalendarioCitas($idMecanico) {
-     // Obtener los días y citas del mecánico
+    // Obtener los días de la semana y las citas del mecánico
     $dias = Citas::diasConCitas($idMecanico);
     $citasPorDia = [];
     foreach ($dias as $dia) {
@@ -64,7 +64,7 @@ function mostrarCalendarioCitas($idMecanico) {
     $html = '<table>';
     $html .= '<thead><tr><th>Hora</th>';
     foreach ($dias as $dia) {
-        // Obtener el día de la semana
+        // Obtener el nombre del día de la semana
         $nombreDia = strftime('%A', strtotime($dia));
         $html .= "<th>$nombreDia</th>";
     }
@@ -76,8 +76,10 @@ function mostrarCalendarioCitas($idMecanico) {
 
     // Iterar sobre cada hora del día
     foreach ($horasDia as $hora) {
+        // Formatear la hora con cero inicial si es menor de 10
+        $horaFormateada = sprintf('%02d:00', $hora);
         $html .= '<tr>';
-        $html .= "<td>$hora:00</td>";
+        $html .= "<td>$horaFormateada</td>";
 
         // Iterar sobre cada día y mostrar la cita correspondiente
         foreach ($dias as $dia) {
@@ -90,7 +92,9 @@ function mostrarCalendarioCitas($idMecanico) {
                 }
             }
             if ($citaEnHora) {
-                $html .= misCitas($citaEnHora);
+                $html .= $citaEnHora->getAsunto();
+            } else {
+                $html .= '-';
             }
             $html .= '</td>';
         }
