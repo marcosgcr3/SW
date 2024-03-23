@@ -14,6 +14,7 @@ if( $app->esAdmin() ){
 }
 else{
     $contenidoPrincipal .= carrito();
+    
 }
 $params = ['tituloPagina' => $tituloPagina, 'contenidoPrincipal' => $contenidoPrincipal];
 $app->generaVista('/plantillas/plantilla.php', $params);     

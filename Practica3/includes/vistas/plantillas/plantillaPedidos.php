@@ -37,7 +37,7 @@ function buildPedido($id_user,$estado)
 function mostrarCarrito($carrito, $id_pedido)
 {
     $html = listarPedido($carrito, $id_pedido);//$carrito array y carrito id
-    echo $html;
+    return $html;
 }
 
 function mostrarPedidos($pedidos)
@@ -45,7 +45,7 @@ function mostrarPedidos($pedidos)
     foreach($pedidos as $pedido){
         $aux = Producto::listaProductos($pedido->getId_pedido());
         $html = listarPedido($aux, null);
-        echo $html;
+        return $html;
     }
 
 }
