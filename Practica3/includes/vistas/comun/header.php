@@ -92,7 +92,6 @@ use es\ucm\fdi\aw\Aplicacion;
     <?php
             if ($app->usuarioLogueado() && !$app->esAdmin() && !$app->esMecanico()) {
                 echo '<i id="iconoCarro" onclick="location.href=\'carro.php\'" class="fa-solid fa-cart-shopping"></i>';
-                
                                 
             }
         

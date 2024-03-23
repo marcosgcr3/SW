@@ -87,7 +87,6 @@ class Pedidos
             $id_producto,
             $cantidad);
             //
-            throw new mysqli_sql_exception("Error al ejecutar la consulta de inserción: " . $conn->errno . "<br>" . utf8_encode($conn->error));
             if($conn->query($query)){
                 return true;
             }
@@ -112,7 +111,7 @@ class Pedidos
     }
     
 
-    public function eliminarProducto($id_pedido,$id_producto){//elimina un producto del carrito y devuelve la cantidad al producto a la BD 
+    public function eliminarProducto($id_pedido,$id_producto){//elimina un producto del carrito 
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("DELETE FROM pedido_producto WHERE id_pedido = '%d' AND id_producto = '%d'",
             $id_pedido,

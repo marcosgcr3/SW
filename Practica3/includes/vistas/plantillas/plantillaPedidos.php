@@ -81,12 +81,14 @@ function listarPedido($carrito, $id_pedido)
                 {$cantidad}
             </div>
 
-            <div class="precio">
-                {$precio}
+            <div class="precio"> <!-- Aqui el precio del producto -->
+                <p>Precio por unidad:</p>
+                {$precio} €
             </div>
 
             <div class="precio2">
-                {$precio2}
+                <p>Precio total:</p>
+                {$precio2} €
             </div>
 
             </div>
@@ -97,7 +99,8 @@ function listarPedido($carrito, $id_pedido)
         $precio_total .= Pedidos::calculaPrecioTotal($id_pedido);
         $productos .= <<<EOS
             <div class="precioCarritoTotal">
-                {$precio_total} <!-- Aqui el precio total del carrito -->
+                <p>TOTAL:</p>
+                {$precio_total} € <!-- Aqui el precio total del carrito -->
             <form action="comprarCarro.php" method="post">
                 <input type="hidden" name="id_usuario" value="{$id_usuario}">
                 <button type="submit">Comprar</button>
