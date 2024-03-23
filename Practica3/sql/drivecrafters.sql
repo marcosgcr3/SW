@@ -249,9 +249,7 @@ ALTER TABLE `pedido`
 --
 -- Indices de la tabla `pedido_producto`
 --
-ALTER TABLE `pedido_producto`
-  ADD PRIMARY KEY (`id_pedido`),
-  ADD KEY `id_producto` (`id_producto`);
+ALTER TABLE `drivecrafters`.`pedido_producto` DROP PRIMARY KEY, ADD PRIMARY KEY (`id_pedido`, `id_producto`) USING BTREE;
 
 --
 -- Indices de la tabla `productos`

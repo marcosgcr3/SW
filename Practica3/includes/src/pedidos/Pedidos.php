@@ -4,6 +4,9 @@ namespace es\ucm\fdi\aw\pedidos;
 
 use es\ucm\fdi\aw\Aplicacion;
 use es\ucm\fdi\aw\MagicProperties;
+use mysqli_sql_exception;
+
+
 class Pedidos 
 {
     use MagicProperties;
@@ -78,17 +81,33 @@ class Pedidos
 
     public function anyadirProducto($id_pedido,$id_producto, $cantidad){//añade un producto al CARRITO
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("INSERT INTO pedido_producto (id_pedido, id_producto, cantidad) VALUES ('%d', '%d', '%d')",
+        try{
+            $query = sprintf("INSERT INTO pedido_producto (id_pedido, id_producto, cantidad) VALUES ('%d', '%d', '%d')",
             $id_pedido,
             $id_producto,
-            $cantidad
-        );
-       if($conn->query($query)){
-            return true;
+            $cantidad);
+            //
+            throw new mysqli_sql_exception("Error al ejecutar la consulta de inserción: " . $conn->errno . "<br>" . utf8_encode($conn->error));
+            if($conn->query($query)){
+                return true;
+            }
+            else{
+                throw new mysqli_sql_exception("Error al ejecutar la consulta de inserción: " . $conn->errno . "<br>" . utf8_encode($conn->error));
+            }
         }
-        else{
-            echo "Error en la BD: " . $conn->errno . "<br>" . utf8_encode($conn->error);
-            return false;
+        catch(mysqli_sql_exception $ex){
+            //Manejar la excepción
+            $query = sprintf("UPDATE pedido_producto SET cantidad = cantidad + '%d' WHERE id_pedido = '%d' AND id_producto = '%d'",
+                $cantidad,
+                $id_pedido,
+                $id_producto);
+            if($conn->query($query)){
+                return true;
+            }
+            else{
+                echo "Error en la BD: " . $conn->errno . "<br>" . utf8_encode($conn->error);
+                return false;
+            }
         }
     }
     
@@ -192,7 +211,7 @@ class Pedidos
         return $result;
     }
 
-    public function guarda_producto(){
+    public function guarda(){
         if ($this->id_pedido != null) {
             return self::actualiza($this);
         }
