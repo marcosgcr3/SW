@@ -14,12 +14,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     //$id_producto = $_POST['id_producto'];
     //$unidades = $_POST['unidades'];
    
-    $pedido = Pedidos::buscarCarrito($id_usuario); 
+    $pedido = Pedidos::buscarCarrito($id_usuario);
+
     if($pedido == NULL){//si no existe el carrito, lo creo
         $pedido = Pedidos::crea($id_usuario, 0, 0);
+
         $pedido->anyadirProducto($pedido->getId_pedido(),$id_producto, $unidades);
     }
     else{//ya tiene carrito este usuario, añado el producto al carrito
+
         $pedido->anyadirProducto($pedido->getId_pedido(),$id_producto, $unidades);
     }
 

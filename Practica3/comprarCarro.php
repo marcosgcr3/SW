@@ -24,4 +24,4 @@ else{//ya tiene carrito este usuario, lo compramos
 
 
 //le llevo al index
-header('Location: index.php');
+header('Location: tienda.php');

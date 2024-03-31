@@ -108,6 +108,7 @@ function listarPedido($carrito, $id_pedido)
            
             </div>
         EOS;
+
     }
     return $productos;
 }

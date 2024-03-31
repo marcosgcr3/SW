@@ -4,6 +4,7 @@
 //Tambien hay que hacer el objeto articulo para poder mostrarlos bien en la tienda
 require_once 'includes/config.php';
 require_once 'includes/vistas/plantillas/citas.php';
+
 use es\ucm\fdi\aw\citas\Citas;
 
 $contenido = '';
@@ -54,6 +55,8 @@ function listaCitasMecanicoDias($id){
 }
 function mostrarCalendarioCitas($idMecanico) {
     // Obtener los días de la semana y las citas del mecánico
+
+    $diasSemana = [];
     $dias = Citas::diasConCitas($idMecanico);
     $citasPorDia = [];
     foreach ($dias as $dia) {

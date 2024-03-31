@@ -19,7 +19,7 @@ class Producto
         
         return $producto->guarda();
     }
-    
+
     public static function buscaPorNombre($nombre)
     {
         $conn = Aplicacion::getInstance()->getConexionBd();
