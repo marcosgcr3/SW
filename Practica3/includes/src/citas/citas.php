@@ -88,6 +88,9 @@ Class Citas{
         } else {
             error_log("Error BD ({$conn->errno}): {$conn->error}");
         }
+        usort($lista_citas, function($a, $b) {
+            return strcmp($a->getHora(), $b->getHora());
+        });
         return $lista_citas;
     }
     public static function listaCitas(){
@@ -144,6 +147,7 @@ Class Citas{
             error_log("Error BD ({$conn->errno}): {$conn->error}");
             return array();
         } 
+        sort($diasConCitas);
         return $diasConCitas;
     }
     

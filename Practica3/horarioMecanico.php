@@ -10,7 +10,7 @@ $tituloPagina = 'Mi Horario';
 
 $contenidoPrincipal = '';
 
-$contenidoPrincipal .= mostrarCalendarioCitas($_SESSION['id']);
+$contenidoPrincipal .= listaCitasMecanicoDias($_SESSION['id']);
 
 
 $params = ['tituloPagina' => $tituloPagina, 'contenidoPrincipal' => $contenidoPrincipal];
