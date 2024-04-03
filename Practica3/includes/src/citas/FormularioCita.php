@@ -16,8 +16,9 @@ class FormularioCita extends Formulario{
 
 
     protected function generaCamposFormulario(&$datos){
+        date_default_timezone_set("Europe/Madrid");
         $dia = $datos['dia'] ?? '';
-        $dia = '2024-03-21';
+        //$dia = '2024-03-21';
         $hora = $datos['hora'] ?? '';
         $asunto = $datos['asunto'] ?? '';
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
@@ -33,11 +34,12 @@ class FormularioCita extends Formulario{
                 <label for="Dia">Dia:</label>
                 <input id="dia" type="date" name="dia" value="$dia" />
                 {$erroresCampos['dia']}
-                
+
                 <label for='Hora'>Horario:</label>
                 <select id='hora' name='hora'>
                 <option value=''>Seleccione una hora</option>
                 
+                {$erroresCampos['hora']}
 
 
         </div>
@@ -46,10 +48,11 @@ class FormularioCita extends Formulario{
         $horasDisp = horarioDisponible($dia);
         foreach ($horasDisp as $hora) {
             $html .= "<option value='$hora'>$hora:00</option>";
-        }
-        $html .= "</select>";
+        } 
 
         $html .= <<<EOF
+            </select>
+            {$erroresCampos['hora']}
             <button class="botonIni" type="submit" name="registro">Registrar</button>
         EOF;
 
@@ -61,7 +64,11 @@ class FormularioCita extends Formulario{
         if (empty($dia)) {
             $this->errores['dia'] = "El dia no puede estar vacío";
         }
+        else if(strtotime($dia) < strtotime(date('Y-m-d'))){
+            $this->errores['dia'] = "El dia no puede ser anterior a la fecha de hoy";
+        }
         $hora = $datos['hora'] ?? null;
+        echo $hora;
         if (empty($hora)) {
             $this->errores['hora'] = "La hora no puede estar vacía";
         }
