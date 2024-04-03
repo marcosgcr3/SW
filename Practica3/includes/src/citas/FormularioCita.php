@@ -65,7 +65,7 @@ class FormularioCita extends Formulario{
             $this->errores['dia'] = "El dia no puede estar vacío";
         }
         else if(strtotime($dia) < strtotime(date('Y-m-d'))){
-            $this->errores['dia'] = "El dia no puede ser anterior a la fecha de hoy";
+            $this->errores['dia'] = "El día no puede ser anterior a la fecha de hoy";
         }
         $hora = $datos['hora'] ?? null;
         echo $hora;
