@@ -110,6 +110,37 @@ Class Alquilar{
         
     }
 
+    public static function listaTodosAlquileres(){
+        $lista_alquileres = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+
+        $query = "SELECT * FROM Alquileres";
+        $rs = $conn->query($query);
+        
+        if ($rs) {
+            while($fila = $rs->fetch_assoc()){
+                $result = new Alquilar($fila['id_usuario'], $fila['id_vehiculo'], $fila['fecha_inicio'], $fila['fecha_fin'], $fila['precioFinal'],$fila['id_alquiler']);
+                array_push($lista_alquileres, $result);
+            }
+            $rs->free();
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_alquileres;
+        
+    }
+
+    public static function comprobarFecha(){
+        $lAlquileres = array();
+        $lAlquileres = self::listaTodosAlquileres();
+        foreach($lAlquileres as $alquileres){
+            if(strtotime($alquileres->getFechaFin()) < strtotime(date('Y-m-d'))){
+                self::borrar($alquileres->getId());
+            }
+        }
+
+    }
+
     private $id;
     private $id_usuarios;
     private $id_vehiculo;
@@ -144,11 +175,14 @@ Class Alquilar{
         return $this->precioFinal;
     }
 
+
     public static function borrar($id){
         return self::eliminarAlquiler($id);
     }
     private static function eliminarAlquiler($id){
-        
+        $alquiler = self::buscaPorIdAlquiler($id);
+        $vehiculo = Vehiculo::buscaPorId($alquiler->getIdVehiculo());
+        Vehiculo::cambiarDisponibilidad($vehiculo);
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = "DELETE FROM Alquileres WHERE id_alquiler='$id'";
@@ -160,6 +194,7 @@ Class Alquilar{
         } else {
             error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
         }
+        
         return $result;
 
 

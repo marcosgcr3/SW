@@ -83,11 +83,6 @@ class FormularioAlquiler extends Formulario{
             Vehiculo::cambiarDisponibilidad($vehiculo);
             Alquilar::crea($_SESSION['id'], $this->id_vehiculo, $fechaIni, $fechaFin, $vehiculo->getPrecio()*$numDias);
                  
-             
-             
-        
         }
-
-    
     }
 }

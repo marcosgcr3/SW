@@ -110,6 +110,40 @@ Class Citas{
         }
         return $lista_citas;
     }
+
+    public static function listaTodasCitas(){
+        $lista_citas = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $sql = "SELECT * FROM Citas";
+        $rs = $conn->query($sql);
+
+        if($rs){
+            while($fila = $rs->fetch_assoc()){
+                $result = new Citas($fila['id_cliente'], $fila['id_mecanico'], $fila['dia'], $fila['hora'], $fila['asunto'], $fila['id_cita']);
+                array_push($lista_citas, $result);
+            }
+            $rs->free();
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_citas;
+    }
+
+    public static function comprobarFecha(){
+        $lCitas = array();
+        $lCitas = self::listaTodasCitas();
+        foreach($lCitas as $citas){
+            if(strtotime($citas->getDia()) < strtotime(date('Y-m-d'))){
+                self::borrar($citas->getId());
+            }
+            else if(strtotime($citas->getDia()) == strtotime(date('Y-m-d'))){
+                if($citas->getHora() < date('G'))
+                    self::borrar($citas->getId());
+            }
+        }
+
+    }
+
     public static function listaCitasM($id){
         $lista_citas = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
