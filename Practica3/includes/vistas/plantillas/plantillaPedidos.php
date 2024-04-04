@@ -103,6 +103,8 @@ function listarPedido($carrito, $id_pedido)
                 {$precio_total} € <!-- Aqui el precio total del carrito -->
             <form action="comprarCarro.php" method="post">
                 <input type="hidden" name="id_usuario" value="{$id_usuario}">
+                <input type="hidden" name="id_pedido" value="{$id_pedido}">
+                <input type="hidden" name="precio_total" value="{$precio_total}">
                 <button type="submit">Comprar</button>
             </form>
            

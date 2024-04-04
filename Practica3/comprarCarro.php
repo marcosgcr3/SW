@@ -7,11 +7,10 @@ use es\ucm\fdi\aw\productos\Producto;
 use es\ucm\fdi\aw\pedidos\Pedidos;
 
 
-//filter_input(INPUT_GET, 'id', FILTER_SANITIZE_SPECIAL_CHARS);
 $id_usuario =$_SESSION['id'];
 $id_pedido = filter_input(INPUT_POST, 'id_pedido', FILTER_SANITIZE_SPECIAL_CHARS);
-//$id_producto = filter_input(INPUT_POST, 'id_producto', FILTER_SANITIZE_SPECIAL_CHARS);
-//$id_producto = $_POST['id_producto'];
+$precio_total = filter_input(INPUT_POST, 'precio_total', FILTER_SANITIZE_SPECIAL_CHARS);
+
     
     
 $pedido = Pedidos::buscarCarrito($id_usuario); 
@@ -20,8 +19,19 @@ if($pedido == NULL){//si no existe el carrito
 }
 else{//ya tiene carrito este usuario, lo compramos
     $pedido->finalizarPedido($pedido->getId_pedido());
+    $pedido->insertaPrecioTotal($pedido->getId_pedido(), $precio_total);
+    //bajar el numero de unidades de los productos del carro
+    $productos = Producto::listaProductos($pedido->getId_pedido());
+    foreach($productos as $producto){
+        //NO ME LLEGA EL ID DEL PRODUCTO FALTA GRABE SI LO HAGO POR EL NOMBRE
+        $id_aux = producto::devolverId($producto->getNombre()); 
+        $cantidad = Pedidos::cantidadDeProducto($pedido->getId_pedido(), $id_aux);
+        $stock = producto::buscaPorId($id_aux);
+        $producto->setUnidades($stock->getUnidades() - $cantidad);
+        $producto->guarda();
+    }
+    
 }
-
 
 //le llevo al index
 header('Location: tienda.php');

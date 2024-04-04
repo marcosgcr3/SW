@@ -29,7 +29,7 @@ class Producto
         if ($rs) {
             $fila = $rs->fetch_assoc();
             if ($fila) {
-                $result = new Producto( $fila['nombre'], $fila['precio'], $fila['descripcion'], $fila['unidades'], $fila['imagen']);
+                $result = new Producto($fila['nombre'], $fila['precio'], $fila['descripcion'], $fila['unidades'], $fila['imagen']);
             }
             $rs->free();
         } else {
@@ -62,7 +62,7 @@ class Producto
         if ($rs) {
             $fila = $rs->fetch_assoc();
             if ($fila) {
-                $result = new Producto( $fila['nombre'], $fila['precio'], $fila['descripcion'], $fila['unidades'], $fila['imagen']);
+                $result = new Producto($fila['nombre'], $fila['precio'], $fila['descripcion'], $fila['unidades'], $fila['imagen']);
             }
             $rs->free();
         } else {
@@ -133,6 +133,10 @@ class Producto
         $this->descripcion = $descripcion;
         $this->unidades = $unidades;
         $this->imagen = $imagen;
+    }
+
+    public function setUnidades($unidades){
+        $this->unidades = $unidades;
     }
 
     public function getId()
