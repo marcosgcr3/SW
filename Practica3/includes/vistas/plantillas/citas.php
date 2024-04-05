@@ -17,7 +17,6 @@ function buildCita($citas)
                     <div class="producto-detalle">
                         <h2>$asunto</h2>
                     <p>Fecha: $dia, $hora:00</p>
-                    <p>ID: $id_cita</p>
                     </div>
                     
                     <form id="formBorrarCita_$id_cita" action="eliminarCita.php" method="post">

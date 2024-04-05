@@ -12,16 +12,27 @@ $contenido = '';
 function listaCitas(){
     $citas = Citas::listaCitas();
     $contenido = '';
+    $contenido .= "<h1>Citas actuales</h1>";
     if(empty($citas)){
         return sinCitas();
     }
-    
     foreach ($citas as $cita){
-        $contenido .= misCitas($cita);
+        if($cita->getEstado()==0)
+            $contenido .= misCitas($cita);
     }
-    $contenido .= <<<EOS
-    <button class="botonIni" onclick="location.href='addCita.php'">Agendar Cita</button>
-    EOS;
+    return $contenido;
+}
+function listaCitasHistorial(){
+    $citas = Citas::listaCitas();
+    $contenido = '';
+    $contenido .= "<h1>Historial de Citas</h1>";
+    if(empty($citas)){
+        return sinCitas();
+    }
+    foreach ($citas as $cita){
+        if($cita->getEstado()==1)
+            $contenido .= misCitas($cita);
+    }
     return $contenido;
 }
 function listaCitasMecanico($id){
