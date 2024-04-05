@@ -187,10 +187,11 @@ class Vehiculo
     
     if ($rs && $rs->num_rows > 0) {
         // Si hay alquileres activos, el vehículo está ocupado
-        $vehiculo->disponibilidad = 'no';
+        $vehiculo->disponibilidad = 'si';
     } else {
         // Si no hay alquileres activos, el vehículo está disponible
-        $vehiculo->disponibilidad = 'si';
+        
+        $vehiculo->disponibilidad = 'no';
     }
        
         $conn = Aplicacion::getInstance()->getConexionBd();
