@@ -175,6 +175,23 @@ class Vehiculo
 
     public static function cambiarDisponibilidad($vehiculo)
     {
+
+        $conn = Aplicacion::getInstance()->getConexionBd();
+
+    // Obtener la fecha actual
+    $fechaActual = date('Y-m-d');
+
+    // Verificar si hay alquileres activos para este vehículo
+    $query = sprintf("SELECT * FROM alquileres WHERE id_vehiculo = '%s' AND fecha_inicio <= '%s' AND fecha_fin >= '%s'", $vehiculo->id_vehiculo, $fechaActual, $fechaActual);
+    $rs = $conn->query($query);
+    
+    if ($rs && $rs->num_rows > 0) {
+        // Si hay alquileres activos, el vehículo está ocupado
+        $vehiculo->disponibilidad = 'no';
+    } else {
+        // Si no hay alquileres activos, el vehículo está disponible
+        $vehiculo->disponibilidad = 'si';
+    }
         if($vehiculo->disponibilidad == 'no'){
             $vehiculo->disponibilidad = 'si';
         }else{
