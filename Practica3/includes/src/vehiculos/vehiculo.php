@@ -89,7 +89,7 @@ class Vehiculo
     {
         $lista_vehiculos = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "SELECT * FROM vehiculos WHERE disponibilidad='si'";
+        $query = "SELECT * FROM vehiculos WHERE disponibilidad='si' ";
         $rs = $conn->query($query);
         if ($rs) {
             while($fila = $rs->fetch_assoc()) {
@@ -196,21 +196,33 @@ class Vehiculo
 
 
     $fechaActual = date('Y-m-d');
-
+ 
    
     $listaVehiculos = self::listaVehiculos();
 
     foreach ($listaVehiculos as $vehiculo) {
         
-        $query = sprintf("SELECT * FROM alquileres WHERE id_vehiculo = '%s' AND fecha_inicio <= '%s' AND fecha_fin >= '%s' AND estado ='0'", $vehiculo->getId(), $fechaActual, $fechaActual);
+        $query = sprintf("SELECT * FROM alquileres WHERE id_vehiculo = '%s' AND fecha_inicio <= '%s' AND fecha_fin >= '%s'", $vehiculo->getId(), $fechaActual, $fechaActual);
         $rs = $conn->query($query);
        
         if ($rs && $rs->num_rows > 0) {
             
             $vehiculo->disponibilidad = 'no';
         } else {
-            
+            $query_last_rental = sprintf("SELECT estado FROM alquileres WHERE id_vehiculo = '%s' ", $vehiculo->getId());
+            $rs_last_rental = $conn->query($query_last_rental);
+
+            if ($rs_last_rental && $rs_last_rental->num_rows > 0) {
+                $last_rental = $rs_last_rental->fetch_assoc();
+                if ($last_rental['estado'] == 0) {
+                    // Si el estado del último alquiler fue 0, mantener la disponibilidad del vehículo sin cambios
+                    continue;
+                }
+            }
+
+            // Si no hay alquileres activos y el estado del último alquiler no fue 0, el vehículo está disponible
             $vehiculo->disponibilidad = 'si';
+            
         }
 
        

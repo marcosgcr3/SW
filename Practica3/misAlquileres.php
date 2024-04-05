@@ -1,7 +1,7 @@
 <?php
 
 use es\ucm\fdi\aw\Aplicacion;
-
+use es\ucm\fdi\aw\alquilar\Vehiculo;
 require_once 'includes/config.php';
 require_once 'includes/src/alquilar/listaAlquileres.php';
 
