@@ -11,8 +11,8 @@ Class Alquilar{
 
     use MagicProperties;
 
-    public static function crea($id_usuarios, $id_vehiculo, $fechaIni,$fechaFin, $precioFinal){
-        $alquiler = new Alquilar($id_usuarios, $id_vehiculo, $fechaIni,$fechaFin,  $precioFinal);
+    public static function crea($id_usuarios, $id_vehiculo, $fechaIni,$fechaFin, $precioFinal, $estado = 0){
+        $alquiler = new Alquilar($id_usuarios, $id_vehiculo, $fechaIni,$fechaFin,  $precioFinal, $estado);
         return $alquiler->guarda();
     }
 
@@ -20,7 +20,7 @@ Class Alquilar{
         $fechaInicio = $alquiler->fechaIni;
         $fechaFin = $alquiler->fechaFin;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "INSERT INTO Alquileres (id_usuario, id_vehiculo, fecha_inicio, fecha_fin, precioFinal) VALUES ($alquiler->id_usuarios, $alquiler->id_vehiculo, '$fechaInicio', '$fechaFin', $alquiler->precioFinal)";
+        $query = "INSERT INTO Alquileres (id_usuario, id_vehiculo, fecha_inicio, fecha_fin, precioFinal, estado) VALUES ($alquiler->id_usuarios, $alquiler->id_vehiculo, '$fechaInicio', '$fechaFin', $alquiler->precioFinal, 0)";
         $rs = $conn->query($query);
         if ($rs) {
             $alquiler->id = $conn->insert_id;
@@ -65,7 +65,7 @@ Class Alquilar{
         if ($rs) {
             $fila = $rs->fetch_assoc();
             if ($fila) {
-                $result = new Alquilar($fila['id_usuario'], $fila['id_vehiculo'], $fila['fecha_inicio'], $fila['fecha_fin'], $fila['precioFinal'],$fila['id_alquiler']);
+                $result = new Alquilar($fila['id_usuario'], $fila['id_vehiculo'], $fila['fecha_inicio'], $fila['fecha_fin'], $fila['precioFinal'], $fila['estado'],$fila['id_alquiler']);
             }
             $rs->free();
         } else {
@@ -82,7 +82,7 @@ Class Alquilar{
         if ($rs) {
             $fila = $rs->fetch_assoc();
             if ($fila) {
-                $result = new Alquilar($fila['id_usuario'], $fila['id_vehiculo'], $fila['fecha_inicio'], $fila['fecha_fin'], $fila['precioFinal'],$fila['id_alquiler']);
+                $result = new Alquilar($fila['id_usuario'], $fila['id_vehiculo'], $fila['fecha_inicio'], $fila['fecha_fin'], $fila['precioFinal'], $fila['estado'],$fila['id_alquiler']);
             }
             $rs->free();
         } else {
@@ -99,7 +99,7 @@ Class Alquilar{
         
         if ($rs) {
             while($fila = $rs->fetch_assoc()){
-                $result = new Alquilar($fila['id_usuario'], $fila['id_vehiculo'], $fila['fecha_inicio'], $fila['fecha_fin'], $fila['precioFinal'],$fila['id_alquiler']);
+                $result = new Alquilar($fila['id_usuario'], $fila['id_vehiculo'], $fila['fecha_inicio'], $fila['fecha_fin'], $fila['precioFinal'], $fila['estado'],$fila['id_alquiler']);
                 array_push($lista_alquileres, $result);
             }
             $rs->free();
@@ -119,7 +119,7 @@ Class Alquilar{
         
         if ($rs) {
             while($fila = $rs->fetch_assoc()){
-                $result = new Alquilar($fila['id_usuario'], $fila['id_vehiculo'], $fila['fecha_inicio'], $fila['fecha_fin'], $fila['precioFinal'],$fila['id_alquiler']);
+                $result = new Alquilar($fila['id_usuario'], $fila['id_vehiculo'], $fila['fecha_inicio'], $fila['fecha_fin'], $fila['precioFinal'],     $fila['estado'],$fila['id_alquiler']);
                 array_push($lista_alquileres, $result);
             }
             $rs->free();
@@ -147,7 +147,8 @@ Class Alquilar{
     private $fechaIni;
     private $fechaFin;
     private $precioFinal;
-    private function __construct($id_usuarios, $id_vehiculo, $fechaIni,$fechaFin, $precioFinal,$id = null)
+    private $estado;
+    private function __construct($id_usuarios, $id_vehiculo, $fechaIni,$fechaFin, $precioFinal,$estado,$id = null)
     {   
         $this->id = $id;
         $this->id_usuarios = $id_usuarios;
@@ -155,6 +156,7 @@ Class Alquilar{
         $this->fechaIni = $fechaIni;
         $this->fechaFin = $fechaFin;
         $this->precioFinal = $precioFinal;
+        $this->estado = $estado;
     }
     public function getId(){
         return $this->id;
@@ -174,7 +176,27 @@ Class Alquilar{
     public function getPrecioFinal(){
         return $this->precioFinal;
     }
-
+    public function getEstado(){
+        return $this->estado;
+    }
+    public static function cambiarEstado($alquiler){
+       if($alquiler->getEstado() == 0){
+           $alquiler->estado = 1;
+         }else{
+            $alquiler->estado = 0;
+         }
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("UPDATE Alquileres SET estado='$alquiler->estado' WHERE id_alquiler='$alquiler->id'");
+        $rs = $conn->query($query);
+        if ($rs) {
+            if ($conn->affected_rows != 1) {
+                error_log("Error al actualizar el alquiler $alquiler->id");
+            }
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $alquiler;
+    }
 
     public static function borrar($id){
         return self::eliminarAlquiler($id);
@@ -199,4 +221,5 @@ Class Alquilar{
 
 
     }
+    
 }
