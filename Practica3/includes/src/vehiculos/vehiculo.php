@@ -192,11 +192,7 @@ class Vehiculo
         // Si no hay alquileres activos, el vehículo está disponible
         $vehiculo->disponibilidad = 'si';
     }
-        if($vehiculo->disponibilidad == 'no'){
-            $vehiculo->disponibilidad = 'si';
-        }else{
-            $vehiculo->disponibilidad = 'no';
-        }
+       
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("UPDATE vehiculos SET disponibilidad='$vehiculo->disponibilidad' WHERE id_vehiculo ='$vehiculo->id_vehiculo'");
         $rs = $conn->query($query);
