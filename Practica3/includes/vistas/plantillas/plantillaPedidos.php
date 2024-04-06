@@ -18,10 +18,10 @@ function buildPedido($id_user,$estado)
             $contenido = mostrarCarrito($carrito, $id_carro->getId_pedido());//$carrito array y carrito id
         }
     }
-    else{                   //Historial de pedidos del usuario
+    else{ //Historial de pedidos del usuario
         $pedidos = Pedidos::listaPedidos($id_user);  //Devuelve la lista de los pedidos del user
         //Hacer un foreach llamando a la funcion de productos que me devuelve la lista de los productos y luego otro foreach para sacar la lista
-        mostrarPedidos($pedidos);
+        $contenido = mostrarPedidos($pedidos);
 
     }   
     $app = Aplicacion::getInstance();
@@ -42,13 +42,62 @@ function mostrarCarrito($carrito, $id_pedido)
 
 function mostrarPedidos($pedidos)
 {
-    foreach($pedidos as $pedido){
+    $productos = '';
+    $cont = 1;
+    foreach($pedidos as $pedido){//por cada pedido
         $aux = Producto::listaProductos($pedido->getId_pedido());
-        $html = listarPedido($aux, null);
-        return $html;
-    }
+        $productos .= <<<EOS
+            <div class="pedido">
+                <h2>Pedido {$cont}</h2>
 
+            </div>
+        EOS;
+        $precio_total = '';
+        foreach($aux as $producto){//por cada producto del pedido
+            $nombre = $producto->getNombre();
+            $cantidad = $producto->getUnidades();
+            $precio = $producto->getPrecio();
+            $precio2 = $precio*$cantidad;
+            $imagen = $producto->getImagen();
+            $productos .= <<<EOS
+                <div class="producto">
+                <div class="fotoProducto">
+                    <img src="$imagen" alt="imagen" class="producto-imagen">
+                </div>
+                <div class="nombreProducto">
+                    {$nombre}
+                </div>
+                <div class="cantidad">
+                    {$cantidad}
+                </div>
+                <div class="precio"> <!-- Aqui el precio del producto -->
+                    <p>Precio por unidad:</p>
+                    {$precio} €
+                </div>
+                <div class="precio2">
+                    <p>Precio total:</p>
+                    {$precio2} €
+                </div>
+                </div>
+            EOS;
+        }
+        $cont = $cont + 1;
+        $precio_total .= Pedidos::calculaPrecioTotal($pedido->getId_pedido());
+        $productos .= <<<EOS
+            <div class="precioCarritoTotal">
+                <p>TOTAL:</p>
+                {$precio_total} € <!-- Aqui el precio total de ese pedido -->
+            </div>
+            <hr/>
+
+        EOS;
+
+        //$html = listarPedido($aux, null);
+        //return $html;
+    }
+    return $productos;
 }
+
 
 function listarPedido($carrito, $id_pedido)
 {

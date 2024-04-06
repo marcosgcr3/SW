@@ -49,7 +49,7 @@ class Pedidos
     public static function listaPedidos($id_usuario){//devuelve una lista con todos los pedidos del usuario
         $lista_pedidos = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("SELECT p.id_pedido, p.id_usuario, p.estado
+        $query = sprintf("SELECT *
                             FROM pedido p 
                             WHERE P.id_usuario = '%d'", $id_usuario );
         $rs = $conn->query($query);
