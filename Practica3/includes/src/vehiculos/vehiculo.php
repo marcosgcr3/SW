@@ -68,6 +68,23 @@ class Vehiculo
         }
         return $result;
     }
+    public static function listaVehiculos()
+    {
+        $lista_vehiculos = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = "SELECT * FROM vehiculos";
+        $rs = $conn->query($query);
+        if ($rs) {
+            while($fila = $rs->fetch_assoc()) {
+                $vehiculo = new Vehiculo( $fila['matricula'], $fila['marca'], $fila['modelo'], $fila['precio'], $fila['year'],$fila['disponibilidad'], $fila['imagen'], $fila['id_vehiculo']);
+                array_push($lista_vehiculos, $vehiculo);
+            }
+            $rs->free();
+        } else {
+            error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_vehiculos;
+    }
     public static function listaVehiculosDisponibles()
     {
         $lista_vehiculos = array();
@@ -173,29 +190,31 @@ class Vehiculo
         return $result;
     }   
 
-    public static function cambiarDisponibilidad($vehiculo)
-    {
+    public static function comprobarDisponibilidadTodos()
+{
+    $conn = Aplicacion::getInstance()->getConexionBd();
 
-        $conn = Aplicacion::getInstance()->getConexionBd();
 
-    // Obtener la fecha actual
     $fechaActual = date('Y-m-d');
 
-    // Verificar si hay alquileres activos para este vehículo
-    $query = sprintf("SELECT * FROM alquileres WHERE id_vehiculo = '%s' AND fecha_inicio <= '%s' AND fecha_fin >= '%s'", $vehiculo->id_vehiculo, $fechaActual, $fechaActual);
-    $rs = $conn->query($query);
-    
-    if ($rs && $rs->num_rows > 0) {
-        // Si hay alquileres activos, el vehículo está ocupado
-        $vehiculo->disponibilidad = 'si';
-    } else {
-        // Si no hay alquileres activos, el vehículo está disponible
+   
+    $listaVehiculos = self::listaVehiculos();
+
+    foreach ($listaVehiculos as $vehiculo) {
         
-        $vehiculo->disponibilidad = 'no';
-    }
+        $query = sprintf("SELECT * FROM alquileres WHERE id_vehiculo = '%s' AND fecha_inicio <= '%s' AND fecha_fin >= '%s'", $vehiculo->getId(), $fechaActual, $fechaActual);
+        $rs = $conn->query($query);
+
+        if ($rs && $rs->num_rows > 0) {
+            
+            $vehiculo->disponibilidad = 'no';
+        } else {
+            
+            $vehiculo->disponibilidad = 'si';
+        }
+
        
-        $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("UPDATE vehiculos SET disponibilidad='$vehiculo->disponibilidad' WHERE id_vehiculo ='$vehiculo->id_vehiculo'");
+        $query = sprintf("UPDATE vehiculos SET disponibilidad='%s' WHERE id_vehiculo ='%s'", $vehiculo->getDisponibilidad(), $vehiculo->getId());
         $rs = $conn->query($query);
         if ($rs) {
             if ($conn->affected_rows != 1) {
@@ -204,8 +223,36 @@ class Vehiculo
         } else {
             error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
         }
-        return $vehiculo;
     }
+}
+    public static function cambiarDisponibilidad($vehiculo)
+{
+    $conn = Aplicacion::getInstance()->getConexionBd();
+
+    $fechaActual = date('Y-m-d');
+
+    
+    $query = sprintf("SELECT * FROM alquileres WHERE id_vehiculo = '%s' AND fecha_inicio <= '%s' AND fecha_fin >= '%s'", $vehiculo->id_vehiculo, $fechaActual, $fechaActual);
+    $rs = $conn->query($query);
+    
+    if ($rs && $rs->num_rows > 0) {
+        
+        $vehiculo->disponibilidad = 'no';
+    } else {
+       
+        $vehiculo->disponibilidad = 'si';
+    }
+    $query = sprintf("UPDATE vehiculos SET disponibilidad='%s' WHERE id_vehiculo ='%s'", $vehiculo->disponibilidad, $vehiculo->id_vehiculo);
+    $rs = $conn->query($query);
+    if ($rs) {
+        if ($conn->affected_rows != 1) {
+            error_log("Error al cambiar la disponibilidad del vehiculo");
+        }
+    } else {
+        error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
+    }
+    return $vehiculo;
+}
     private static function inserta($vehiculo)
     {
         $result = false;
