@@ -52,7 +52,8 @@ CREATE TABLE `citas` (
   `id_mecanico` int(11) NOT NULL,
   `dia` date NOT NULL,
   `hora` int(11) NOT NULL,
-  `asunto` text NOT NULL
+  `asunto` text NOT NULL,
+  `estado` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
