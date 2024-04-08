@@ -12,7 +12,9 @@ $tituloPagina = 'Mis Citas';
 
 $contenidoPrincipal = '';
 
+$contenidoPrincipal .= '<h1>Citas Activas</h1>';
 $contenidoPrincipal .= listaCitas();
+$contenidoPrincipal .= '<h1>Historial de Citas</h1>';
 $contenidoPrincipal .= listaCitasHistorial();
 $contenidoPrincipal .= newCita();
 

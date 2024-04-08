@@ -12,20 +12,17 @@ $contenido = '';
 function listaCitas(){
     $citas = Citas::listaCitas();
     $contenido = '';
-    $contenido .= "<h1>Citas actuales</h1>";
     if(empty($citas)){
         return sinCitas();
     }
     foreach ($citas as $cita){
-        if($cita->getEstado()==0)
             $contenido .= misCitas($cita);
     }
     return $contenido;
 }
 function listaCitasHistorial(){
-    $citas = Citas::listaCitas();
+    $citas = Citas::listaCitasHistorial($_SESSION['id']);
     $contenido = '';
-    $contenido .= "<h1>Historial de Citas</h1>";
     if(empty($citas)){
         return sinCitas();
     }
@@ -76,7 +73,6 @@ function misCitasH($cita){
 function sinCitas(){
     $contenido = <<<EOS
     <h2>No tienes citas</h2>
-    <button class="botonIni" onclick="location.href='addCita.php'">Agendar Cita</button>
     EOS;
     return $contenido;
 }

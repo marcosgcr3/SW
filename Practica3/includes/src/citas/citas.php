@@ -97,7 +97,7 @@ Class Citas{
     public static function listaCitas(){
         $lista_citas = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $sql = "SELECT * FROM Citas WHERE id_cliente = {$_SESSION['id']}";
+        $sql = "SELECT * FROM Citas WHERE id_cliente = {$_SESSION['id']} AND estado = 0";
         $rs = $conn->query($sql);
 
         if($rs){
@@ -298,6 +298,24 @@ Class Citas{
         return $result;
 
 
+    }
+
+    public static function listaCitasHistorial($id_usuario){
+        $lista_citas = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $sql = "SELECT * FROM Citas WHERE id_cliente = $id_usuario AND estado = 1";
+        $rs = $conn->query($sql);
+
+        if($rs){
+            while($fila = $rs->fetch_assoc()){
+                $result = new Citas($fila['id_cliente'], $fila['id_mecanico'], $fila['dia'], $fila['hora'], $fila['asunto'], $fila['estado'], $fila['id_cita']);
+                array_push($lista_citas, $result);
+            }
+            $rs->free();
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_citas;
     }
 
 }
