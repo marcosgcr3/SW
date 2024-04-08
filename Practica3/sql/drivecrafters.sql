@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS `alquileres` (
   `fecha_inicio` date DEFAULT NULL,
   `fecha_fin` date DEFAULT NULL,
   `precioFinal` double NOT NULL,
+  `estado`int (1) NOT NULL,
   PRIMARY KEY (`id_alquiler`),
   KEY `id_usuario` (`id_usuario`),
   KEY `id_vehiculo` (`id_vehiculo`)

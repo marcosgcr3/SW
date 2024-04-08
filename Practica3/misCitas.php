@@ -13,6 +13,7 @@ $tituloPagina = 'Mis Citas';
 $contenidoPrincipal = '';
 
 $contenidoPrincipal .= listaCitas();
+$contenidoPrincipal .= listaCitasHistorial();
 $contenidoPrincipal .= newCita();
 
 $params = ['tituloPagina' => $tituloPagina, 'contenidoPrincipal' => $contenidoPrincipal];
