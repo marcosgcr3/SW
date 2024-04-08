@@ -91,10 +91,11 @@ Class Alquilar{
         return $result;
     }
     public static function listaAlquileres($id_usuarios){
+        $fechaActual = date('Y-m-d');
         $lista_alquileres = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
 
-        $query = "SELECT * FROM Alquileres WHERE id_usuario=$id_usuarios";
+        $query = "SELECT * FROM Alquileres WHERE id_usuario=$id_usuarios AND fecha_fin >= '$fechaActual'";
         $rs = $conn->query($query);
         
         if ($rs) {
@@ -135,7 +136,7 @@ Class Alquilar{
         $lAlquileres = self::listaTodosAlquileres();
         foreach($lAlquileres as $alquileres){
             if(strtotime($alquileres->getFechaFin()) < strtotime(date('Y-m-d'))){
-                self::borrar($alquileres->getId());
+                self::cambiarEstado($alquileres->getId());
             }
         }
 
@@ -179,7 +180,8 @@ Class Alquilar{
     public function getEstado(){
         return $this->estado;
     }
-    public static function cambiarEstado($alquiler){
+    public static function cambiarEstado($id){
+        $alquiler = self::buscaPorIdAlquiler($id);
        if($alquiler->getEstado() == 0){
            $alquiler->estado = 1;
          }else{
@@ -219,6 +221,42 @@ Class Alquilar{
         
         return $result;
 
+
+    }
+    public static function historialAlquileres($id_usuarios){
+        $lista_alquileres = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+
+        $query = "SELECT * FROM Alquileres WHERE id_usuario=$id_usuarios AND estado=1";
+        $rs = $conn->query($query);
+        
+        if ($rs) {
+            while($fila = $rs->fetch_assoc()){
+                $result = new Alquilar($fila['id_usuario'], $fila['id_vehiculo'], $fila['fecha_inicio'], $fila['fecha_fin'], $fila['precioFinal'], $fila['estado'],$fila['id_alquiler']);
+                array_push($lista_alquileres, $result);
+            }
+            $rs->free();
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_alquileres;
+    }
+    public static function alquileresPendientesDeDevolver($id_usuarios){
+        $lista_alquileres = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $fechaActual = date('Y-m-d');
+        $query = "SELECT * FROM Alquileres WHERE id_usuario=$id_usuarios AND estado=0 AND  fecha_fin < '$fechaActual' ";
+        $rs = $conn->query($query);
+        if ($rs) {
+            while($fila = $rs->fetch_assoc()){
+                $result = new Alquilar($fila['id_usuario'], $fila['id_vehiculo'], $fila['fecha_inicio'], $fila['fecha_fin'], $fila['precioFinal'], $fila['estado'],$fila['id_alquiler']);
+                array_push($lista_alquileres, $result);
+            }
+            $rs->free();
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_alquileres;
 
     }
     

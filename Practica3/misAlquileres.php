@@ -12,9 +12,13 @@ $tituloPagina = 'Mis Alquileres';
 $contenidoPrincipal = '';
 
 
-
+    $contenidoPrincipal .= '<h1>Alquileres Activos</h1>';
     $contenidoPrincipal .= listaAlquileres();
-    
+    $contenidoPrincipal .= '<h1>Alquileres Pendientes de Devolver</h1>';
+    $contenidoPrincipal .= listaAlquileresPendientesDevolver();
+    $contenidoPrincipal .= '<h1>Historial de Alquileres</h1>';
+    $contenidoPrincipal .= listaHistorialAlquileres();
+
  
 
     

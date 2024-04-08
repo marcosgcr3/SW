@@ -12,7 +12,7 @@ $tituloPagina = 'Alquiler';
 
 $contenidoPrincipal = '';
 Vehiculo::comprobarDisponibilidadTodos();
-    Alquilar::comprobarFecha();
+   // Alquilar::comprobarFecha();
     $contenidoPrincipal .= listavehiculos();
 
 
