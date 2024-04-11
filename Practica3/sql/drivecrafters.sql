@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-04-2024 a las 12:16:08
+-- Tiempo de generación: 11-04-2024 a las 12:34:50
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -33,7 +33,8 @@ CREATE TABLE `alquileres` (
   `id_vehiculo` int(11) DEFAULT NULL,
   `fecha_inicio` date DEFAULT NULL,
   `fecha_fin` date DEFAULT NULL,
-  `precioFinal` double NOT NULL
+  `precioFinal` double NOT NULL,
+  `estado` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -48,7 +49,9 @@ CREATE TABLE `citas` (
   `id_mecanico` int(11) NOT NULL,
   `dia` date NOT NULL,
   `hora` int(11) NOT NULL,
-  `asunto` text NOT NULL
+  `asunto` text NOT NULL,
+  `nueva_columna` int(11) NOT NULL DEFAULT 0,
+  `estado` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
