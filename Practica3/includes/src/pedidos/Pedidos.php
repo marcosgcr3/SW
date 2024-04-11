@@ -51,7 +51,7 @@ class Pedidos
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("SELECT *
                             FROM pedido p 
-                            WHERE P.id_usuario = '%d'", $id_usuario );
+                            WHERE p.id_usuario = '%d'", $id_usuario );
         $rs = $conn->query($query);
         if($rs -> num_rows > 0){
             while($row = $rs->fetch_assoc()){
