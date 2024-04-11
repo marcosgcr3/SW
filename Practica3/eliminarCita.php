@@ -1,6 +1,6 @@
 <?php
 
-use es\ucm\fdi\aw\citas\Citas;
+use es\ucm\fdi\aw\citas\citas;
 
 require_once __DIR__.'/includes/config.php';
 

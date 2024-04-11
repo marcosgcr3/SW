@@ -3,7 +3,7 @@
 require_once __DIR__.'/includes/config.php';
 
 use es\ucm\fdi\aw\Aplicacion;
-use es\ucm\fdi\aw\productos\Producto;
+use es\ucm\fdi\aw\productos\producto;
 use es\ucm\fdi\aw\pedidos\Pedidos;
 
 
@@ -24,9 +24,9 @@ else{//ya tiene carrito este usuario, lo compramos
     $productos = Producto::listaProductos($pedido->getId_pedido());
     foreach($productos as $producto){
         //NO ME LLEGA EL ID DEL PRODUCTO FALTA GRABE SI LO HAGO POR EL NOMBRE
-        $id_aux = producto::devolverId($producto->getNombre()); 
+        $id_aux = Producto::devolverId($producto->getNombre()); 
         $cantidad = Pedidos::cantidadDeProducto($pedido->getId_pedido(), $id_aux);
-        $stock = producto::buscaPorId($id_aux);
+        $stock = Producto::buscaPorId($id_aux);
         $producto->setUnidades($stock->getUnidades() - $cantidad);
         $producto->guarda();
     }

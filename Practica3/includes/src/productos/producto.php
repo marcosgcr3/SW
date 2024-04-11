@@ -175,7 +175,7 @@ class Producto
     {
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query=sprintf("UPDATE productos P SET unidades = '$producto->unidades' WHERE p.nombre='$producto->nombre'"
+        $query=sprintf("UPDATE productos p SET unidades = '$producto->unidades' WHERE p.nombre='$producto->nombre'"
         );
         if ( $conn->query($query) ) {
             if ( $conn->affected_rows == 0) {

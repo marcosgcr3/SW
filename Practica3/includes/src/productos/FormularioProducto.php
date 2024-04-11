@@ -13,7 +13,7 @@ require_once 'includes/src/productos/producto.php';
 class FormularioProducto extends Formulario{
 
     public function __construct() {
-        parent::__construct('formProducto', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('/tienda.php')]);
+        parent::__construct('formProducto', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('tienda.php')]);
     }
     protected function generaCamposFormulario(&$datos)
     {

@@ -18,7 +18,7 @@ Class Citas{
     private static function crearCita($cita){
         $dia = $cita->dia;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("INSERT INTO Citas (id_cliente, id_mecanico, dia, hora, asunto, estado)
+        $query = sprintf("INSERT INTO citas (id_cliente, id_mecanico, dia, hora, asunto, estado)
                       VALUES ('%s', '%s', '%s', '%s', '%s', '%s')",
                       $conn->real_escape_string($cita->id_cliente),
                       $conn->real_escape_string($cita->id_mecanico),
@@ -37,7 +37,7 @@ Class Citas{
     }
     private static function actualiza($cita){
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "UPDATE Citas SET fecha=$cita->fecha, asunto=$cita->asunto WHERE id_cita=$cita->id";
+        $query = "UPDATE citas SET fecha=$cita->fecha, asunto=$cita->asunto WHERE id_cita=$cita->id";
         $rs = $conn->query($query);
         if ($rs) {
             if ($conn->affected_rows != 1) {
@@ -60,7 +60,7 @@ Class Citas{
     public static function listaCitasMecanico($id_mecanico){
         $lista_citas = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $sql = "SELECT * FROM Citas WHERE id_mecanico = $id_mecanico";
+        $sql = "SELECT * FROM citas WHERE id_mecanico = $id_mecanico";
         $rs = $conn->query($sql);
 
         if($rs){
@@ -77,7 +77,7 @@ Class Citas{
     public static function listaCitasMecanicoEnUnDia($id_mecanico, $dia){
         $lista_citas = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $sql = "SELECT * FROM Citas WHERE id_mecanico = $id_mecanico AND dia = '$dia'";
+        $sql = "SELECT * FROM citas WHERE id_mecanico = $id_mecanico AND dia = '$dia'";
         $rs = $conn->query($sql);
 
         if($rs){
@@ -97,7 +97,7 @@ Class Citas{
     public static function listaCitas(){
         $lista_citas = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $sql = "SELECT * FROM Citas WHERE id_cliente = {$_SESSION['id']} AND estado = 0";
+        $sql = "SELECT * FROM citas WHERE id_cliente = {$_SESSION['id']} AND estado = 0";
         $rs = $conn->query($sql);
 
         if($rs){
@@ -115,7 +115,7 @@ Class Citas{
     public static function listaTodasCitas(){
         $lista_citas = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $sql = "SELECT * FROM Citas";
+        $sql = "SELECT * FROM citas";
         $rs = $conn->query($sql);
 
         if($rs){
@@ -148,7 +148,7 @@ Class Citas{
     public static function listaCitasM($id){
         $lista_citas = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $sql = "SELECT * FROM Citas WHERE id_mecanico = '$id'";
+        $sql = "SELECT * FROM citas WHERE id_mecanico = '$id'";
         $rs = $conn->query($sql);
 
         if($rs){
@@ -167,7 +167,7 @@ Class Citas{
         
     
         // Consultar los días en los que el mecánico tiene Citas programadas
-        $query = "SELECT DISTINCT dia FROM Citas WHERE id_mecanico = $idMecanico";
+        $query = "SELECT DISTINCT dia FROM citas WHERE id_mecanico = $idMecanico";
         $rs = $conn->query($query);
     
         if ($rs) {
@@ -232,7 +232,7 @@ Class Citas{
     }
     public static function buscaPorId($id){
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "SELECT * FROM Citas WHERE id_cita=$id";
+        $query = "SELECT * FROM citas WHERE id_cita=$id";
         $rs = $conn->query($query);
         if ($rs) {
             if ($rs->num_rows == 0) {
@@ -248,7 +248,7 @@ Class Citas{
     }
     public static function buscaPorCliente($id_cliente){
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "SELECT * FROM Citas WHERE id_cliente=$id_cliente";
+        $query = "SELECT * FROM citas WHERE id_cliente=$id_cliente";
         $rs = $conn->query($query);
         $result = [];
         if ($rs) {
@@ -269,7 +269,7 @@ Class Citas{
     public static function cambiarEstado($cita){
         $cita->estado = ($cita->estado == 0) ? 1 : 0;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("UPDATE Citas SET estado='$cita->estado'
+        $query = sprintf("UPDATE citas SET estado='$cita->estado'
                              WHERE id_cita ='$cita->id'");
         $rs = $conn->query($query);
         if ($rs) {
@@ -286,7 +286,7 @@ Class Citas{
         
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "DELETE FROM Citas WHERE id_cita='$id'";
+        $query = "DELETE FROM citas WHERE id_cita='$id'";
         if ( $conn->query($query) ) {
             if ( $conn->affected_rows == 0) {
                 error_log("No se ha eliminado el alquiler");
@@ -303,7 +303,7 @@ Class Citas{
     public static function listaCitasHistorial($id_usuario){
         $lista_citas = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $sql = "SELECT * FROM Citas WHERE id_cliente = $id_usuario AND estado = 1";
+        $sql = "SELECT * FROM citas WHERE id_cliente = $id_usuario AND estado = 1";
         $rs = $conn->query($sql);
 
         if($rs){

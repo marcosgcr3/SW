@@ -236,6 +236,7 @@ private static function numCitasTotales($mecanico) {
 
     // Consultar el número total de citas para el mecánico
     $query = "SELECT COUNT(*) AS numCitas FROM citas WHERE id_mecanico = $idMecanico";
+    $query = "SELECT COUNT(*) AS numCitas FROM citas WHERE id_mecanico = $idMecanico";
     $rs = $conn->query($query);
 
     if ($rs) {

@@ -4,7 +4,8 @@ namespace es\ucm\fdi\aw\alquilar;
 
 use es\ucm\fdi\aw\Aplicacion;
 use es\ucm\fdi\aw\Formulario;
-use es\ucm\fdi\aw\vehiculos\Vehiculo;
+use es\ucm\fdi\aw\vehiculos\vehiculo;
+use es\ucm\fdi\aw\alquilar\alquilar;
 
 class FormularioAlquiler extends Formulario{
     
@@ -13,7 +14,7 @@ class FormularioAlquiler extends Formulario{
     private $vehiculo;
     
     public function __construct($matricula) {
-        parent::__construct('formAlquiler', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('/alquiler.php')]);
+        parent::__construct('formAlquiler', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('alquiler.php')]);
        
         $this->matricula = $matricula;
         $this->vehiculo = Vehiculo::buscaPorMatricula($matricula);

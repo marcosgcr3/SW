@@ -1,5 +1,5 @@
 <?php
-use es\ucm\fdi\aw\productos\Producto;
+use es\ucm\fdi\aw\productos\producto;
 
 require_once __DIR__.'/includes/config.php';
 

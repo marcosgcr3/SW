@@ -1,7 +1,7 @@
 <?php
 
 use es\ucm\fdi\aw\Aplicacion;
-use es\ucm\fdi\aw\citas\Citas;
+use es\ucm\fdi\aw\citas\citas;
 
 require_once 'includes/config.php';
 require_once 'includes/src/citas/listado_citas.php';

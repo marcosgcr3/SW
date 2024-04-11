@@ -4,14 +4,14 @@ namespace es\ucm\fdi\aw\citas;
 
 use es\ucm\fdi\aw\Aplicacion;
 use es\ucm\fdi\aw\Formulario;
-use es\ucm\fdi\aw\citas\Citas;
+use es\ucm\fdi\aw\citas\citas;
 use es\ucm\fdi\aw\usuarios\Usuario;
 require_once 'procesaHorarioDisp.php';
 
 class FormularioCita extends Formulario{
 
     public function __construct() {
-        parent::__construct('formCita', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('/misCitas.php')]);
+        parent::__construct('formCita', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('misCitas.php')]);
     }
 
 

@@ -61,7 +61,7 @@ class Pedidos
             $rs->free();
         }
         else{
-            echo "No hay pedidos en la base de datos";
+            //echo "No hay pedidos en la base de datos";
         }
         return $lista_pedidos;
     }

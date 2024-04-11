@@ -4,7 +4,7 @@ require_once __DIR__.'/includes/config.php';
 
 require_once 'includes/src/Productos/producto.php';
 
-use es\ucm\fdi\aw\productos\Producto;
+use es\ucm\fdi\aw\productos\producto;
 
 
 

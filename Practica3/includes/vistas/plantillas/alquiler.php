@@ -2,7 +2,7 @@
 
 require_once 'includes/config.php';
 use es\ucm\fdi\aw\Aplicacion;
-use es\ucm\fdi\aw\vehiculos\Vehiculo;
+use es\ucm\fdi\aw\vehiculos\vehiculo;
 
 function buildAlquilerPendiente($alquiler){
     $id = $alquiler->getId();

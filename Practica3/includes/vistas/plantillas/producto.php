@@ -2,7 +2,7 @@
 
 require_once 'includes/config.php';
 use es\ucm\fdi\aw\Aplicacion;
-use es\ucm\fdi\aw\productos\Producto;
+use es\ucm\fdi\aw\productos\producto;
 use es\ucm\fdi\aw\pedidos\Pedidos;
 
 

@@ -3,7 +3,7 @@
 require_once __DIR__.'/includes/config.php';
 
 
-use es\ucm\fdi\aw\alquilar\Alquilar;
+use es\ucm\fdi\aw\alquilar\alquilar;
 
 
 

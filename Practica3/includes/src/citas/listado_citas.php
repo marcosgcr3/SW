@@ -5,7 +5,7 @@
 require_once 'includes/config.php';
 require_once 'includes/vistas/plantillas/citas.php';
 
-use es\ucm\fdi\aw\citas\Citas;
+use es\ucm\fdi\aw\citas\citas;
 
 $contenido = '';
 

@@ -2,7 +2,7 @@
 
 require_once 'includes/config.php';
 use es\ucm\fdi\aw\Aplicacion;
-use es\ucm\fdi\aw\citas\Citas;
+use es\ucm\fdi\aw\citas\citas;
 
 function buildCita($citas)
 {

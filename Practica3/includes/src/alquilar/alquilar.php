@@ -5,7 +5,7 @@ use es\ucm\fdi\aw\Aplicacion;
 use es\ucm\fdi\aw\usuarios;
 use es\ucm\fdi\aw\vehiculos;
 use es\ucm\fdi\aw\MagicProperties;
-use es\ucm\fdi\aw\vehiculos\Vehiculo;
+use es\ucm\fdi\aw\vehiculos\vehiculo;
 
 Class Alquilar{
 

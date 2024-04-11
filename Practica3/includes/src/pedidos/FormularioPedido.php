@@ -33,7 +33,7 @@ class FormularioPedido extends Formulario{
 
     public function __construct() {
 
-        parent::__construct('formPedido', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('/tienda.php')]);//no se que php poner aqui
+        parent::__construct('formPedido', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('tienda.php')]);//no se que php poner aqui
 
     }
 
