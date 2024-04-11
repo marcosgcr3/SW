@@ -61,32 +61,23 @@ function mostrarPedidos($pedidos)
             $imagen = $producto->getImagen();
             $productos .= <<<EOS
                 <div class="producto">
-                <div class="fotoProducto">
+                <div class="producto-info">
                     <img src="$imagen" alt="imagen" class="producto-imagen">
+                    <div class="producto-detalle">
+                        <h2>{$nombre}</h2>
+                        <p>Numero de productos: {$cantidad} </p>
+                        <p>Precio por unidad : {$precio} € </p>
+                        <p>Precio total de este articulo: {$precio2} €</p>
+                    </div>  
                 </div>
-                <div class="nombreProducto">
-                    {$nombre}
-                </div>
-                <div class="cantidad">
-                    {$cantidad}
-                </div>
-                <div class="precio"> <!-- Aqui el precio del producto -->
-                    <p>Precio por unidad:</p>
-                    {$precio} €
-                </div>
-                <div class="precio2">
-                    <p>Precio total:</p>
-                    {$precio2} €
-                </div>
-                </div>
+            </div>
             EOS;
         }
         $cont = $cont + 1;
         $precio_total .= Pedidos::calculaPrecioTotal($pedido->getId_pedido());
         $productos .= <<<EOS
             <div class="precioCarritoTotal">
-                <p>TOTAL:</p>
-                {$precio_total} € <!-- Aqui el precio total de ese pedido -->
+                <p>TOTAL: {$precio_total} € <!-- Aqui el precio total de ese pedido --></p>
             </div>
             <hr/>
 
@@ -117,29 +108,15 @@ function listarPedido($carrito, $id_pedido)
 
             $productos .= <<<EOS
             <div class="producto">
-
-            <div class="fotoProducto">
-                <img src="$imagen" alt="imagen" class="producto-imagen">
-            </div>
-
-            <div class="nombreProducto">
-                {$nombre}
-            </div>
-            
-            <div class="cantidad">
-                {$cantidad}
-            </div>
-
-            <div class="precio"> <!-- Aqui el precio del producto -->
-                <p>Precio por unidad:</p>
-                {$precio} €
-            </div>
-
-            <div class="precio2">
-                <p>Precio total:</p>
-                {$precio2} €
-            </div>
-
+                <div class="producto-info">
+                    <img src="$imagen" alt="imagen" class="producto-imagen">
+                    <div class="producto-detalle">
+                        <h2>{$nombre}</h2>
+                        <p>Numero de productos: {$cantidad} </p>
+                        <p>Precio por unidad : {$precio} € </p>
+                        <p>Precio total :{$precio2} €</p>
+                    </div>  
+                </div>
             </div>
             EOS;
         }
@@ -148,13 +125,12 @@ function listarPedido($carrito, $id_pedido)
         $precio_total .= Pedidos::calculaPrecioTotal($id_pedido);
         $productos .= <<<EOS
             <div class="precioCarritoTotal">
-                <p>TOTAL:</p>
-                {$precio_total} € <!-- Aqui el precio total del carrito -->
+                <p>TOTAL:  {$precio_total} € <!-- Aqui el precio total del carrito --></p>
             <form action="comprarCarro.php" method="post">
                 <input type="hidden" name="id_usuario" value="{$id_usuario}">
                 <input type="hidden" name="id_pedido" value="{$id_pedido}">
                 <input type="hidden" name="precio_total" value="{$precio_total}">
-                <button type="submit">Comprar</button>
+                <button class="botoncarro" type="submit">Comprar</button>
             </form>
            
             </div>

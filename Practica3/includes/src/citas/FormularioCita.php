@@ -18,7 +18,7 @@ class FormularioCita extends Formulario{
     protected function generaCamposFormulario(&$datos){
         date_default_timezone_set("Europe/Madrid");
         $dia = $datos['dia'] ?? '';
-        //$dia = '2024-03-21';
+        //$dia = '2024-04-18';
         $hora = $datos['hora'] ?? '';
         $asunto = $datos['asunto'] ?? '';
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
@@ -78,9 +78,14 @@ class FormularioCita extends Formulario{
         }
         if (count($this->errores) === 0) {
             $mecanico = Usuario::obtenerMecanicoDisponible($dia, $hora);
-           
-            Citas::crea($_SESSION['id'], $mecanico->getId(), $dia, $hora, $asunto, 0);
-            
+            if($mecanico === NULL){
+                echo '<script>
+                    displayMessage()
+                </script> ';
+            }
+            else{
+                Citas::crea($_SESSION['id'], $mecanico->getId(), $dia, $hora, $asunto, 0);
+            }            
         }
     }
            
