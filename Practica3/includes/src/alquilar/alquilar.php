@@ -20,7 +20,7 @@ Class Alquilar{
         $fechaInicio = $alquiler->fechaIni;
         $fechaFin = $alquiler->fechaFin;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "INSERT INTO Alquileres (id_usuario, id_vehiculo, fecha_inicio, fecha_fin, precioFinal, estado) VALUES ($alquiler->id_usuarios, $alquiler->id_vehiculo, '$fechaInicio', '$fechaFin', $alquiler->precioFinal, 0)";
+        $query = "INSERT INTO alquileres (id_usuario, id_vehiculo, fecha_inicio, fecha_fin, precioFinal, estado) VALUES ($alquiler->id_usuarios, $alquiler->id_vehiculo, '$fechaInicio', '$fechaFin', $alquiler->precioFinal, 0)";
         $rs = $conn->query($query);
         if ($rs) {
             $alquiler->id = $conn->insert_id;
@@ -32,7 +32,7 @@ Class Alquilar{
     }
     private static function actualiza($alquiler){
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "UPDATE Alquileres SET fecha_inicio=$alquiler->fechaIni, fecha_fin=$alquiler->fechaFin WHERE id=$alquiler->id";
+        $query = "UPDATE alquileres SET fecha_inicio=$alquiler->fechaIni, fecha_fin=$alquiler->fechaFin WHERE id=$alquiler->id";
         $rs = $conn->query($query);
         if ($rs) {
             if ($conn->affected_rows != 1) {
@@ -59,7 +59,7 @@ Class Alquilar{
 
     private static function buscaPorId($id_usuarios){
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "SELECT * FROM Alquileres WHERE id_usuario=$id_usuarios";
+        $query = "SELECT * FROM alquileres WHERE id_usuario=$id_usuarios";
         $rs = $conn->query($query);
         $result = false;
         if ($rs) {
@@ -76,7 +76,7 @@ Class Alquilar{
     
     public static function buscaPorIdAlquiler($id_alquiler){
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("SELECT * FROM Alquileres WHERE id_alquiler=%d", $id_alquiler);
+        $query = sprintf("SELECT * FROM alquileres WHERE id_alquiler=%d", $id_alquiler);
         $rs = $conn->query($query);
         $result = false;
         if ($rs) {
@@ -95,7 +95,7 @@ Class Alquilar{
         $lista_alquileres = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
 
-        $query = "SELECT * FROM Alquileres WHERE id_usuario=$id_usuarios AND fecha_fin >= '$fechaActual'";
+        $query = "SELECT * FROM alquileres WHERE id_usuario=$id_usuarios AND fecha_fin >= '$fechaActual'";
         $rs = $conn->query($query);
         
         if ($rs) {
@@ -115,7 +115,7 @@ Class Alquilar{
         $lista_alquileres = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
 
-        $query = "SELECT * FROM Alquileres";
+        $query = "SELECT * FROM alquileres";
         $rs = $conn->query($query);
         
         if ($rs) {
@@ -188,7 +188,7 @@ Class Alquilar{
             $alquiler->estado = 0;
          }
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("UPDATE Alquileres SET estado='$alquiler->estado' WHERE id_alquiler='$alquiler->id'");
+        $query = sprintf("UPDATE alquileres SET estado='$alquiler->estado' WHERE id_alquiler='$alquiler->id'");
         $rs = $conn->query($query);
         if ($rs) {
             if ($conn->affected_rows != 1) {
@@ -209,7 +209,7 @@ Class Alquilar{
         Vehiculo::cambiarDisponibilidad($vehiculo);
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "DELETE FROM Alquileres WHERE id_alquiler='$id'";
+        $query = "DELETE FROM alquileres WHERE id_alquiler='$id'";
         if ( $conn->query($query) ) {
             if ( $conn->affected_rows == 0) {
                 error_log("No se ha eliminado el alquiler");
@@ -227,7 +227,7 @@ Class Alquilar{
         $lista_alquileres = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
 
-        $query = "SELECT * FROM Alquileres WHERE id_usuario=$id_usuarios AND estado=1";
+        $query = "SELECT * FROM alquileres WHERE id_usuario=$id_usuarios AND estado=1";
         $rs = $conn->query($query);
         
         if ($rs) {
@@ -245,7 +245,7 @@ Class Alquilar{
         $lista_alquileres = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
         $fechaActual = date('Y-m-d');
-        $query = "SELECT * FROM Alquileres WHERE id_usuario=$id_usuarios AND estado=0 AND  fecha_fin < '$fechaActual' ";
+        $query = "SELECT * FROM alquileres WHERE id_usuario=$id_usuarios AND estado=0 AND  fecha_fin < '$fechaActual' ";
         $rs = $conn->query($query);
         if ($rs) {
             while($fila = $rs->fetch_assoc()){

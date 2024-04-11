@@ -7,18 +7,18 @@ use es\ucm\fdi\aw\vehiculos;
 use es\ucm\fdi\aw\MagicProperties;
 use es\ucm\fdi\aw\vehiculos\Vehiculo;
 
-Class Citas{
+Class citas{
     use MagicProperties;
 
     public static function crea($id_cliente, $id_mecanico, $dia,$hora,$asunto, $estado){
-        $alquiler = new Citas($id_cliente, $id_mecanico, $dia,$hora,$asunto, $estado);
+        $alquiler = new citas($id_cliente, $id_mecanico, $dia,$hora,$asunto, $estado);
         return $alquiler->guarda();
     }
 
     private static function crearCita($cita){
         $dia = $cita->dia;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("INSERT INTO Citas (id_cliente, id_mecanico, dia, hora, asunto, estado)
+        $query = sprintf("INSERT INTO citas (id_cliente, id_mecanico, dia, hora, asunto, estado)
                       VALUES ('%s', '%s', '%s', '%s', '%s', '%s')",
                       $conn->real_escape_string($cita->id_cliente),
                       $conn->real_escape_string($cita->id_mecanico),
@@ -37,7 +37,7 @@ Class Citas{
     }
     private static function actualiza($cita){
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "UPDATE Citas SET fecha=$cita->fecha, asunto=$cita->asunto WHERE id_cita=$cita->id";
+        $query = "UPDATE citas SET fecha=$cita->fecha, asunto=$cita->asunto WHERE id_cita=$cita->id";
         $rs = $conn->query($query);
         if ($rs) {
             if ($conn->affected_rows != 1) {
@@ -60,12 +60,12 @@ Class Citas{
     public static function listaCitasMecanico($id_mecanico){
         $lista_citas = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $sql = "SELECT * FROM Citas WHERE id_mecanico = $id_mecanico";
+        $sql = "SELECT * FROM citas WHERE id_mecanico = $id_mecanico";
         $rs = $conn->query($sql);
 
         if($rs){
             while($fila = $rs->fetch_assoc()){
-                $result = new Citas($fila['id_cliente'], $fila['id_mecanico'], $fila['dia'], $fila['hora'], $fila['asunto'], $fila['estado'], $fila['id_cita']);
+                $result = new citas($fila['id_cliente'], $fila['id_mecanico'], $fila['dia'], $fila['hora'], $fila['asunto'], $fila['estado'], $fila['id_cita']);
                 array_push($lista_citas, $result);
             }
             $rs->free();
@@ -77,12 +77,12 @@ Class Citas{
     public static function listaCitasMecanicoEnUnDia($id_mecanico, $dia){
         $lista_citas = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $sql = "SELECT * FROM Citas WHERE id_mecanico = $id_mecanico AND dia = '$dia'";
+        $sql = "SELECT * FROM citas WHERE id_mecanico = $id_mecanico AND dia = '$dia'";
         $rs = $conn->query($sql);
 
         if($rs){
             while($fila = $rs->fetch_assoc()){
-                $result = new Citas($fila['id_cliente'], $fila['id_mecanico'], $fila['dia'], $fila['hora'], $fila['asunto'], $fila['estado'], $fila['id_cita']);
+                $result = new citas($fila['id_cliente'], $fila['id_mecanico'], $fila['dia'], $fila['hora'], $fila['asunto'], $fila['estado'], $fila['id_cita']);
                 array_push($lista_citas, $result);
             }
             $rs->free();
@@ -97,12 +97,12 @@ Class Citas{
     public static function listaCitas(){
         $lista_citas = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $sql = "SELECT * FROM Citas WHERE id_cliente = {$_SESSION['id']} AND estado = 0";
+        $sql = "SELECT * FROM citas WHERE id_cliente = {$_SESSION['id']} AND estado = 0";
         $rs = $conn->query($sql);
 
         if($rs){
             while($fila = $rs->fetch_assoc()){
-                $result = new Citas($fila['id_cliente'], $fila['id_mecanico'], $fila['dia'], $fila['hora'], $fila['asunto'], $fila['estado'], $fila['id_cita']);
+                $result = new citas($fila['id_cliente'], $fila['id_mecanico'], $fila['dia'], $fila['hora'], $fila['asunto'], $fila['estado'], $fila['id_cita']);
                 array_push($lista_citas, $result);
             }
             $rs->free();
@@ -115,12 +115,12 @@ Class Citas{
     public static function listaTodasCitas(){
         $lista_citas = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $sql = "SELECT * FROM Citas";
+        $sql = "SELECT * FROM citas";
         $rs = $conn->query($sql);
 
         if($rs){
             while($fila = $rs->fetch_assoc()){
-                $result = new Citas($fila['id_cliente'], $fila['id_mecanico'], $fila['dia'], $fila['hora'], $fila['asunto'], $fila['estado'], $fila['id_cita']);
+                $result = new citas($fila['id_cliente'], $fila['id_mecanico'], $fila['dia'], $fila['hora'], $fila['asunto'], $fila['estado'], $fila['id_cita']);
                 array_push($lista_citas, $result);
             }
             $rs->free();
@@ -148,12 +148,12 @@ Class Citas{
     public static function listaCitasM($id){
         $lista_citas = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $sql = "SELECT * FROM Citas WHERE id_mecanico = '$id'";
+        $sql = "SELECT * FROM citas WHERE id_mecanico = '$id'";
         $rs = $conn->query($sql);
 
         if($rs){
             while($fila = $rs->fetch_assoc()){
-                $result = new Citas($fila['id_cliente'], $fila['id_mecanico'], $fila['dia'], $fila['hora'], $fila['asunto'], $fila['estado'], $fila['id_cita']);
+                $result = new citas($fila['id_cliente'], $fila['id_mecanico'], $fila['dia'], $fila['hora'], $fila['asunto'], $fila['estado'], $fila['id_cita']);
                 array_push($lista_citas, $result);
             }
             $rs->free();
@@ -167,7 +167,7 @@ Class Citas{
         
     
         // Consultar los días en los que el mecánico tiene citas programadas
-        $query = "SELECT DISTINCT dia FROM Citas WHERE id_mecanico = $idMecanico";
+        $query = "SELECT DISTINCT dia FROM citas WHERE id_mecanico = $idMecanico";
         $rs = $conn->query($query);
     
         if ($rs) {
@@ -232,7 +232,7 @@ Class Citas{
     }
     public static function buscaPorId($id){
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "SELECT * FROM Citas WHERE id_cita=$id";
+        $query = "SELECT * FROM citas WHERE id_cita=$id";
         $rs = $conn->query($query);
         if ($rs) {
             if ($rs->num_rows == 0) {
@@ -240,7 +240,7 @@ Class Citas{
             }
             $cita = $rs->fetch_assoc();
             $rs->free();
-            return new Citas($cita['id_cliente'], $cita['id_mecanico'], $cita['dia'],  $cita['hora'],$cita['asunto'], $cita['estado'], $cita['id_cita']);
+            return new citas($cita['id_cliente'], $cita['id_mecanico'], $cita['dia'],  $cita['hora'],$cita['asunto'], $cita['estado'], $cita['id_cita']);
         } else {
             error_log("Error al consultar la base de datos: $conn->error ");
             return null;
@@ -248,12 +248,12 @@ Class Citas{
     }
     public static function buscaPorCliente($id_cliente){
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "SELECT * FROM Citas WHERE id_cliente=$id_cliente";
+        $query = "SELECT * FROM citas WHERE id_cliente=$id_cliente";
         $rs = $conn->query($query);
         $result = [];
         if ($rs) {
             while($cita = $rs->fetch_assoc()){
-                $result[] = new Citas($cita['id_cliente'], $cita['id_mecanico'], $cita['dia'], $cita['hora'], $cita['asunto'], $fila['estado'], $cita['id_cita']);
+                $result[] = new citas($cita['id_cliente'], $cita['id_mecanico'], $cita['dia'], $cita['hora'], $cita['asunto'], $fila['estado'], $cita['id_cita']);
             }
             $rs->free();
         } else {
@@ -286,7 +286,7 @@ Class Citas{
         
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "DELETE FROM Citas WHERE id_cita='$id'";
+        $query = "DELETE FROM citas WHERE id_cita='$id'";
         if ( $conn->query($query) ) {
             if ( $conn->affected_rows == 0) {
                 error_log("No se ha eliminado el alquiler");
@@ -303,12 +303,12 @@ Class Citas{
     public static function listaCitasHistorial($id_usuario){
         $lista_citas = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $sql = "SELECT * FROM Citas WHERE id_cliente = $id_usuario AND estado = 1";
+        $sql = "SELECT * FROM citas WHERE id_cliente = $id_usuario AND estado = 1";
         $rs = $conn->query($sql);
 
         if($rs){
             while($fila = $rs->fetch_assoc()){
-                $result = new Citas($fila['id_cliente'], $fila['id_mecanico'], $fila['dia'], $fila['hora'], $fila['asunto'], $fila['estado'], $fila['id_cita']);
+                $result = new citas($fila['id_cliente'], $fila['id_mecanico'], $fila['dia'], $fila['hora'], $fila['asunto'], $fila['estado'], $fila['id_cita']);
                 array_push($lista_citas, $result);
             }
             $rs->free();
