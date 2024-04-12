@@ -17,20 +17,22 @@ function buildArticulo($producto)
     $imagen = $producto->getImagen();
     $descripcion = $producto->getDescripcion();
    
+    if($unidades != 0){
+        $productos .=  <<<EOS
+        <div class="producto">
+            <div class="producto-info">
+                <img src="$imagen" alt="imagen" class="producto-imagen">
+                <div class="producto-detalle">
+                    <h2>$nombre</h2>
+                    <p>$descripcion</p>
+                    <p>Precio: $precio&euro;</p>
+                    <p>Unidades disponibles: $unidades</p>
+                
+        EOS;
+    }
     
-    $productos .=  <<<EOS
-    <div class="producto">
-        <div class="producto-info">
-            <img src="$imagen" alt="imagen" class="producto-imagen">
-            <div class="producto-detalle">
-                <h2>$nombre</h2>
-                <p>$descripcion</p>
-                <p>Precio: $precio&euro;</p>
-                <p>Unidades disponibles: $unidades</p>
-               
-    EOS;
     $app = Aplicacion::getInstance();
-    if ($app->esAdmin()) {
+    if ($app->esAdmin() && $unidades != 0) {
         // Enlace para sumar stock con método POST
         $productos .= <<<EOS
             <form action="sumarStock.php" method="post">
@@ -44,7 +46,7 @@ function buildArticulo($producto)
             <i id="iconoBasura" class="fa-solid fa-trash" onclick="document.getElementById('formBorrarProducto_$nombre').submit();"></i>
         </div></div>
         EOS;
-    } else {
+    } else if ($unidades != 0){
         // Botón para añadir al carrito
         $productos .= <<<EOS
                 <form action="addProductoAlCarro.php" method="POST">

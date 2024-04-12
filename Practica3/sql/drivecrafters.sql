@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 11-04-2024 a las 12:34:50
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Servidor: vm008.db.swarm.test
+-- Tiempo de generación: 12-04-2024 a las 08:23:10
+-- Versión del servidor: 10.4.32-MariaDB-1:10.4.32+maria~ubu2004
+-- Versión de PHP: 8.2.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -155,7 +155,8 @@ ALTER TABLE `pedido`
 -- Indices de la tabla `pedido_producto`
 --
 ALTER TABLE `pedido_producto`
-  ADD PRIMARY KEY (`id_pedido`,`id_producto`);
+  ADD PRIMARY KEY (`id_pedido`,`id_producto`),
+  ADD KEY `pedido_producto_ibfk_2` (`id_producto`);
 
 --
 -- Indices de la tabla `productos`
@@ -223,13 +224,6 @@ ALTER TABLE `vehiculos`
 --
 
 --
--- Filtros para la tabla `alquileres`
---
-ALTER TABLE `alquileres`
-  ADD CONSTRAINT `alquileres_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`),
-  ADD CONSTRAINT `alquileres_ibfk_2` FOREIGN KEY (`id_vehiculo`) REFERENCES `vehiculos` (`id_vehiculo`);
-
---
 -- Filtros para la tabla `pedido`
 --
 ALTER TABLE `pedido`
@@ -240,7 +234,7 @@ ALTER TABLE `pedido`
 --
 ALTER TABLE `pedido_producto`
   ADD CONSTRAINT `pedido_producto_ibfk_1` FOREIGN KEY (`id_pedido`) REFERENCES `pedido` (`id_pedido`),
-  ADD CONSTRAINT `pedido_producto_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`);
+  ADD CONSTRAINT `pedido_producto_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`) ON DELETE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

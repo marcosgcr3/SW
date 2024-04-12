@@ -197,7 +197,8 @@ class Producto
         
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "DELETE FROM productos WHERE nombre='$nombre'";
+        //$query = "DELETE FROM productos WHERE nombre='$nombre'";
+        $query = "UPDATE productos SET unidades = '0' WHERE nombre='$nombre'";
         if ( $conn->query($query) ) {
             if ( $conn->affected_rows == 0) {
                 error_log("No se ha eliminado el producto");
