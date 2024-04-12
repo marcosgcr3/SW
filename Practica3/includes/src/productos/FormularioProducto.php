@@ -49,6 +49,9 @@ class FormularioProducto extends Formulario{
                 <label for="Imagen">Imagen:</label>
                 <input id="imagen" type="text" name="imagen" value="$imagen" />
                 {$erroresCampos['imagen']}
+
+               
+               
             
                 <button class="botonIni" type="submit" name="registro">Registrar</button>
             
@@ -62,13 +65,13 @@ class FormularioProducto extends Formulario{
         $this->errores = [];
         $nombre = $datos['nombre'] ?? '';
         $nombre = filter_var($nombre, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if ( ! $nombre || empty($nombre) ) {
+        if ( ! $nombre ||  empty($nombre) ) {
             $this->errores['nombre'] = 'El nombre no puede estar vacío';
         }
         
         $precio = $datos['precio'] ?? '';
         $precio = filter_var($precio, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if ( ! $precio || empty($precio) ) {
+        if ( ! $precio  || empty($precio)) {
             $this->errores['precio'] = 'El precio no puede estar vacío.';
         }
         
@@ -80,23 +83,27 @@ class FormularioProducto extends Formulario{
         
         $unidades = $datos['unidades'] ?? '';
         $unidades = filter_var($unidades, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if ( ! $unidades || empty($unidades) ) {
+        if ( ! $unidades || empty($unidades)) {
             $this->errores['unidades'] = 'Las unidades no pueden estar vacías.';
         }
         
         $imagen = $datos['imagen'] ?? '';
         $imagen = filter_var($imagen, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if ( ! $imagen || empty($imagen) ) {
+        if ( ! $imagen    || empty($imagen)) {
             $this->errores['imagen'] = 'La imagen no puede estar vacía.';
         }
-        
+    
+      
         if (count($this->errores) === 0) {
+           
             $producto = Producto::buscaPorNombre($nombre);
             if ($producto) {
                 $this->errores['nombre'] = 'Ya existe un producto con ese nombre';
                
             }else{
+                
               Producto::crea($nombre, $precio, $descripcion, $unidades, $imagen);  
+            
             }
             
             
