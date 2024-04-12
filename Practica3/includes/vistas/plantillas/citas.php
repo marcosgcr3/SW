@@ -22,15 +22,16 @@ function buildCita($citas)
                     <form id="formBorrarCita_$id_cita" action="eliminarCita.php" method="post">
                         <input type="hidden" name="id_cita" value="$id_cita">
                     </form></div>
+                    </div>
             EOS;
-    if(($app->usuarioLogueado() || $app->esAdmin()) && !$app->esMecanico()){
+    /*if(($app->usuarioLogueado() || $app->esAdmin()) && !$app->esMecanico()){
         $contenido .= <<<EOS
             <i id="iconoBasura" class="fa-solid fa-trash" onclick="document.getElementById('formBorrarCita_$id_cita').submit();"></i>
         </div>
         EOS;
     }else{
-        $contenido .= '</div>';
-    }
+        
+    }*/
 
     return $contenido;
 }

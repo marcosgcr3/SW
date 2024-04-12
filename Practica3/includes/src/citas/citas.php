@@ -60,7 +60,7 @@ Class Citas{
     public static function listaCitasMecanico($id_mecanico){
         $lista_citas = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $sql = "SELECT * FROM citas WHERE id_mecanico = $id_mecanico";
+        $sql = "SELECT * FROM citas WHERE id_mecanico = $id_mecanico AND estado = 0";
         $rs = $conn->query($sql);
 
         if($rs){
@@ -77,7 +77,7 @@ Class Citas{
     public static function listaCitasMecanicoEnUnDia($id_mecanico, $dia){
         $lista_citas = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $sql = "SELECT * FROM citas WHERE id_mecanico = $id_mecanico AND dia = '$dia'";
+        $sql = "SELECT * FROM citas WHERE id_mecanico = $id_mecanico AND dia = '$dia' AND estado = 0";
         $rs = $conn->query($sql);
 
         if($rs){
@@ -115,7 +115,7 @@ Class Citas{
     public static function listaTodasCitas(){
         $lista_citas = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $sql = "SELECT * FROM citas";
+        $sql = "SELECT * FROM citas WHERE estado = 0";
         $rs = $conn->query($sql);
 
         if($rs){
@@ -135,11 +135,11 @@ Class Citas{
         $lCitas = self::listaTodasCitas();
         foreach($lCitas as $Citas){
             if(strtotime($Citas->getDia()) < strtotime(date('Y-m-d'))){
-                self::borrar($Citas->getId());
+                self::cambiarEstado($Citas);
             }
             else if(strtotime($Citas->getDia()) == strtotime(date('Y-m-d'))){
                 if($Citas->getHora() < date('G'))
-                    self::borrar($Citas->getId());
+                    self::cambiarEstado($Citas);    
             }
         }
 
@@ -148,7 +148,7 @@ Class Citas{
     public static function listaCitasM($id){
         $lista_citas = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $sql = "SELECT * FROM citas WHERE id_mecanico = '$id'";
+        $sql = "SELECT * FROM citas WHERE id_mecanico = '$id' AND estado = 0";
         $rs = $conn->query($sql);
 
         if($rs){
@@ -167,7 +167,7 @@ Class Citas{
         
     
         // Consultar los días en los que el mecánico tiene Citas programadas
-        $query = "SELECT DISTINCT dia FROM citas WHERE id_mecanico = $idMecanico";
+        $query = "SELECT DISTINCT dia FROM citas WHERE id_mecanico = $idMecanico AND estado = 0";
         $rs = $conn->query($query);
     
         if ($rs) {
@@ -248,7 +248,7 @@ Class Citas{
     }
     public static function buscaPorCliente($id_cliente){
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "SELECT * FROM citas WHERE id_cliente=$id_cliente";
+        $query = "SELECT * FROM citas WHERE id_cliente=$id_cliente AND estado = 0";
         $rs = $conn->query($query);
         $result = [];
         if ($rs) {
