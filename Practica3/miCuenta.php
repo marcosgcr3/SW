@@ -32,7 +32,7 @@ if($app->esCliente()){
 else{
     $contenidoPrincipal .=<<<EOS
     <button class="botonC" onclick="location.href='logout.php'">Cerrar sesion</button>
-    <a href="logout.php"><i class="fa-solid fa-right-from-bracket"></i></a>
+    
     EOS;
 }
 
