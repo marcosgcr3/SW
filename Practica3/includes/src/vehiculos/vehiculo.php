@@ -202,9 +202,9 @@ class Vehiculo
 
     foreach ($listaVehiculos as $vehiculo) {
         
-        $query = sprintf("SELECT * FROM alquileres WHERE id_vehiculo = '%s' AND fecha_inicio <= '%s' AND fecha_fin >= '%s'", $vehiculo->getId(), $fechaActual, $fechaActual);
+        $query = sprintf("SELECT * FROM alquileres WHERE id_vehiculo = '%s' AND fecha_inicio <= '%s' AND fecha_fin >= '%s' AND estado ='0'", $vehiculo->getId(), $fechaActual, $fechaActual);
         $rs = $conn->query($query);
-
+       
         if ($rs && $rs->num_rows > 0) {
             
             $vehiculo->disponibilidad = 'no';
