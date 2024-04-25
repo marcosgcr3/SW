@@ -85,9 +85,18 @@ EOS;
             <form id="formBorrarAlquiler_$id" action="eliminarAlquiler.php" method="post">
                 <input type="hidden" name="id_alquiler" value="$id">
             </form>
-            <i id="iconoBasura" class="fa-solid fa-trash" onclick="document.getElementById('formBorrarAlquiler_$id').submit();"></i>
+            <i id="iconoBasura" onclick="confirmarBorrado($id)">Cancelar</i>
+            <i id="iconoModificar" type"submit">Modificar</i>
+
             </div></div>
-       
+            <script>
+                function confirmarBorrado(id) {
+                    if (confirm("¿Seguro que desea eliminar este alquiler?")) {
+                        document.getElementById('formBorrarAlquiler_' + id).submit();
+                        alert("Se ha elimiando con éxito");
+                    }
+                }
+            </script>
             EOS;
     }
 
