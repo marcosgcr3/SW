@@ -28,7 +28,7 @@ class Usuario
     public static function buscaPorNIF($NIF)
     {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "SELECT * FROM usuarios WHERE NIF=$NIF";
+        $query = "SELECT * FROM usuarios WHERE NIF='$NIF'";
         $rs = $conn->query($query);
         $result = false;
         if ($rs) {

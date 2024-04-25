@@ -51,11 +51,11 @@ class Pedidos
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("SELECT *
                             FROM pedido p 
-                            WHERE p.id_usuario = '%d'", $id_usuario );
+                            WHERE p.id_usuario = '%d' AND p.estado = '1'", $id_usuario );
         $rs = $conn->query($query);
         if($rs -> num_rows > 0){
             while($row = $rs->fetch_assoc()){
-                $pedido = new Pedidos($row['id_usuario'], $row['estado'], $row['precio_total'],$row['id_pedido']);
+                $pedido = new Pedidos($row['id_usuario'], $row['estado'] , $row['precio_total'],$row['id_pedido']);
                 array_push($lista_pedidos, $pedido);
             }
             $rs->free();
