@@ -47,10 +47,19 @@ function mostrarPedidos($pedidos)
     foreach($pedidos as $pedido){//por cada pedido
         $aux = Producto::listaProductos($pedido->getId_pedido());
         $productos .= <<<EOS
-            <div class="pedido">
-                <h2>Pedido {$cont}</h2>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script> 
+        $(document).ready(function(){
+          $("#pedido{$cont}").click(function(){
+            $("#panel{$cont}").slideToggle("slow", "linear");
+          });
+        });
+        </script>
 
-            </div>
+        <div id=pedido{$cont} class="pedido">
+            <h2>Pedido {$cont}</h2>
+        </div>
+        <div id=panel{$cont} class="productoPedido">
         EOS;
         $precio_total = '';
         foreach($aux as $producto){//por cada producto del pedido
@@ -80,7 +89,8 @@ function mostrarPedidos($pedidos)
                 <p>TOTAL: {$precio_total} € <!-- Aqui el precio total de ese pedido --></p>
             </div>
             <hr/>
-
+            </div>
+            </div>
         EOS;
 
         //$html = listarPedido($aux, null);
