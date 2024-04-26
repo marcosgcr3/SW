@@ -106,6 +106,7 @@ function listarPedido($carrito, $id_pedido)
         return '<p>El carrito esta vacio</p>';
     }
     else{
+        $id_usuario = $_SESSION['id'];
         $productos = '';
         $precio_total = '';
         foreach($carrito as $producto){
@@ -114,6 +115,7 @@ function listarPedido($carrito, $id_pedido)
             $precio = $producto->getPrecio();
             $precio2 = $precio*$cantidad;
             $imagen = $producto->getImagen();
+            $id_producto = $producto->getId();
             
 
             $productos .= <<<EOS
@@ -125,13 +127,19 @@ function listarPedido($carrito, $id_pedido)
                         <p>Numero de productos: {$cantidad} </p>
                         <p>Precio por unidad : {$precio} € </p>
                         <p>Precio total :{$precio2} €</p>
+                        <form action="deleteProductoCarro.php" method="post">
+                            <input type="hidden" name="id_usuario" value="{$id_usuario}">
+                            <input type="hidden" name="producto" value="{$id_producto}">
+                            <input type="hidden" name="id_pedido" value="{$id_pedido}">
+                            <input type="hidden" name="cantidad" value="{$cantidad}">
+                            <h4>Eliminar: <input type="number" name="unidades" min="1" max="$cantidad" value="1"> <button class="botonCa" type="submit">Eliminar seleccionado</button></h4>
+                        </form>
                     </div>  
                 </div>
             </div>
             EOS;
         }
 
-        $id_usuario = $_SESSION['id'];
         $precio_total .= Pedidos::calculaPrecioTotal($id_pedido);
         $productos .= <<<EOS
             <div class="precioCarritoTotal">
@@ -142,10 +150,15 @@ function listarPedido($carrito, $id_pedido)
                 <input type="hidden" name="precio_total" value="{$precio_total}">
                 <button class="botoncarro" type="submit">Comprar</button>
             </form>
-           
+
+            <form action="deleteCarro.php" method="post">
+                <input type="hidden" name="id_usuario" value="{$id_usuario}">
+                <input type="hidden" name="id_pedido" value="{$id_pedido}">
+                <button class="botonCa" type="submit">Eliminar carrito</button>
+            </form>
+
             </div>
         EOS;
-
     }
     return $productos;
 }

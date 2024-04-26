@@ -66,6 +66,19 @@ class Pedidos
         return $lista_pedidos;
     }
 
+    public static function borrarPedido_producto($id_pedido){//borra un pedido de la base de datos
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("DELETE FROM pedido_producto WHERE id_pedido = '%d'", $id_pedido);
+        //eliminar de pedido_producto tambien
+
+        if ($conn->query($query) === TRUE) {
+            return true;
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}\n");
+            return false;
+        }
+    }
+
     public static function borrarPedido($id_pedido){//borra un pedido de la base de datos
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("DELETE FROM pedido WHERE id_pedido = '%d'", $id_pedido);
@@ -116,6 +129,22 @@ class Pedidos
         $query = sprintf("DELETE FROM pedido_producto WHERE id_pedido = '%d' AND id_producto = '%d'",
             $id_pedido,
             $id_producto,
+        );
+        if($conn->query($query)){
+            return true;
+        }
+        else{
+            echo "Error en la BD: " . $conn->errno . "<br>" . utf8_encode($conn->error);
+            return false;
+        }
+    }
+
+    public function eliminarProductos($id_pedido,$id_producto, $cantidad){//elimina un producto del carrito 
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("UPDATE pedido_producto SET cantidad = cantidad - '%d' WHERE id_pedido = '%d' AND id_producto = '%d'",
+                $cantidad,
+                $id_pedido,
+                $id_producto
         );
         if($conn->query($query)){
             return true;
