@@ -95,7 +95,7 @@ Class Alquilar{
         $lista_alquileres = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
 
-        $query = "SELECT * FROM alquileres WHERE id_usuario=$id_usuarios AND fecha_fin >= '$fechaActual'";
+        $query = "SELECT * FROM alquileres WHERE id_usuario=$id_usuarios AND fecha_inicio > '$fechaActual'";
         $rs = $conn->query($query);
         
         if ($rs) {
@@ -245,7 +245,7 @@ Class Alquilar{
         $lista_alquileres = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
         $fechaActual = date('Y-m-d');
-        $query = "SELECT * FROM alquileres WHERE id_usuario=$id_usuarios AND estado=0 AND  fecha_fin < '$fechaActual' ";
+        $query = "SELECT * FROM alquileres WHERE id_usuario=$id_usuarios AND estado=0 AND  fecha_inicio <= '$fechaActual' ";
         $rs = $conn->query($query);
         if ($rs) {
             while($fila = $rs->fetch_assoc()){
