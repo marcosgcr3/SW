@@ -5,9 +5,7 @@
 <head>
   <title>JQuery Full Calendar</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha256-YvdLHPgkqJ8DVUxjjnGVlMMJtNimJ6dYkowFFvp4kKs=" crossorigin="anonymous">
-
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css" integrity="sha256-5veQuRbWaECuYxwap/IOE/DAwNxgm4ikX7nrgsqYp88=" crossorigin="anonymous">
-
   <script src="https://cdn.jsdelivr.net/npm/moment@2.29.3/min/moment-with-locales.min.js" integrity="sha256-7WG1TljuR3d5m5qKqT0tc4dNDR/aaZtjc2Tv1C/c5/8=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js" integrity="sha256-XCdgoNaBjzkUaEJiauEq+85q/xi/2D4NcB3ZHwAapoM=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/locales-all.min.js" integrity="sha256-GcByKJnun2NoPMzoBsuCb4O2MKiqJZLlHTw3PJeqSkI=" crossorigin="anonymous"></script>
@@ -26,10 +24,7 @@
           center: 'title',
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
-
-
         events: 'eventos.php',
-
         editable: true,
         slotDuration: '01:00:00',
         businessHours: {
@@ -38,9 +33,7 @@
           // Horario de 9:00 a 18:00
           startTime: '09:00', // Hora de inicio
           endTime: '20:00' // Hora de fin
-
         },
-
         slotMinTime: '09:00', // Hora mínima
         slotMaxTime: '20:00', // Hora máxima
         
@@ -55,7 +48,6 @@
           var formattedMinute = minute.toString().padStart(2, '0');
           return formattedHour + ':' + formattedMinute;
         },
-
         //Añadir eventos solo de lunes-viernes
         selectAllow: function(selectInfo) {
           // Verificar si es sábado o domingo
@@ -74,7 +66,6 @@
             "end": moment(event.end).format("Y-MM-DD HH:mm:ss"),
             "title": event.title
           };
-
           $.ajax({
             url: "eventos.php?idEvento=" + event.id,
             type: "PUT",
@@ -97,7 +88,6 @@
             alert('No puedes arrastrar eventos a sábado o domingo');
             return;
          }
-
           var e = {
             "id": event.id,
             "userId": event.userId,
@@ -117,7 +107,6 @@
             }
           }); 
         },
-
         // Ejecutado al hacer click sobre un evento
         eventClick: function(info) {
           var event = info.event;
@@ -139,7 +128,6 @@
             })
           }
         },
-
         selectable: true,
         select: function(info) {
           var start = info.start;
@@ -177,13 +165,10 @@
             margin: 0 auto;
         }
     </style>
-
 </head>
-
 <body>
   <div class="container">
     <div id="calendar"></div>
   </div>
 </body>
-
 </html>

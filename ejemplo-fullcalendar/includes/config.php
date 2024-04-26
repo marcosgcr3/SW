@@ -1,11 +1,11 @@
 <?php
 // Varios defines para los parámetros de configuración de acceso a la BD y la URL desde la que se sirve la aplicación
 define('BD_HOST', 'localhost');
-define('BD_NAME', 'aw');
-define('BD_USER', 'aw');
-define('BD_PASS', 'aw');
+define('BD_NAME', 'drivecrafters');
+define('BD_USER', 'root');
+define('BD_PASS', '');
 define('RAIZ_APP', __DIR__);
-define('RUTA_APP', '/ejemplo-fullcalendar/');
+define('RUTA_APP', '/SW/Practica4');
 define('RUTA_IMGS', RUTA_APP.'img/');
 define('RUTA_CSS', RUTA_APP.'css/');
 define('RUTA_JS', RUTA_APP.'js/');

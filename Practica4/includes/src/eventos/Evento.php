@@ -27,9 +27,8 @@ class Evento implements \JsonSerializable
         }
 
         $result = [];
-        $app = App::getSingleton();
-        $conn = $app->conexionBd();
-        $query = sprintf('SELECT E.id, E.userId AS userId, E.title, E.startDate AS start, E.endDate AS end FROM Eventos E WHERE E.userId = %d'
+        $conn = App::getInstance()->getConexionBd();
+        $query = sprintf('SELECT C.id_cita, C.id_mecanico AS id_mecanico, C.asunto, C.startDate AS start, C.endDate AS end FROM citas C WHERE C.id_mecanico = %d'
             , $userId);
 
         $rs = $conn->query($query);
@@ -60,9 +59,8 @@ class Evento implements \JsonSerializable
         }
 
         $result = null;
-        $app = App::getSingleton();
-        $conn = $app->conexionBd();
-        $query = sprintf("SELECT E.id, E.title, E.userId, E.startDate AS start, E.endDate AS end FROM Eventos E WHERE E.id = %d", $idEvento);
+        $conn = App::getInstance()->getConexionBd();
+        $query = sprintf("SELECT C.id_cita, C.asunto, C.id_mecanico, C.startDate AS start, C.endDate AS end FROM citas C WHERE C.id_cita = %d", $idEvento);
         $rs = $conn->query($query);
         if ($rs && $rs->num_rows == 1) {
             while($fila = $rs->fetch_assoc()) {
@@ -107,8 +105,7 @@ class Evento implements \JsonSerializable
             }
         }
         
-        $app = App::getSingleton();
-        $conn = $app->conexionBd();
+        $conn = App::getInstance()->getConexionBd();
         
         $query = sprintf("SELECT E.id, E.title, E.userId, E.startDate AS start, E.endDate AS end  FROM Eventos E WHERE E.userId=%d AND E.startDate >= '%s'", $userId, $startDate);
         if ($endDate) {
@@ -140,8 +137,7 @@ class Evento implements \JsonSerializable
             throw new \BadMethodCallException('$evento no puede ser nulo.');
         }
         $result = false;
-        $app = App::getSingleton();
-        $conn = $app->conexionBd();
+        $conn = App::getInstance()->getConexionBd();
         if (!$evento->id) {
             $query = sprintf("INSERT INTO Eventos (userId, title, startDate, endDate) VALUES (%d, '%s', '%s', '%s')"
                 , $evento->userId
@@ -186,8 +182,7 @@ class Evento implements \JsonSerializable
             throw new \BadMethodCallException('$idEvento no puede ser nulo.');
         }
         $result = false;
-        $app = App::getSingleton();
-        $conn = $app->conexionBd();
+        $conn = App::getInstance()->getConexionBd();
         $query = sprintf('DELETE FROM Eventos WHERE id=%d', $idEvento);
         $result = $conn->query($query);
         if ($result && $conn->affected_rows == 1) {
