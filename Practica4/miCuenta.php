@@ -26,7 +26,6 @@ if($app->esCliente()){
     <button class="botonIni" onclick="location.href='misCitas.php'">Mis Citas</button>
     <button class="botonIni" onclick="location.href='misPedidos.php'">Mis Pedidos</button>
     <button class="botonC" onclick="location.href='logout.php'">Cerrar sesion</button>
-    <a href="logout.php"><i class="fa-solid fa-right-from-bracket"></i></a> 
     EOS;
 }
 else{
