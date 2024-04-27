@@ -23,11 +23,15 @@ else{//ya tiene carrito este usuario, lo compramos
     //bajar el numero de unidades de los productos del carro
     $productos = Producto::listaProductos($pedido->getId_pedido());
     foreach($productos as $producto){
-        //NO ME LLEGA EL ID DEL PRODUCTO FALTA GRABE SI LO HAGO POR EL NOMBRE
         $id_aux = Producto::devolverId($producto->getNombre()); 
         $cantidad = Pedidos::cantidadDeProducto($pedido->getId_pedido(), $id_aux);
         $stock = Producto::buscaPorId($id_aux);
         $producto->setUnidades($stock->getUnidades() - $cantidad);
+        //$producto->guarda();
+        //si se acaban las unidades del producto lo archivamos
+        if($producto->getUnidades() == 0){
+            $producto->setArchivado(1);
+        }
         $producto->guarda();
     }
     

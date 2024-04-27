@@ -13,11 +13,12 @@ function buildArticulo($producto)
     $nombre = $producto->getNombre();
     $unidades = $producto->getUnidades();
     $precio = $producto->getPrecio();
+    $archivado = $producto->getArchivado();
     $id_producto = $producto->getId();
     $imagen = $producto->getImagen();
     $descripcion = $producto->getDescripcion();
    
-    if($unidades != 0){
+    if($archivado == 0){ //si el producto NO esta archivado
         $productos .=  <<<EOS
         <div class="producto">
             <div class="producto-info">
@@ -32,7 +33,7 @@ function buildArticulo($producto)
     }
     
     $app = Aplicacion::getInstance();
-    if ($app->esAdmin() && $unidades != 0) {
+    if ($app->esAdmin() && $archivado == 0) {
         // Enlace para sumar stock con método POST
         $productos .= <<<EOS
             <form action="sumarStock.php" method="post">
@@ -46,7 +47,7 @@ function buildArticulo($producto)
             <i id="iconoBasura" class="fa-solid fa-trash" onclick="document.getElementById('formBorrarProducto_$nombre').submit();"></i>
         </div></div>
         EOS;
-    } else if ($unidades != 0){
+    } else if ($archivado == 0){
         // Botón para añadir al carrito
         $productos .= <<<EOS
                 <form action="addProductoAlCarro.php" method="POST">

@@ -24,7 +24,7 @@ class FormularioProducto extends Formulario{
         $imagen = $datos['imagen'] ?? '';
 
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
-        $erroresCampos = self::generaErroresCampos(['nombre', 'precio', 'descripcion', 'unidades', 'imagen'], $this->errores, 'span', array('class' => 'error'));
+        $erroresCampos = self::generaErroresCampos(['nombre', 'precio', 'archivado', 'descripcion', 'unidades', 'imagen'], $this->errores, 'span', array('class' => 'error'));
 
         $html = <<<EOF
         $htmlErroresGlobales
@@ -37,6 +37,10 @@ class FormularioProducto extends Formulario{
                 <label for="Precio">Precio:</label>
                 <input id="precio" type="text" name="precio" value="$precio" />
                 {$erroresCampos['precio']}
+
+                <label for="Archivado">Archivado:</label>
+                <input id="archivado" type="text" name="archivado" value="$archivado" />
+                {$erroresCampos['archivado']}
                 
                 <label for="Descripcion">Descripcion:</label>
                 <input id="descripcion" type="text" name="descripcion" value="$descripcion" />
@@ -74,6 +78,12 @@ class FormularioProducto extends Formulario{
         if ( ! $precio  || empty($precio)) {
             $this->errores['precio'] = 'El precio no puede estar vacío.';
         }
+
+        $archivado = $datos['archivado'] ?? '';
+        $archivado = filter_var($archivado, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        if ( ! $archivado || empty($archivado)) {
+            $this->errores['archivado'] = 'El archivado no puede estar vacío.';
+        }
         
         $descripcion = $datos['descripcion'] ?? '';
         $descripcion = filter_var($descripcion, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -102,7 +112,7 @@ class FormularioProducto extends Formulario{
                
             }else{
                 
-              Producto::crea($nombre, $precio, $descripcion, $unidades, $imagen);  
+              Producto::crea($nombre, $precio, $archivado, $descripcion, $unidades, $imagen);  
             
             }
             
