@@ -1,7 +1,7 @@
-<!DOCTYPE html>
-
-<html>
-
+<?php
+require_once __DIR__.'/includes/config.php';
+$tituloPagina = "Calendario";
+$contenidoPrincipal = <<<HTML
 <head>
   <title>JQuery Full Calendar</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha256-YvdLHPgkqJ8DVUxjjnGVlMMJtNimJ6dYkowFFvp4kKs=" crossorigin="anonymous">
@@ -171,4 +171,9 @@
     <div id="calendar"></div>
   </div>
 </body>
-</html>
+
+HTML;
+
+$params = ['tituloPagina' => $tituloPagina, 'contenidoPrincipal' => $contenidoPrincipal];
+$app->generaVista('/plantillas/plantilla.php', $params);
+?>
