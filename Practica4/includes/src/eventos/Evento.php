@@ -86,6 +86,44 @@ class Evento implements \JsonSerializable
      *
      * @return array[Evento] Lista de eventos encontrados.
      */
+    public static function buscaTodosEntreFechas(DateTime $start, DateTime $end)
+{
+   
+   
+    
+    $startDate = $start->format(self::MYSQL_DATE_TIME_FORMAT);
+    if (!$startDate) {
+        throw new \BadMethodCallException('$diccionario[\'start\'] no sigue el formato válido: '.self::MYSQL_DATE_TIME_FORMAT);
+    }
+    
+    $endDate = null;
+    if ($end) {
+        $endDate =  $end->format(self::MYSQL_DATE_TIME_FORMAT);
+        if (!$endDate) {
+            throw new \BadMethodCallException('$diccionario[\'end\'] no sigue el formato válido: '.self::MYSQL_DATE_TIME_FORMAT);
+        }
+    }
+    
+    $conn = App::getInstance()->getConexionBd();
+    
+    $query = sprintf("SELECT C.id, C.title, C.id_mecanico, C.startDate AS start, C.endDate AS end  FROM citas C WHERE C.startDate >= '%s'", $startDate);
+    if ($endDate) {
+        $query = sprintf($query . " AND C.startDate <= '%s'", $endDate);
+    }
+    
+    $result = [];
+    
+    $rs = $conn->query($query);
+    if ($rs) {
+        while($fila = $rs->fetch_assoc()) {
+            $e = new Evento();
+            $e->asignaDesdeDiccionario($fila);
+            $result[] = $e;
+        }
+        $rs->free();
+    }
+    return $result;
+}
     public static function buscaEntreFechas(int $id_mecanico, DateTime $start, DateTime $end = null)
     {
         if (!$id_mecanico) {
@@ -126,6 +164,7 @@ class Evento implements \JsonSerializable
         return $result;
     }
 
+    
     /**
      * Guarda o actualiza un evento $evento en la BD.
      *
