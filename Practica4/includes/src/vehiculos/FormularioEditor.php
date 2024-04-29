@@ -14,21 +14,13 @@ use es\ucm\fdi\aw\vehiculos\vehiculo;
 class FormularioEditor extends Formulario{
     private $matricula;
     public function __construct($matricula) {
-
-        parent::__construct('formVehiculoEditor', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('editarVehiculo.php')]);
         $this->matricula = $matricula;
+        parent::__construct('formVehiculoEditor', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('alquiler.php')]);
+
     }
 
     protected function generaCamposFormulario(&$datos){
-        //$matricula = $datos['matricula'] ?? '';
-
-        $vehiculo = Vehiculo::buscaPorMatricula("1234EFG");
-        /*$marca = $datos['marca'] ?? '';
-        $modelo = $datos['modelo'] ?? '';
-        $precio = $datos['precio'] ?? '';
-        $year = $datos['year'] ?? '';
-        $imagen = $datos['imagen'] ?? '';*/
-        //echo $vehiculo->getMarca();
+        $vehiculo = Vehiculo::buscaPorMatricula($this->matricula);
         $matricula = $vehiculo->getMatricula();
         $marca = $vehiculo->getMarca();
         $modelo = $vehiculo->getModelo();
@@ -46,7 +38,7 @@ class FormularioEditor extends Formulario{
         <div class="container-registro">
                 
                 <label for="Matricula">Matricula:</label>
-                <input id="matricula" type="text" name="matricula" value="1234EFG" readonly />
+                <input id="matricula" type="text" name="matricula" value="$this->matricula" readonly />
                 {$erroresCampos['matricula']}
                 
                 <label for="Marca">Marca:</label>
@@ -120,12 +112,10 @@ class FormularioEditor extends Formulario{
         
         $imagen = $datos['imagen'] ?? '';
         $imagen = filter_var($imagen, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        echo "<p>$modelo</p>";
         if ( ! $imagen || empty($imagen) ) {
             $this->errores['imagen'] = 'La imagen no puede estar vacía.';
         }
         if (count($this->errores) === 0) {
-            echo "<p>HOLA HOLA HOLLA</p>";
            //$vehiculo = Vehiculo::buscaPorMatricula($matricula); 
             //$vehiculo->actualiza2($matricula, $marca, $modelo, $precio, $year,$imagen, $id);
             $vehiculo = Vehiculo::actualiza2($matricula, $marca, $modelo, $precio, $year, $disponibilidad, $imagen);
@@ -137,8 +127,7 @@ class FormularioEditor extends Formulario{
        
         }
         else{
-            echo "NO SE ESTA ACTUALIZANDO";
-            $vehiculo = Vehiculo::buscaPorMatricula($matricula); 
+            echo "Ha ocurrido un error al intentar actualizar el vehículo."; 
         }
     }
 
