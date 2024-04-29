@@ -21,7 +21,7 @@ $cantidad = filter_input(INPUT_POST, 'cantidad', FILTER_SANITIZE_SPECIAL_CHARS);
 
 $producto = Producto::buscaPorNombre($nombre);
 
-Producto::crea($producto->getNombre(), $producto->getPrecio(), $producto->getDescripcion(), $producto->getUnidades() + $cantidad, $producto->getImagen());
+Producto::crea($producto->getNombre(), $producto->getPrecio(), $producto->getArchivado(), $producto->getDescripcion(), $producto->getUnidades() + $cantidad, $producto->getImagen());
 
 header('Location: tienda.php');
 

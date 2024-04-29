@@ -37,7 +37,7 @@ class FormularioProducto extends Formulario{
                 <label for="Precio">Precio:</label>
                 <input id="precio" type="text" name="precio" value="$precio" />
                 {$erroresCampos['precio']}
-                
+
                 <label for="Descripcion">Descripcion:</label>
                 <input id="descripcion" type="text" name="descripcion" value="$descripcion" />
                 {$erroresCampos['descripcion']}
@@ -97,12 +97,13 @@ class FormularioProducto extends Formulario{
         if (count($this->errores) === 0) {
            
             $producto = Producto::buscaPorNombre($nombre);
+            $archivado = 0; //por defecto no esta archivado
             if ($producto) {
                 $this->errores['nombre'] = 'Ya existe un producto con ese nombre';
                
             }else{
                 
-              Producto::crea($nombre, $precio, $descripcion, $unidades, $imagen);  
+              Producto::crea($nombre, $precio, $archivado, $descripcion, $unidades, $imagen);  
             
             }
             

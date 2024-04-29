@@ -14,23 +14,22 @@ class Evento implements \JsonSerializable
 {
 
     /**
-     * Busca todos los eventos de un usuario con id $userId.
+     * Busca todos los eventos de un usuario con id $id_mecanico.
      *
-     * @param int $userId Id del usuario a buscar.
+     * @param int $id_mecanico Id del usuario a buscar.
      *
-     * @return array[Evento] Lista de eventos del usuario con id $userId.
+     * @return array[Evento] Lista de eventos del usuario con id $id_mecanico.
      */
-    public static function buscaTodosEventos(int $userId)
+    public static function buscaTodosEventos(int $id_mecanico)
     {
-        if (!$userId) {
-            throw new \BadMethodCallException('$userId no puede ser nulo.');
+        if (!$id_mecanico) {
+            throw new \BadMethodCallException('$id_mecanico no puede ser nulo.');
         }
 
         $result = [];
-        $app = App::getSingleton();
-        $conn = $app->conexionBd();
-        $query = sprintf('SELECT E.id, E.userId AS userId, E.title, E.startDate AS start, E.endDate AS end FROM Eventos E WHERE E.userId = %d'
-            , $userId);
+        $conn = App::getInstance()->getConexionBd();
+        $query = sprintf('SELECT C.id_cita, C.id_mecanico AS id_mecanico, C.title, C.startDate AS start, C.endDate AS end FROM citas C WHERE C.id_mecanico = %d'
+            , $id_mecanico);
 
         $rs = $conn->query($query);
         if ($rs) {
@@ -60,9 +59,8 @@ class Evento implements \JsonSerializable
         }
 
         $result = null;
-        $app = App::getSingleton();
-        $conn = $app->conexionBd();
-        $query = sprintf("SELECT E.id, E.title, E.userId, E.startDate AS start, E.endDate AS end FROM Eventos E WHERE E.id = %d", $idEvento);
+        $conn = App::getInstance()->getConexionBd();
+        $query = sprintf("SELECT C.id_cita, C.title, C.id_mecanico, C.startDate AS start, C.endDate AS end FROM citas C WHERE C.id_cita = %d", $idEvento);
         $rs = $conn->query($query);
         if ($rs && $rs->num_rows == 1) {
             while($fila = $rs->fetch_assoc()) {
@@ -80,18 +78,56 @@ class Evento implements \JsonSerializable
     }
   
     /**
-     * Busca los eventos de un usuario con id $userId en el rango de fechas $start y $end (si se proporciona).
+     * Busca los eventos de un usuario con id $id_mecanico en el rango de fechas $start y $end (si se proporciona).
      *
-     * @param int $userId Id del usuario para el que se buscarán los eventos.
+     * @param int $id_mecanico Id del usuario para el que se buscarán los eventos.
      * @param DateTime $start Fecha a partir de la cual se buscarán eventos (@link MYSQL_DATE_TIME_FORMAT)
      * @param DateTime|null $end Fecha hasta la que se buscarán eventos (@link MYSQL_DATE_TIME_FORMAT)
      *
      * @return array[Evento] Lista de eventos encontrados.
      */
-    public static function buscaEntreFechas(int $userId, DateTime $start, DateTime $end = null)
+    public static function buscaTodosEntreFechas(DateTime $start, DateTime $end)
+{
+   
+   
+    
+    $startDate = $start->format(self::MYSQL_DATE_TIME_FORMAT);
+    if (!$startDate) {
+        throw new \BadMethodCallException('$diccionario[\'start\'] no sigue el formato válido: '.self::MYSQL_DATE_TIME_FORMAT);
+    }
+    
+    $endDate = null;
+    if ($end) {
+        $endDate =  $end->format(self::MYSQL_DATE_TIME_FORMAT);
+        if (!$endDate) {
+            throw new \BadMethodCallException('$diccionario[\'end\'] no sigue el formato válido: '.self::MYSQL_DATE_TIME_FORMAT);
+        }
+    }
+    
+    $conn = App::getInstance()->getConexionBd();
+    
+    $query = sprintf("SELECT C.id, C.title, C.id_mecanico, C.startDate AS start, C.endDate AS end  FROM citas C WHERE C.startDate >= '%s'", $startDate);
+    if ($endDate) {
+        $query = sprintf($query . " AND C.startDate <= '%s'", $endDate);
+    }
+    
+    $result = [];
+    
+    $rs = $conn->query($query);
+    if ($rs) {
+        while($fila = $rs->fetch_assoc()) {
+            $e = new Evento();
+            $e->asignaDesdeDiccionario($fila);
+            $result[] = $e;
+        }
+        $rs->free();
+    }
+    return $result;
+}
+    public static function buscaEntreFechas(int $id_mecanico, DateTime $start, DateTime $end = null)
     {
-        if (!$userId) {
-            throw new \BadMethodCallException('$userId no puede ser nulo.');
+        if (!$id_mecanico) {
+            throw new \BadMethodCallException('$id_mecanico no puede ser nulo.');
         }
         
         $startDate = $start->format(self::MYSQL_DATE_TIME_FORMAT);
@@ -107,12 +143,11 @@ class Evento implements \JsonSerializable
             }
         }
         
-        $app = App::getSingleton();
-        $conn = $app->conexionBd();
+        $conn = App::getInstance()->getConexionBd();
         
-        $query = sprintf("SELECT E.id, E.title, E.userId, E.startDate AS start, E.endDate AS end  FROM Eventos E WHERE E.userId=%d AND E.startDate >= '%s'", $userId, $startDate);
+        $query = sprintf("SELECT C.id, C.title, C.id_mecanico, C.startDate AS start, C.endDate AS end  FROM citas C WHERE C.id_mecanico=%d AND C.startDate >= '%s'", $id_mecanico, $startDate);
         if ($endDate) {
-            $query = sprintf($query . " AND E.startDate <= '%s'", $endDate);
+            $query = sprintf($query . " AND C.startDate <= '%s'", $endDate);
         }
         
         $result = [];
@@ -129,6 +164,7 @@ class Evento implements \JsonSerializable
         return $result;
     }
 
+    
     /**
      * Guarda o actualiza un evento $evento en la BD.
      *
@@ -140,11 +176,10 @@ class Evento implements \JsonSerializable
             throw new \BadMethodCallException('$evento no puede ser nulo.');
         }
         $result = false;
-        $app = App::getSingleton();
-        $conn = $app->conexionBd();
+        $conn = App::getInstance()->getConexionBd();
         if (!$evento->id) {
-            $query = sprintf("INSERT INTO Eventos (userId, title, startDate, endDate) VALUES (%d, '%s', '%s', '%s')"
-                , $evento->userId
+            $query = sprintf("INSERT INTO citas (id_mecanico, title, startDate, endDate) VALUES (%d, '%s', '%s', '%s')"
+                , $evento->id_mecanico
                     , $conn->real_escape_string($evento->title)
                         , $evento->start->format(self::MYSQL_DATE_TIME_FORMAT)
                             , $evento->end->format(self::MYSQL_DATE_TIME_FORMAT));
@@ -157,8 +192,8 @@ class Evento implements \JsonSerializable
                 throw new DataAccessException("No se ha podido guardar el evento");
             }
         } else {
-            $query = sprintf("UPDATE Eventos E SET userId=%d, title='%s', startDate='%s', endDate='%s' WHERE E.id = %d"
-                , $evento->userId
+            $query = sprintf("UPDATE citas E SET id_mecanico=%d, title='%s', startDate='%s', endDate='%s' WHERE E.id = %d"
+                , $evento->id_mecanico
                     , $conn->real_escape_string($evento->title)
                         , $evento->start->format(self::MYSQL_DATE_TIME_FORMAT)
                             , $evento->end->format(self::MYSQL_DATE_TIME_FORMAT)
@@ -186,9 +221,8 @@ class Evento implements \JsonSerializable
             throw new \BadMethodCallException('$idEvento no puede ser nulo.');
         }
         $result = false;
-        $app = App::getSingleton();
-        $conn = $app->conexionBd();
-        $query = sprintf('DELETE FROM Eventos WHERE id=%d', $idEvento);
+        $conn = App::getInstance()->getConexionBd();
+        $query = sprintf('DELETE FROM citas WHERE id=%d', $idEvento);
         $result = $conn->query($query);
         if ($result && $conn->affected_rows == 1) {
             $result = true;
@@ -202,50 +236,50 @@ class Evento implements \JsonSerializable
     }
   
     /**
-     * Crear un evento asociado a un usuario $userId y un título $title.
+     * Crear un evento asociado a un usuario $id_mecanico y un título $title.
      * El comienzo es la fecha y hora actual del sistema y el fin es una hora más tarde.
      *
-     * @param int $userId Id del propietario del evento.
+     * @param int $id_mecanico Id del propietario del evento.
      * @param string $title Título del evento.
      *
      */
-    public static function creaSimple(int $userId, string $title)
+    public static function creaSimple(int $id_mecanico, string $title)
     {
         $start = new \DateTime();
         $end = $start->add(new \DateInterval('PT1H'));
-        return self::creaDetallado($userId, $title, $start, $end);
+        return self::creaDetallado($id_mecanico, $title, $start, $end);
     }
   
     /**
-     * Crear un evento asociado a un usuario $userId, un título $title y una fecha y hora de comienzo.
+     * Crear un evento asociado a un usuario $id_mecanico, un título $title y una fecha y hora de comienzo.
      * El fin es una hora más tarde de la hora de comienzo.
      *
-     * @param int $userId Id del propietario del evento.
+     * @param int $id_mecanico Id del propietario del evento.
      * @param string $title Título del evento.
      * @param DateTime $start Fecha y horas de comienzo.
      */
-    public static function creaComenzandoEn(int $userId, string $title, \DateTime $start)
+    public static function creaComenzandoEn(int $id_mecanico, string $title, \DateTime $start)
     {    
         if (empty($start)) {
             throw new \BadMethodCallException('$start debe ser un timestamp valido no nulo');
         }
 
         $end = $start->add(new \DateInterval('PT1H'));
-        return self::creaDetallado($userId, $title, $start, $end);
+        return self::creaDetallado($id_mecanico, $title, $start, $end);
     }
   
     /**
-     * Crear un evento asociado a un usuario $userId, un título $title y una fecha y hora de comienzo y fin.
+     * Crear un evento asociado a un usuario $id_mecanico, un título $title y una fecha y hora de comienzo y fin.
      *
-     * @param int $userId Id del propietario del evento.
+     * @param int $id_mecanico Id del propietario del evento.
      * @param string $title Título del evento.
      * @param DateTime $start Fecha y horas de comienzo.
      * @param DateTime $end Fecha y horas de fin.
      */
-    public static function creaDetallado(int $userId, string $title, \DateTime $start, \DateTime $end)
+    public static function creaDetallado(int $id_mecanico, string $title, \DateTime $start, \DateTime $end)
     {
         $e = new Evento();
-        $e->setUserId($userId);
+        $e->setid_mecanico($id_mecanico);
         $e->setTitle($title);
         $e->setStart($start);
         $e->setEnd($end);
@@ -253,7 +287,7 @@ class Evento implements \JsonSerializable
 
     /**
      * Crear un evento un evento a partir de un diccionario PHP.
-     * Como por ejemplo array("userId" => (int)1, "title" => "Descripcion"
+     * Como por ejemplo array("id_mecanico" => (int)1, "title" => "Descripcion"
      *   , "start" => "2019-04-29 00:00:00", "end" => "2019-04-30 00:00:00")
      *
      * @param array $diccionario Array / map / diccionario PHP con los datos del evento a crear.
@@ -263,7 +297,7 @@ class Evento implements \JsonSerializable
     public static function creaDesdeDicionario(array $diccionario)
     {
         $e = new Evento();
-        $e->asignaDesdeDiccionario($diccionario, ['userId', 'title', 'start', 'end']);
+        $e->asignaDesdeDiccionario($diccionario, ['id_mecanico', 'title', 'start', 'end']);
         return $e;
     }
     
@@ -298,11 +332,11 @@ class Evento implements \JsonSerializable
     /**
      * @param array[string] Nombre de las propiedades de la clase.
      */
-    const PROPERTIES = ['id', 'userId', 'title', 'start', 'end'];
+    const PROPERTIES = ['id', 'id_mecanico', 'title', 'start', 'end'];
     
     private $id;
 
-    private $userId;
+    private $id_mecanico;
 
     private $title;
 
@@ -319,17 +353,17 @@ class Evento implements \JsonSerializable
         return $this->id;
     }
 
-    public function getUserId()
+    public function getid_mecanico()
     {
-        return $this->userId;
+        return $this->id_mecanico;
     }
 
-    public function setUserId(int $userId)
+    public function setid_mecanico(int $id_mecanico)
     {
-        if (is_null($userId)) {
-            throw new \BadMethodCallException('$userId no puede ser una cadena vacía o nulo');
+        if (is_null($id_mecanico)) {
+            throw new \BadMethodCallException('$id_mecanico no puede ser una cadena vacía o nulo');
         }
-        $this->userId = $userId;
+        $this->id_mecanico = $id_mecanico;
     }
 
     public function getTitle()
@@ -400,7 +434,7 @@ class Evento implements \JsonSerializable
     {
         $o = new \stdClass();
         $o->id = $this->id;
-        $o->userId = $this->userId;
+        $o->id_mecanico = $this->id_mecanico;
         $o->title = $this->title;
         $o->start = $this->start->format(self::MYSQL_DATE_TIME_FORMAT);
         $o->end = $this->end->format(self::MYSQL_DATE_TIME_FORMAT);
@@ -465,14 +499,14 @@ class Evento implements \JsonSerializable
             }
         }
 
-        if (array_key_exists('userId', $diccionario)) {
-            $userId = $diccionario['userId'];
-            if (empty($userId)) {
-                throw new \BadMethodCallException('$diccionario[\'userId\'] no puede ser una cadena vacía o nulo');
-            } else if (!is_int($userId) && ! ctype_digit($userId)) {
-                throw new \BadMethodCallException('$diccionario[\'userId\'] tiene que ser un número entero: '.$userId);
+        if (array_key_exists('id_mecanico', $diccionario)) {
+            $id_mecanico = $diccionario['id_mecanico'];
+            if (empty($id_mecanico)) {
+                throw new \BadMethodCallException('$diccionario[\'id_mecanico\'] no puede ser una cadena vacía o nulo');
+            } else if (!is_int($id_mecanico) && ! ctype_digit($id_mecanico)) {
+                throw new \BadMethodCallException('$diccionario[\'id_mecanico\'] tiene que ser un número entero: '.$id_mecanico);
             } else {
-                $this->setUserId((int)$userId);
+                $this->setid_mecanico((int)$id_mecanico);
             }
         }
        

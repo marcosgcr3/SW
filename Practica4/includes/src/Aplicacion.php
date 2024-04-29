@@ -27,6 +27,7 @@ class Aplicacion
         }
         return self::$instancia;
     }
+    
 
     /**
      * @var array Almacena los datos de configuración de la BD
