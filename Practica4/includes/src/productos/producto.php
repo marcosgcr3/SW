@@ -87,7 +87,7 @@ class Producto
             $rs->free();
         }
         else{
-            echo "No hay productos en la base de datos";
+            //echo "No hay productos en la base de datos";
         }
         return $lista_productos;
 
