@@ -56,7 +56,7 @@ class Producto
     public static function buscaPorId($id_producto)
     {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "SELECT * FROM productos WHERE id_producto=$id_producto";
+        $query = "SELECT * FROM productos WHERE id_producto='$id_producto'";
         $rs = $conn->query($query);
         $result = false;
         if ($rs) {
@@ -181,7 +181,7 @@ class Producto
         }
         return self::inserta($this);
     }
-    private static function actualiza($producto)
+    public static function actualiza($producto)
     {
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
@@ -200,6 +200,24 @@ class Producto
         
         return $result;
     }
+
+    public static function actualiza2($nombre, $precio, $descripcion, $imagen)
+    {
+        $result = false;
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("UPDATE productos SET precio = '$precio', descripcion = '$descripcion', imagen = '$imagen' WHERE nombre ='$nombre'");
+        if ($conn->query($query)) {
+            if ($conn->affected_rows == 0) {
+                error_log("No se ha actualizado el producto");
+            }
+            $result = true;
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+    
+        return $result;
+    }
+    
     public static function borrar($nombre){
         return self::eliminarProducto($nombre);
     }

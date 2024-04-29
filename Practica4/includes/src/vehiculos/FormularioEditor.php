@@ -14,9 +14,9 @@ use es\ucm\fdi\aw\vehiculos\vehiculo;
 class FormularioEditor extends Formulario{
     private $matricula;
     public function __construct($matricula) {
-        $this->matricula = $matricula;
-        parent::__construct('formVehiculoEditor', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('alquiler.php')]);
 
+        parent::__construct('formVehiculoEditor', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('alquiler.php')]);
+        $this->matricula = $matricula;
     }
 
     protected function generaCamposFormulario(&$datos){

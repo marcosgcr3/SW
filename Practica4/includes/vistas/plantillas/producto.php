@@ -9,7 +9,8 @@ use es\ucm\fdi\aw\pedidos\Pedidos;
 function buildArticulo($producto)
 {
     $productos = '';
-        
+    
+    $id = $producto->getId();
     $nombre = $producto->getNombre();
     $unidades = $producto->getUnidades();
     $precio = $producto->getPrecio();
@@ -45,6 +46,11 @@ function buildArticulo($producto)
                 <input type="hidden" name="nombre" value="$nombre">
             </form></div>
             <i id="iconoBasura" class="fa-solid fa-trash" onclick="document.getElementById('formBorrarProducto_$nombre').submit();"></i>
+
+            <form id="formEditarProducto_$nombre" action="editarProducto.php" method="post">
+                <input type="hidden" name="nombre" value="$nombre">
+            </form></div>
+            <i id="iconoEditar"  onclick="document.getElementById('formEditarProducto_$nombre').submit();">EDITAR</i>
         </div></div>
         EOS;
     } else if ($archivado == 0){
