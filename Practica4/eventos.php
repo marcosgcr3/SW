@@ -50,7 +50,7 @@ switch($_SERVER['REQUEST_METHOD']) {
                     if ($app->esMecanico()){
                         $result = Evento::buscaEntreFechas($_SESSION['id'], $startDateTime, $endDateTime);
                     }else {
-                        $result = Evento::buscaTodosEntreFechas( $startDateTime, $endDateTime);
+                        $result = Evento:: fechasDisponibles( $startDateTime, $endDateTime);
                     }
 
                 } else {

@@ -105,7 +105,7 @@ class Evento implements \JsonSerializable
 }
 
 
-public static function buscaTodosEntreFechas(DateTime $start, DateTime $end)
+public static function fechasDisponibles(DateTime $start, DateTime $end)
 {
     $startDate = $start->format(self::MYSQL_DATE_TIME_FORMAT);
     if (!$startDate) {
