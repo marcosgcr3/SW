@@ -45,7 +45,7 @@ function listaHistorialAlquileres()
         }
     
         foreach ($alquileres as $alquiler) {
-            $contenido .= elVehiculoAlquilado($alquiler);
+            $contenido .= historialVehiculos($alquiler);
         }
     
         return $contenido;
@@ -56,6 +56,10 @@ function elVehiculoAlquilado($alquiler){
 }
 function vehiculoPendiente($alquiler){
     $contenido = buildAlquilerPendiente($alquiler);
+    return $contenido;
+}
+function historialVehiculos($alquiler){
+    $contenido = buildHistorialAlquiler($alquiler);
     return $contenido;
 }
 

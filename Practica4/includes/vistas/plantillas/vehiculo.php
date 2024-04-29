@@ -33,6 +33,11 @@ function buildVehiculo($vehiculo)
                 <input type="hidden" name="matricula" value="$matricula">
             </form>
             <i id="iconoBasura" class="fa-solid fa-trash" onclick="document.getElementById('formBorrarVehiculo_$matricula').submit();"></i>
+            <form id="formEditarVehiculo_$matricula" action="editarVehiculo.php" method="post">
+                <input type="hidden" name="matricula" value="$matricula">
+            </form>
+            <i id="iconoEditar" onclick="document.getElementById('formEditarVehiculo_$matricula').submit();">Editar</i>
+
         </div></div>
         EOS;
     } else {

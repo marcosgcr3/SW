@@ -11,7 +11,7 @@ class Vehiculo
 
     public static function crea($matricula,$marca, $modelo, $precio,$year, $imagen)
     {   
-      
+        
         $producto = new Vehiculo($matricula, $marca,$modelo, $precio,$year, 'si', $imagen);
         
         return $producto->guarda();
@@ -164,6 +164,30 @@ class Vehiculo
         }
         return self::inserta($this);
     }
+
+    public static function actualiza2($matricula, $marca, $modelo, $precio, $year, $disponibilidad, $imagen)
+{   
+    $result = false;
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("UPDATE vehiculos V SET marca='%s', modelo='%s', precio='%s', year='%s', disponibilidad='%s',imagen='%s' WHERE V.matricula='$matricula'"
+            , $marca
+            , $modelo
+            , $precio
+            , $year
+            , $disponibilidad
+            , $imagen
+        );
+        if ( $conn->query($query) ) {
+            if ( $conn->affected_rows != 1) {
+                error_log("Error Aplicacion: No se ha actualizado la disponibilidad");
+            }
+            $result = true;
+        } else {
+            error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
+        }
+        return $result;
+} 
+
 
     private static function actualiza($vehiculo)
     {

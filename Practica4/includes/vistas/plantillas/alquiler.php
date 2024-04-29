@@ -16,6 +16,7 @@ function buildAlquilerPendiente($alquiler){
     $imagen = $vehiculo->getImagen();
     $marca = $vehiculo->getMarca();
     $modelo = $vehiculo->getModelo();
+    $matricula = $vehiculo->getMatricula();
     $contenido="";
     $contenido.=<<<EOS
     <div class="producto">
@@ -41,6 +42,11 @@ EOS;
             <input type="hidden" name="id" value="$id">
             <button class="botoncarro" type="submit">Devolver</button>
         </form>
+
+        <form action="alquilarVehiculo.php" method="post">
+            <input type="hidden" name="matricula" value="$matricula">
+            <button class="botoncarro" type="submit">Ampliar</button>
+         </form>
     </div></div></div>
     EOS;
     }
@@ -99,6 +105,38 @@ EOS;
             </script>
             EOS;
     }
+
+    return $contenido;
+}
+
+function buildHistorialAlquiler($alquiler)
+{
+    $id = $alquiler->getId();
+    $id_vehiculo = $alquiler->getIdVehiculo();
+    $fechaIni = $alquiler->getFechaIni();
+    $fechaFin = $alquiler->getFechaFin();
+    $precio = $alquiler->getPrecioFinal();
+    
+    
+    $vehiculo = Vehiculo::buscaPorId($id_vehiculo);
+    $imagen = $vehiculo->getImagen();
+    $marca = $vehiculo->getMarca();
+    $modelo = $vehiculo->getModelo();
+    $contenido="";
+    $contenido.=<<<EOS
+    <div class="producto">
+    
+        <div class="producto-info">
+        
+        <img src="$imagen" alt="imagen" class="producto-imagen">
+        <div class="producto-detalle">
+        <h2>$marca:  $modelo</h2>
+            <p>Fecha de inicio: $fechaIni</p>
+            <p>Fecha de fin: $fechaFin</p>
+            <p>Precio: $precio&euro;</p>
+        </div></div></div>
+    
+    EOS;    
 
     return $contenido;
 }

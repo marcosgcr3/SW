@@ -25,11 +25,17 @@ use es\ucm\fdi\aw\Aplicacion;
     <nav id="nav" class="">
 
     <ul>
-        <li><a href="alquiler.php" >ALQUILER</a></li>
         
 
         <?php
             $app = Aplicacion::getInstance();
+
+            if($app->esAdmin()){
+                echo "<li><a href='alquiler.php' >GESTION DE ALQUILERES</a></li>";
+            }
+            else if(!$app->esAdmin() && !$app->esMecanico()){
+                echo "<li><a href='alquiler.php' >ALQUILER</a></li>";
+            }
 
             
             if ($app->esAdmin()) {
@@ -43,7 +49,8 @@ use es\ucm\fdi\aw\Aplicacion;
                                 
             }
             else if ($app->usuarioLogueado() && !$app->esAdmin() && !$app->esMecanico()){
-                echo "<li ><a href='citas.php' >CITAS</a></li>";
+                //echo "<li ><a href='citas.php' >CITAS</a></li>";
+                echo "<li ><a href='calendario.php' >CITAS</a></li>";
             }else{
                 echo "<li><a href='noUsuarioAviso.php'>CITAS</a></li>";
             }
