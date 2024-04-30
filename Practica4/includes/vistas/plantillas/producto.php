@@ -35,7 +35,7 @@ function buildArticulo($producto)
     
     $app = Aplicacion::getInstance();
     if ($app->esAdmin() && $archivado == 0) {
-        // Enlace para sumar stock con método POST
+        // Enlace para sumar stock, borrar producto y editar producto
         $productos .= <<<EOS
             <form action="sumarStock.php" method="post">
                 <input type="hidden" name="nombre" value="$nombre">
@@ -58,7 +58,8 @@ function buildArticulo($producto)
         $productos .= <<<EOS
                 <form action="addProductoAlCarro.php" method="POST" id="formAddProducto">
                 <input type="hidden" name="id_producto" id="idProducto" value="$id_producto">
-                <input type="number" name="unidades" id="unidadesCompra" min="1" max="100000" value="1">
+                <input type="hidden" name="nombre" id="nombre" value="$nombre">
+                <input type="number" name="unidades" id="units" min="1" max="100000" value="1">
                 <button type="submit" id="bottonCompra" class="botoncarro">Añadir al carrito</button>
                 </form>
         </div>
@@ -73,16 +74,22 @@ function buildArticulo($producto)
             
             $(document).ready(function() {
                 //VALIDAR FORMULARIO DE bottonCompra (añadir al carrito)
-                $('#formAddProducto').submit(function(event) {
-                    var unidades = $('#unidadesCompra').val();
+                $('[id^="formAddProducto"]').submit(function(event) {
+                    var unidades = $(this).find('[name="unidades"]').val();
+                    var idProducto = $(this).find('[name="id_producto"]').val();
+                    var nombre = $(this).find('[name="nombre"]').val();
                     var stock = $unidades;
                     if (unidades > stock) {
                         alert('No hay suficiente stock');
                         event.preventDefault();
                     }
                     else{
-                        alert('Producto añadido al carrito');
+                        alert('Se ha añadido al carro ' + unidades + ' ' + nombre);
+                        //solo tiene que ejecutarse una vez
+                        $(this).unbind('submit').submit();
+
                     }
+                    
                 });
             });            
         </script>
