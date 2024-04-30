@@ -17,7 +17,7 @@ function listaproductos()
     foreach ($productos as $producto) {
         $contenido .= elArticulo($producto);
     }
-
+    //
     return $contenido;
 }
 
