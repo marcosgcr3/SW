@@ -12,19 +12,22 @@ require_once 'includes/src/productos/producto.php';
 
 class FormularioProducto extends Formulario{
 
+    const EXTENSIONES_PERMITIDAS = array('gif', 'jpg', 'jpe', 'jpeg', 'png', 'webp', 'avif');
+
     public function __construct() {
-        parent::__construct('formProducto', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('tienda.php')]);
+        parent::__construct('formProducto', ['enctype' => 'multipart/form-data', 'urlRedireccion' => Aplicacion::getInstance()->resuelve('tienda.php')]);
     }
     protected function generaCamposFormulario(&$datos)
     {
+        $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
+        $erroresCampos = self::generaErroresCampos(['nombre', 'precio', 'descripcion', 'unidades', 'imagen'], $this->errores, 'span', array('class' => 'error'));
+
         $nombre = $datos['nombre'] ?? '';
         $precio = $datos['precio'] ?? '';
         $descripcion = $datos['descripcion'] ?? '';
         $unidades = $datos['unidades'] ?? '';
         $imagen = $datos['imagen'] ?? '';
-
-        $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
-        $erroresCampos = self::generaErroresCampos(['nombre', 'precio', 'descripcion', 'unidades', 'imagen'], $this->errores, 'span', array('class' => 'error'));
+    
 
         $html = <<<EOF
         $htmlErroresGlobales
@@ -46,8 +49,8 @@ class FormularioProducto extends Formulario{
                 <input id="unidades" type="text" name="unidades" value="$unidades" />
                 {$erroresCampos['unidades']}
                 
-                <label for="Imagen">Imagen:</label>
-                <input id="imagen" type="text" name="imagen" value="$imagen" />
+                <label for="imagen">Imagen:</label>
+                <input id="imagen" type="file" name="imagen"/>
                 {$erroresCampos['imagen']}
 
                
@@ -86,16 +89,48 @@ class FormularioProducto extends Formulario{
         if ( ! $unidades || empty($unidades)) {
             $this->errores['unidades'] = 'Las unidades no pueden estar vacías.';
         }
-        
+
+        /*
         $imagen = $datos['imagen'] ?? '';
         $imagen = filter_var($imagen, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         if ( ! $imagen    || empty($imagen)) {
-            $this->errores['imagen'] = 'La imagen no puede estar vacía.';
+            $this->errores['imagen'] = 'Tiene que seleccionar una imagen.';
         }
-    
+        */
+
+        $ok = $_FILES['imagen']['error'] == UPLOAD_ERR_OK && count($_FILES) == 1;
+        if(!$ok){
+            $this->errores['imagen'] = 'Error en la subida de la imagen';
+            return;
+        }
+        
+
+        $nombreArchivo = $_FILES['imagen']['name'];
+        //Valida el nombre del archivo 
+        $ok = self::check_file_uploaded_name($nombreArchivo) && self::check_file_uploaded_length($nombreArchivo);  
+        //Comprueba si la extension esta permitida
+        $extension = pathinfo($nombreArchivo, PATHINFO_EXTENSION);
+        $ok = $ok && in_array($extension, self::EXTENSIONES_PERMITIDAS);
+        //Comprueba el tipo mime del archivo corresponde a una imagen image
+        $finfo = new \finfo(FILEINFO_MIME_TYPE);
+        $mimeType = $finfo->file($_FILES['imagen']['tmp_name']);
+        $ok = $ok && preg_match('/image\/.+/', $mimeType) === 1;
+        if(!$ok){
+            $this->errores['imagen'] = 'La imagen no es válida';
+        }
+        if(count($this->errores) > 0){
+            return;
+        }
+        $tmp_name = $_FILES['imagen']['tmp_name'];
+        $fichero = "{$nombreArchivo}";
+        $ruta = "img/imgProductos/$fichero";
+        if(!move_uploaded_file($tmp_name, $ruta)){
+            $this->errores['imagen'] = 'Error al mover el archivo';
+            return;
+        }
       
         if (count($this->errores) === 0) {
-           
+
             $producto = Producto::buscaPorNombre($nombre);
             $archivado = 0; //por defecto no esta archivado
             if ($producto) {
@@ -103,7 +138,7 @@ class FormularioProducto extends Formulario{
                
             }else{
                 
-              Producto::crea($nombre, $precio, $archivado, $descripcion, $unidades, $imagen);  
+              Producto::crea($nombre, $precio, $archivado, $descripcion, $unidades, $ruta);  
             
             }
             
@@ -112,4 +147,14 @@ class FormularioProducto extends Formulario{
         }
     }
 
+    private static function check_file_uploaded_name($filename){
+        return (bool) ((preg_match('/^[0-9A-Z-_\.]+$/i', $filename) === 1) ? true : false);
+    }
+
+    private function check_file_uploaded_length($filename)
+    {
+        return (bool) ((mb_strlen($filename, 'UTF-8') < 250) ? true : false);
+    }
+
 }
+
