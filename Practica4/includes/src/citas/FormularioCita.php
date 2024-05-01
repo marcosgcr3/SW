@@ -49,10 +49,7 @@ class FormularioCita extends Formulario{
         </div>
 
         EOF;
-        $horasDisp = horarioDisponible($dia);
-        foreach ($horasDisp as $hora) {
-            $html .= "<option value='$hora'>$hora:00</option>";
-        } 
+        $html .= generarDesplegableHorario($dia);
 
 
         $html .= <<<EOF
