@@ -28,12 +28,14 @@ function horarioDisponible($dia){
                 $mapa[$hora] = $total_mecanicos;
             }
 
-            $sql2 = "SELECT hora FROM citas WHERE dia = '$dia'";
+            $sql2 = "SELECT HOUR(startDate) as hora FROM citas WHERE DATE(startDate) = '$dia'";
             $result2 = $conn->query($sql2);
+            
             while ($row2 = $result2->fetch_assoc()) {
-                $mapa[$row2["hora"]] -= 1;
-                if ($mapa[$row2["hora"]] == 0) {
-                    $unavailableHours[] = $row2["hora"];
+                $hora = $row2["hora"];
+                $mapa[$hora] -= 1;
+                if ($mapa[$hora] == 0) {
+                    $unavailableHours[] = $hora;
                 }
             }
             $resultado = array_diff($horario, $unavailableHours);

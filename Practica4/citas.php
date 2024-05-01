@@ -11,7 +11,7 @@ require_once 'includes/src/vehiculos/vehiculo.php';
 $tituloPagina = 'Cita';
 
 $contenidoPrincipal = '';
-    Citas::comprobarFecha();
+    //Citas::comprobarFecha();
     $contenidoPrincipal .= newCita();
 
 $params = ['tituloPagina' => $tituloPagina, 'contenidoPrincipal' => $contenidoPrincipal];
