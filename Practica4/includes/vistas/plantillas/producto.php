@@ -73,6 +73,9 @@ function buildArticulo($producto)
         <script>
             
             $(document).ready(function() {
+
+                var mensajeMostrado = false;
+
                 //VALIDAR FORMULARIO DE bottonCompra (añadir al carrito)
                 $('[id^="formAddProducto"]').submit(function(event) {
                     var unidades = $(this).find('[name="unidades"]').val();
@@ -84,9 +87,10 @@ function buildArticulo($producto)
                         event.preventDefault();
                     }
                     else{
-                        alert('Se ha añadido al carro ' + unidades + ' ' + nombre);
-                        //solo tiene que ejecutarse una vez
-                        $(this).unbind('submit').submit();
+                        if (!mensajeMostrado) { // Verificar si el mensaje ya se ha mostrado
+                            alert('Se ha añadido al carro ' + unidades + ' ' + nombre);
+                            mensajeMostrado = true; // Establecer la bandera a true para indicar que el mensaje se ha mostrado
+                        }
 
                     }
                     
