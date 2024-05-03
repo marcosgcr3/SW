@@ -47,6 +47,7 @@ EOS;
             <input type="hidden" name="matricula" value="$matricula">
             <button class="botoncarro" type="submit">Ampliar</button>
          </form>
+
     </div></div></div>
     EOS;
     }

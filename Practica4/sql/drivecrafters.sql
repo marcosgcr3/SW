@@ -123,6 +123,7 @@ CREATE TABLE `vehiculos` (
   `modelo` text NOT NULL,
   `precio` double NOT NULL,
   `year` int(11) NOT NULL,
+  `archivado` tinyint(1) NOT NULL,
   `disponibilidad` text NOT NULL,
   `imagen` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

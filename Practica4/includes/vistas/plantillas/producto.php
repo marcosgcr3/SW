@@ -11,6 +11,7 @@ function buildArticulo($producto)
     $productos = '';
     
     $id = $producto->getId();
+    $archivado = $producto->getArchivado();
     $nombre = $producto->getNombre();
     $unidades = $producto->getUnidades();
     $precio = $producto->getPrecio();
