@@ -213,7 +213,7 @@ private static function estaDisponible($mecanico, $hora, $dia) {
     $fechaHora = $dia . ' ' . $hora;
 
     // Consultar si hay citas para el mecánico en la hora y día dados
-    $query = "SELECT COUNT(*) AS numCitas FROM citas WHERE id_mecanico = $idMecanico AND dia = '$dia' AND hora = '$hora' AND estado = 0";
+    $query = "SELECT COUNT(*) AS numCitas FROM citas WHERE id_mecanico = $idMecanico AND startDate = '$fechaHora' AND estado = 0";
     $rs = $conn->query($query);
 
     if ($rs) {
@@ -236,7 +236,6 @@ private static function numCitasTotales($mecanico) {
 
     // Consultar el número total de citas para el mecánico
     $query = "SELECT COUNT(*) AS numCitas FROM citas WHERE id_mecanico = $idMecanico";
-    $query = "SELECT COUNT(*) AS numCitas FROM citas WHERE id_mecanico = $idMecanico";
     $rs = $conn->query($query);
 
     if ($rs) {
@@ -250,7 +249,6 @@ private static function numCitasTotales($mecanico) {
         return 0;
     }
 }
-
 
     private $NIF;
 

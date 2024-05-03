@@ -3,8 +3,11 @@
 namespace es\ucm\fdi\aw\citas;
 
 use es\ucm\fdi\aw\Aplicacion;
+use es\ucm\fdi\aw\eventos\Evento;
 use es\ucm\fdi\aw\Formulario;
 use es\ucm\fdi\aw\citas\citas;
+use \DateTime;
+
 use es\ucm\fdi\aw\usuarios\Usuario;
 require_once 'procesaHorarioDisp.php';
 
@@ -21,6 +24,7 @@ class FormularioCita extends Formulario{
         //$dia = '2024-04-18';
         $hora = $datos['hora'] ?? '';
         $asunto = $datos['asunto'] ?? '';
+    
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
         $erroresCampos = self::generaErroresCampos(['dia', 'hora', 'asunto'], $this->errores, 'span', array('class' => 'error'));
         $html = <<<EOF
@@ -45,10 +49,8 @@ class FormularioCita extends Formulario{
         </div>
 
         EOF;
-        $horasDisp = horarioDisponible($dia);
-        foreach ($horasDisp as $hora) {
-            $html .= "<option value='$hora'>$hora:00</option>";
-        } 
+        $html .= generarDesplegableHorario($dia);
+
 
         $html .= <<<EOF
             </select>
@@ -68,14 +70,19 @@ class FormularioCita extends Formulario{
             $this->errores['dia'] = "El día no puede ser anterior a la fecha de hoy";
         }
         $hora = $datos['hora'] ?? null;
-        echo $hora;
+
         if (empty($hora)) {
             $this->errores['hora'] = "La hora no puede estar vacía";
         }
+        $startDate = $dia . ' ' . $hora . ':00:00';
+
+        $endDate = date('Y-m-d H:i:s', strtotime($startDate) + 3600);
+
         $asunto = $datos['asunto'] ?? null;
         if (empty($asunto)) {
             $this->errores['asunto'] = "El asunto no puede estar vacío";
         }
+        
         if (count($this->errores) === 0) {
             $mecanico = Usuario::obtenerMecanicoDisponible($dia, $hora);
             if($mecanico === NULL){
@@ -84,7 +91,10 @@ class FormularioCita extends Formulario{
                 </script> ';
             }
             else{
-                Citas::crea($_SESSION['id'], $mecanico->getId(), $dia, $hora, $asunto, 0);
+                $startDate = new DateTime($startDate);
+                $endDate = new DateTime($endDate);
+                Evento::creaDetallado($_SESSION['id'], $mecanico->getId(), $asunto, $startDate, $endDate, 0);
+                
             }            
         }
     }

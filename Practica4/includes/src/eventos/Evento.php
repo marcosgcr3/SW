@@ -211,11 +211,13 @@ public static function fechasDisponibles(DateTime $start, DateTime $end)
         $result = false;
         $conn = App::getInstance()->getConexionBd();
         if (!$evento->id) {
-            $query = sprintf("INSERT INTO citas (id_mecanico, title, startDate, endDate) VALUES (%d, '%s', '%s', '%s')"
+            $query = sprintf("INSERT INTO citas (id_cliente, id_mecanico, title, startDate, endDate, estado) VALUES (%d, %d,'%s', '%s', '%s', %d)"
+                , $evento->id_cliente
                 , $evento->id_mecanico
                     , $conn->real_escape_string($evento->title)
                         , $evento->start->format(self::MYSQL_DATE_TIME_FORMAT)
-                            , $evento->end->format(self::MYSQL_DATE_TIME_FORMAT));
+                            , $evento->end->format(self::MYSQL_DATE_TIME_FORMAT)
+                                , $evento->estado);
 
             $result = $conn->query($query);
             if ($result) {
@@ -309,13 +311,16 @@ public static function fechasDisponibles(DateTime $start, DateTime $end)
      * @param DateTime $start Fecha y horas de comienzo.
      * @param DateTime $end Fecha y horas de fin.
      */
-    public static function creaDetallado(int $id_mecanico, string $title, \DateTime $start, \DateTime $end)
+    public static function creaDetallado(int $id_cliente ,int $id_mecanico, string $title, \DateTime $start, \DateTime $end, int $estado)
     {
         $e = new Evento();
+        $e->setid_cliente($id_cliente);
         $e->setid_mecanico($id_mecanico);
         $e->setTitle($title);
         $e->setStart($start);
         $e->setEnd($end);
+        $e->setEstado($estado);
+        return self::guardaOActualiza($e);
     }
 
     /**
@@ -369,6 +374,9 @@ public static function fechasDisponibles(DateTime $start, DateTime $end)
     
     private $id;
 
+    private $id_cliente;
+
+    private $estado;
     private $id_mecanico;
 
     private $title;
@@ -386,6 +394,7 @@ public static function fechasDisponibles(DateTime $start, DateTime $end)
         return $this->id;
     }
 
+
     public function getid_mecanico()
     {
         return $this->id_mecanico;
@@ -397,6 +406,27 @@ public static function fechasDisponibles(DateTime $start, DateTime $end)
             throw new \BadMethodCallException('$id_mecanico no puede ser una cadena vacía o nulo');
         }
         $this->id_mecanico = $id_mecanico;
+    }
+    public function getid_cliente()
+    {
+        return $this->id_cliente;
+    }
+    public function setid_cliente(int $id_cliente){
+        if (is_null($id_cliente)) {
+            throw new \BadMethodCallException('$id_cliente no puede ser una cadena vacía o nulo');
+        }
+        $this->id_cliente = $id_cliente;
+    }
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+    public function setEstado(int $estado)
+    {
+        if (is_null($estado)) {
+            throw new \BadMethodCallException('$estado no puede ser una cadena vacía o nulo');
+        }
+        $this->estado = $estado;
     }
 
     public function getTitle()

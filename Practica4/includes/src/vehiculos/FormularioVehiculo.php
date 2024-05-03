@@ -12,11 +12,18 @@ use es\ucm\fdi\aw\vehiculos\vehiculo;
 
 
 class FormularioVehiculo extends Formulario{
+
+    const EXTENSIONES_PERMITIDAS = array('gif', 'jpg', 'jpe', 'jpeg', 'png', 'webp', 'avif');
+
     public function __construct() {
-        parent::__construct('formVehiculo', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('alquiler.php')]);
+        parent::__construct('formVehiculo', ['enctype' => 'multipart/form-data', 'urlRedireccion' => Aplicacion::getInstance()->resuelve('alquiler.php')]);
     }
 
     protected function generaCamposFormulario(&$datos){
+
+        $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
+        $erroresCampos = self::generaErroresCampos(['matricula', 'marca', 'modelo', 'precio', 'year', 'imagen'], $this->errores, 'span', array('class' => 'error'));
+
         $matricula = $datos['matricula'] ?? '';
         $marca = $datos['marca'] ?? '';
         $modelo = $datos['modelo'] ?? '';
@@ -24,9 +31,7 @@ class FormularioVehiculo extends Formulario{
         $year = $datos['year'] ?? '';
         $imagen = $datos['imagen'] ?? '';
 
-        $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
-        $erroresCampos = self::generaErroresCampos(['matricula', 'marca', 'modelo', 'precio', 'year', 'imagen'], $this->errores, 'span', array('class' => 'error'));
-        
+                
         $html = <<<EOF
         $htmlErroresGlobales
         <div class="container-registro">
@@ -51,8 +56,8 @@ class FormularioVehiculo extends Formulario{
                 <input id="year" type="text" name="year" value="$year" />
                 {$erroresCampos['year']}
 
-                <label for="Imagen">Imagen:</label>
-                <input id="imagen" type="text" name="imagen" value="$imagen" />
+                <label for="imagen">Imagen:</label>
+                <input id="imagen" type="file" name="imagen"/>
                 {$erroresCampos['imagen']}
             
                 <button class="botonIni" type="submit" name="registro">Registrar</button>
@@ -93,11 +98,44 @@ class FormularioVehiculo extends Formulario{
             $this->errores['year'] = 'Las year no pueden estar vacías.';
         }
         
+        /*
         $imagen = $datos['imagen'] ?? '';
         $imagen = filter_var($imagen, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         if ( ! $imagen || empty($imagen) ) {
             $this->errores['imagen'] = 'La imagen no puede estar vacía.';
         }
+        */
+        
+        $ok = $_FILES['imagen']['error'] == UPLOAD_ERR_OK && count($_FILES) == 1;
+        if(!$ok){
+            $this->errores['imagen'] = 'Error en la subida de la imagen';
+            return;
+        }
+
+        $nombreArchivo = $_FILES['imagen']['name'];
+        //Valida el nombre del archivo 
+        $ok = self::check_file_uploaded_name($nombreArchivo) && self::check_file_uploaded_length($nombreArchivo);  
+        //Comprueba si la extension esta permitida
+        $extension = pathinfo($nombreArchivo, PATHINFO_EXTENSION);
+        $ok = $ok && in_array($extension, self::EXTENSIONES_PERMITIDAS);
+        //Comprueba el tipo mime del archivo corresponde a una imagen image
+        $finfo = new \finfo(FILEINFO_MIME_TYPE);
+        $mimeType = $finfo->file($_FILES['imagen']['tmp_name']);
+        $ok = $ok && preg_match('/image\/.+/', $mimeType) === 1;
+        if(!$ok){
+            $this->errores['imagen'] = 'La imagen no es válida';
+        }
+        if(count($this->errores) > 0){
+            return;
+        }
+        $tmp_name = $_FILES['imagen']['tmp_name'];
+        $fichero = "{$nombreArchivo}";
+        $ruta = "img/imgVehiculos/$fichero";
+        if(!move_uploaded_file($tmp_name, $ruta)){
+            $this->errores['imagen'] = 'Error al mover el archivo';
+            return;
+        }
+
         if (count($this->errores) === 0) {
            $vehiculo = Vehiculo::buscaPorMatricula($matricula);
            if($vehiculo){
@@ -105,7 +143,7 @@ class FormularioVehiculo extends Formulario{
             }
             else{
                
-                Vehiculo::crea($matricula, $marca, $modelo, $precio, $year, $imagen);
+                Vehiculo::crea($matricula, $marca, $modelo, $precio, $year, $ruta);
             }
            
                 
@@ -115,10 +153,12 @@ class FormularioVehiculo extends Formulario{
         }
     }
 
-    
-    
-    
-    
+    private static function check_file_uploaded_name($filename){
+        return (bool) ((preg_match('/^[0-9A-Z-_\.]+$/i', $filename) === 1) ? true : false);
+    }
 
-
+    private function check_file_uploaded_length($filename)
+    {
+        return (bool) ((mb_strlen($filename, 'UTF-8') < 250) ? true : false);
+    }
 }
