@@ -22,6 +22,7 @@ $app = Aplicacion::getInstance();
 	?>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<title><?= $params['tituloPagina'] ?></title>
 </head>
 <body>
@@ -43,5 +44,6 @@ $params['app']->doInclude('/vistas/comun/pie.php', $params);
 ?>
 
 <script src="js/cabecera.js"></script>
+
 </body>
 </html>

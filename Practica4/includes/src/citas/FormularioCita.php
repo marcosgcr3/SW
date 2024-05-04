@@ -46,11 +46,10 @@ class FormularioCita extends Formulario{
                 
     EOF;
     
-        if (!empty($dia)) {
-            // Llamada a la función para generar el desplegable de horas disponibles
-            $horasDisponibles = generarDesplegableHorario($dia);
-            $html .= $horasDisponibles;
-        }
+    if (!empty($dia)) {
+        $horasDisponibles = generarDesplegableHorario($dia);
+        $html .= $horasDisponibles;
+    }
     
         $html .= <<<EOF
             </select>
