@@ -9,6 +9,7 @@ use es\ucm\fdi\aw\citas\citas;
 use \DateTime;
 
 use es\ucm\fdi\aw\usuarios\Usuario;
+
 require_once 'procesaHorarioDisp.php';
 
 class FormularioCita extends Formulario{
@@ -34,30 +35,49 @@ class FormularioCita extends Formulario{
                 <label for="Asunto">Asunto:</label>
                 <input id="asunto" type="text" name="asunto" value="$asunto" />
                 {$erroresCampos['asunto']}
-
+    
                 <label for="Dia">Dia:</label>
                 <input id="dia" type="date" name="dia" value="$dia" />
                 {$erroresCampos['dia']}
-
+    
                 <label for='Hora'>Horario:</label>
                 <select id='hora' name='hora'>
                 <option value=''>Seleccione una hora</option>
                 
-                {$erroresCampos['hora']}
-
-
-        </div>
-
-        EOF;
-        $html .= generarDesplegableHorario($dia);
-
-
+    EOF;
+    
+        if (!empty($dia)) {
+            // Llamada a la función para generar el desplegable de horas disponibles
+            $horasDisponibles = generarDesplegableHorario($dia);
+            $html .= $horasDisponibles;
+        }
+    
         $html .= <<<EOF
             </select>
             {$erroresCampos['hora']}
+        </div>
             <button class="botonIni" type="submit" name="registro">Registrar</button>
+    EOF;
+    
+        // Script de jQuery para actualizar las horas disponibles al cambiar la fecha
+        $html .= <<<EOF
+        <script>
+        $(document).ready(function() {
+            $('#dia').change(function() {
+                var diaSeleccionado = $(this).val();
+                $.ajax({
+                    type: 'POST',
+                    url: 'actualizaHorario.php', // Ruta al archivo que procesará la solicitud AJAX
+                    data: {'dia': diaSeleccionado},
+                    success: function(data) {
+                        $('#hora').html(data);
+                    }
+                });
+            });
+        });
+        </script>
         EOF;
-
+    
         return $html;
     }protected function procesaFormulario(&$datos)
     {
