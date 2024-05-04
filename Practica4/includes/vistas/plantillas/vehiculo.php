@@ -6,6 +6,7 @@ use es\ucm\fdi\aw\Aplicacion;
 function buildVehiculo($vehiculo)
 {
     $contenido = '';
+    $archivado = $vehiculo->getArchivado();
     $matricula = $vehiculo->getMatricula();
     $marca = $vehiculo->getMarca();
     $modelo = $vehiculo->getModelo();
@@ -21,6 +22,7 @@ function buildVehiculo($vehiculo)
                 <h2>$marca : $modelo ($year)</h2>
                 <p>$matricula</p>
                 <p>Precio: $precio&euro;</p>
+                <p>Archivado: $archivado</p>
                
                 
             
@@ -37,6 +39,14 @@ function buildVehiculo($vehiculo)
                 <input type="hidden" name="matricula" value="$matricula">
             </form>
             <i id="iconoEditar" onclick="document.getElementById('formEditarVehiculo_$matricula').submit();">Editar</i>
+
+            
+            <form action="archivarVehiculo.php" method="post">
+                <input type="hidden" name="matricula" value="$matricula">
+                <button class="iconoArchivar" type="submit">ARCHIVAR</button>
+            </form>
+            
+
 
         </div></div>
         EOS;

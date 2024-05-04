@@ -12,7 +12,7 @@ class Vehiculo
     public static function crea($matricula,$marca, $modelo, $precio,$year, $imagen)
     {   
         
-        $producto = new Vehiculo($matricula, $marca,$modelo, $precio,$year, 'si', $imagen);
+        $producto = new Vehiculo($matricula, $marca,$modelo, $precio,$year, 'si', 0, $imagen);
         
         return $producto->guarda();
     }
@@ -25,7 +25,7 @@ class Vehiculo
         if ($rs) {
             $fila = $rs->fetch_assoc();
             if ($fila) {
-                $result = new Vehiculo( $fila['matricula'], $fila['marca'], $fila['modelo'], $fila['precio'], $fila['year'],$fila['disponibilidad'], $fila['imagen'], $fila['id_vehiculo']);
+                $result = new Vehiculo( $fila['matricula'], $fila['marca'], $fila['modelo'], $fila['precio'], $fila['year'],$fila['disponibilidad'], $fila['archivado'], $fila['imagen'], $fila['id_vehiculo']);
             }
             $rs->free();
         } else {
@@ -43,7 +43,7 @@ class Vehiculo
         if ($rs) {
             $fila = $rs->fetch_assoc();
             if ($fila) {
-                $result = new Vehiculo( $fila['matricula'], $fila['marca'], $fila['modelo'], $fila['precio'],$fila['year'], $fila['disponibilidad'], $fila['imagen']. $fila['id_vehiculo']);
+                $result = new Vehiculo( $fila['matricula'], $fila['marca'], $fila['modelo'], $fila['precio'],$fila['year'], $fila['disponibilidad'], $fila['archivado'], $fila['imagen']. $fila['id_vehiculo']);
             }
             $rs->free();
         } else {
@@ -60,7 +60,7 @@ class Vehiculo
         if ($rs) {
             $fila = $rs->fetch_assoc();
             if ($fila) {
-                $result = new Vehiculo( $fila['matricula'], $fila['marca'], $fila['modelo'], $fila['precio'], $fila['year'],$fila['disponibilidad'], $fila['imagen'], $fila['id_vehiculo']);
+                $result = new Vehiculo( $fila['matricula'], $fila['marca'], $fila['modelo'], $fila['precio'], $fila['year'],$fila['disponibilidad'], $fila['archivado'], $fila['imagen'], $fila['id_vehiculo']);
             }
             $rs->free();
         } else {
@@ -76,7 +76,7 @@ class Vehiculo
         $rs = $conn->query($query);
         if ($rs) {
             while($fila = $rs->fetch_assoc()) {
-                $vehiculo = new Vehiculo( $fila['matricula'], $fila['marca'], $fila['modelo'], $fila['precio'], $fila['year'],$fila['disponibilidad'], $fila['imagen'], $fila['id_vehiculo']);
+                $vehiculo = new Vehiculo( $fila['matricula'], $fila['marca'], $fila['modelo'], $fila['precio'], $fila['year'],$fila['disponibilidad'], $fila['archivado'], $fila['imagen'], $fila['id_vehiculo']);
                 array_push($lista_vehiculos, $vehiculo);
             }
             $rs->free();
@@ -89,11 +89,11 @@ class Vehiculo
     {
         $lista_vehiculos = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "SELECT * FROM vehiculos WHERE disponibilidad='si' ";
+        $query = "SELECT * FROM vehiculos WHERE archivado= '0' AND disponibilidad='si' ";
         $rs = $conn->query($query);
         if ($rs) {
             while($fila = $rs->fetch_assoc()) {
-                $vehiculo = new Vehiculo( $fila['matricula'], $fila['marca'], $fila['modelo'], $fila['precio'], $fila['year'],$fila['disponibilidad'], $fila['imagen'], $fila['id_vehiculo']);
+                $vehiculo = new Vehiculo( $fila['matricula'], $fila['marca'], $fila['modelo'], $fila['precio'], $fila['year'],$fila['disponibilidad'], $fila['archivado'], $fila['imagen'], $fila['id_vehiculo']);
                 array_push($lista_vehiculos, $vehiculo);
             }
             $rs->free();
@@ -108,10 +108,11 @@ class Vehiculo
     private $modelo;
     private $precio;
     private $year;
+    private $archivado;
     private $disponibilidad;
     private $imagen;
 
-    public function __construct($matricula, $marca, $modelo, $precio,$year, $disponibilidad, $imagen, $id_vehiculo=null)
+    public function __construct($matricula, $marca, $modelo, $precio,$year, $disponibilidad, $archivado, $imagen, $id_vehiculo=null)
     {
         $this->id_vehiculo = $id_vehiculo;
         $this->matricula = $matricula;
@@ -119,11 +120,15 @@ class Vehiculo
         $this->modelo = $modelo;
         $this->precio = $precio;
         $this->year = $year;
+        $this->archivado = $archivado;
         $this->disponibilidad = $disponibilidad;
         $this->imagen = $imagen;
 
     }
 
+    public function setArchivado($archivado){
+        $this->archivado = $archivado;
+    }
     public function getId()
     {
         return $this->id_vehiculo;
@@ -143,6 +148,9 @@ class Vehiculo
     public function getPrecio()
     {
         return $this->precio;
+    }
+    public function getArchivado(){
+        return $this->archivado;
     }
     public function getDisponibilidad()
     {
@@ -233,7 +241,7 @@ class Vehiculo
             
             $vehiculo->disponibilidad = 'no';
         } else {
-            $query_last_rental = sprintf("SELECT estado FROM alquileres WHERE id_vehiculo = '%s' ", $vehiculo->getId());
+            $query_last_rental = sprintf("SELECT estado FROM alquileres WHERE id_vehiculo = '%s'", $vehiculo->getId());
             $rs_last_rental = $conn->query($query_last_rental);
 
             if ($rs_last_rental && $rs_last_rental->num_rows > 0) {
@@ -250,7 +258,7 @@ class Vehiculo
         }
 
        
-        $query = sprintf("UPDATE vehiculos SET disponibilidad='%s' WHERE id_vehiculo ='%s'", $vehiculo->getDisponibilidad(), $vehiculo->getId());
+        $query = sprintf("UPDATE vehiculos SET disponibilidad='%s' WHERE id_vehiculo ='%s' AND archivado= '0'", $vehiculo->getDisponibilidad(), $vehiculo->getId());
         $rs = $conn->query($query);
         if ($rs) {
             if ($conn->affected_rows != 1) {
@@ -261,6 +269,24 @@ class Vehiculo
         }
     }
 }
+
+public static function archivarVehiculo($vehiculo){
+
+    $arch = !$vehiculo->archivado;
+    $result = false;
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("UPDATE vehiculos SET archivado='%d' WHERE matricula='%s'", $arch, $vehiculo->getMatricula());
+        if ( $conn->query($query) ) {
+            if ( $conn->affected_rows == 0) {
+                error_log("No se ha eliminado el vehiculo");
+            }
+            $result = true;
+        } else {
+            error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
+        }
+        return $result;
+}
+
     public static function cambiarDisponibilidad($vehiculo)
 {
     $conn = Aplicacion::getInstance()->getConexionBd();
@@ -268,7 +294,7 @@ class Vehiculo
     $fechaActual = date('Y-m-d');
 
     
-    $query = sprintf("SELECT * FROM alquileres WHERE id_vehiculo = '%s' AND fecha_inicio <= '%s' AND fecha_fin >= '%s'", $vehiculo->id_vehiculo, $fechaActual, $fechaActual);
+    $query = sprintf("SELECT * FROM alquileres WHERE id_vehiculo = '%s' AND fecha_inicio <= '%s' AND fecha_fin >= '%s' AND archivado= '0'", $vehiculo->id_vehiculo, $fechaActual, $fechaActual);
     $rs = $conn->query($query);
     
     if ($rs && $rs->num_rows > 0) {
@@ -278,7 +304,7 @@ class Vehiculo
        
         $vehiculo->disponibilidad = 'si';
     }
-    $query = sprintf("UPDATE vehiculos SET disponibilidad='%s' WHERE id_vehiculo ='%s'", $vehiculo->disponibilidad, $vehiculo->id_vehiculo);
+    $query = sprintf("UPDATE vehiculos SET disponibilidad='%s' WHERE id_vehiculo ='%s' AND archivado= '0'", $vehiculo->disponibilidad, $vehiculo->id_vehiculo);
     $rs = $conn->query($query);
     if ($rs) {
         if ($conn->affected_rows != 1) {
@@ -293,8 +319,8 @@ class Vehiculo
     {
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("INSERT INTO vehiculos (matricula, marca, modelo, precio, year ,disponibilidad, imagen) 
-        VALUES ('$vehiculo->matricula', '$vehiculo->marca', '$vehiculo->modelo', '$vehiculo->precio', '$vehiculo->year', '$vehiculo->disponibilidad', '$vehiculo->imagen')");
+        $query = sprintf("INSERT INTO vehiculos (matricula, marca, modelo, precio, year , archivar, disponibilidad, imagen) 
+        VALUES ('$vehiculo->matricula', '$vehiculo->marca', '$vehiculo->modelo', '$vehiculo->precio', '$vehiculo->year', '$vehiculo->archivado', '$vehiculo->disponibilidad', '$vehiculo->imagen')");
         if ( $conn->query($query) ) {
             $result = true;
         } else {
