@@ -12,6 +12,9 @@ use es\ucm\fdi\aw\usuarios\Usuario;
 
 require_once 'procesaHorarioDisp.php';
 
+
+    
+
 class FormularioCita extends Formulario{
 
     public function __construct() {
@@ -59,23 +62,7 @@ class FormularioCita extends Formulario{
     EOF;
     
         // Script de jQuery para actualizar las horas disponibles al cambiar la fecha
-        $html .= <<<EOF
-        <script>
-        $(document).ready(function() {
-            $('#dia').change(function() {
-                var diaSeleccionado = $(this).val();
-                $.ajax({
-                    type: 'POST',
-                    url: 'actualizaHorario.php', // Ruta al archivo que procesará la solicitud AJAX
-                    data: {'dia': diaSeleccionado},
-                    success: function(data) {
-                        $('#hora').html(data);
-                    }
-                });
-            });
-        });
-        </script>
-        EOF;
+     
     
         return $html;
     }protected function procesaFormulario(&$datos)

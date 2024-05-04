@@ -107,53 +107,39 @@ class Evento implements \JsonSerializable
 
 public static function fechasDisponibles(DateTime $start, DateTime $end)
 {
+ 
+    
     $startDate = $start->format(self::MYSQL_DATE_TIME_FORMAT);
     if (!$startDate) {
-        throw new \BadMethodCallException('$start no sigue el formato válido: '.self::MYSQL_DATE_TIME_FORMAT);
+        throw new \BadMethodCallException('$diccionario[\'start\'] no sigue el formato válido: '.self::MYSQL_DATE_TIME_FORMAT);
     }
     
     $endDate = null;
     if ($end) {
         $endDate =  $end->format(self::MYSQL_DATE_TIME_FORMAT);
         if (!$endDate) {
-            throw new \BadMethodCallException('$end no sigue el formato válido: '.self::MYSQL_DATE_TIME_FORMAT);
+            throw new \BadMethodCallException('$diccionario[\'end\'] no sigue el formato válido: '.self::MYSQL_DATE_TIME_FORMAT);
         }
     }
     
     $conn = App::getInstance()->getConexionBd();
     
-    // Inicializar el resultado como null
-    $result = [];
-    
-    // Iterar día por día y hora por hora dentro del rango de fechas
-    $currentDate = clone $start;
-    while ($currentDate <= $end) {
-        $currentDateTime = $currentDate->format(self::MYSQL_DATE_TIME_FORMAT);
-        $currentDateF = clone $currentDate;
-        $currentDateF->add(new DateInterval('PT1H'));
-        $currentDateTimeF = $currentDateF->format(self::MYSQL_DATE_TIME_FORMAT);
-        // Contar el número de eventos para el día y hora actual
-        $query = sprintf("SELECT COUNT(*) AS num_eventos FROM citas WHERE '%s' >= startDate AND '%s' < endDate", $currentDateTime, $currentDateTimeF );
-        $rs = $conn->query($query);
-        $fila = $rs->fetch_assoc();
-        $numEventos = intval($fila['num_eventos']);
-        
-        // Obtener el número de mecánicos
-        $numMecanicos =self::cuentaMecanicosDistintos();
-        
-        // Si el número de eventos es igual al número de mecánicos, establecer el evento "ocupado"
-        if ($numEventos == $numMecanicos) {
-            $ocupado = new Evento();
-            $ocupado->setTitle("Ocupado");
-            $ocupado->setStart(new DateTime($currentDateTime));
-            $ocupado->setEnd(new DateTime($currentDateTimeF));
-            $result[] = $ocupado;
-        }
-        
-        // Incrementar la fecha y hora
-        $currentDate->add(new DateInterval('PT1H'));
+    $query = sprintf("SELECT C.id, C.title, C.id_mecanico, C.startDate AS start, C.endDate AS end  FROM citas C WHERE  C.startDate >= '%s'", $startDate);
+    if ($endDate) {
+        $query = sprintf($query . " AND C.startDate <= '%s'", $endDate);
     }
     
+    $result = [];
+    
+    $rs = $conn->query($query);
+    if ($rs) {
+        while($fila = $rs->fetch_assoc()) {
+            $e = new Evento();
+            $e->asignaDesdeDiccionario($fila);
+            $result[] = $e;
+        }
+        $rs->free();
+    }
     return $result;
 }
     
