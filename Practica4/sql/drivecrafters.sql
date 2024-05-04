@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: vm008.db.swarm.test
--- Tiempo de generación: 27-04-2024 a las 19:29:22
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 04-05-2024 a las 15:31:24
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -44,12 +44,12 @@ CREATE TABLE `alquileres` (
 --
 
 CREATE TABLE `citas` (
-  `id_cita` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `id_cliente` int(11) NOT NULL,
   `id_mecanico` int(11) NOT NULL,
-  `dia` date NOT NULL,
-  `hora` int(11) NOT NULL,
-  `asunto` text NOT NULL,
+  `startDate` datetime NOT NULL,
+  `endDate` datetime NOT NULL,
+  `title` text NOT NULL,
   `estado` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -143,7 +143,8 @@ ALTER TABLE `alquileres`
 -- Indices de la tabla `citas`
 --
 ALTER TABLE `citas`
-  ADD PRIMARY KEY (`id_cita`);
+  ADD PRIMARY KEY (`id`) USING BTREE,
+  ADD KEY `citass` (`id_mecanico`);
 
 --
 -- Indices de la tabla `pedido`
@@ -193,7 +194,7 @@ ALTER TABLE `alquileres`
 -- AUTO_INCREMENT de la tabla `citas`
 --
 ALTER TABLE `citas`
-  MODIFY `id_cita` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `pedido`
