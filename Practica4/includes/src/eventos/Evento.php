@@ -30,7 +30,7 @@ class Evento implements \JsonSerializable
         $result = [];
         $app = App::getSingleton();
         $conn = $app->conexionBd();
-        $query = sprintf('SELECT C.id_cita, C.id_mecanico AS id_mecanico, C.title, C.startDate AS start, C.endDate AS end FROM citas C WHERE C.id_mecanico = %d'
+        $query = sprintf('SELECT C.id, C.id_cliente, C.id_mecanico AS id_mecanico, C.title, C.startDate AS start, C.endDate AS end FROM citas C WHERE C.id_mecanico = %d'
             , $id_mecanico);
 
             $rs = $conn->query($query);
@@ -63,7 +63,7 @@ class Evento implements \JsonSerializable
         $result = null;
         $app = App::getSingleton();
         $conn = $app->conexionBd();
-        $query = sprintf("SELECT C.id_cita, C.title, C.id_mecanico, C.startDate AS start, C.endDate AS end FROM citas C WHERE C.id_cita = %d", $idEvento);
+        $query = sprintf("SELECT C.id, C.id_cliente, C.title, C.id_mecanico, C.startDate AS start, C.endDate AS end FROM citas C WHERE C.id = %d", $idEvento);
         $rs = $conn->query($query);
         if ($rs && $rs->num_rows == 1) {
             while($fila = $rs->fetch_assoc()) {
@@ -128,7 +128,7 @@ public static function fechasDisponibles(DateTime $start, DateTime $end)
     
     $conn = App::getInstance()->getConexionBd();
     
-    $query = sprintf("SELECT C.id, C.title, C.id_mecanico, C.startDate AS start, C.endDate AS end  FROM citas C WHERE  C.startDate >= '%s'", $startDate);
+    $query = sprintf("SELECT C.id, C.id_cliente, C.title, C.id_mecanico, C.startDate AS start, C.endDate AS end  FROM citas C WHERE  C.startDate >= '%s'", $startDate);
     if ($endDate) {
         $query = sprintf($query . " AND C.startDate <= '%s'", $endDate);
     }
@@ -169,7 +169,7 @@ public static function fechasDisponibles(DateTime $start, DateTime $end)
         $app = App::getSingleton();
         $conn = $app->conexionBd();
         
-        $query = sprintf("SELECT C.id, C.title, C.id_mecanico, C.startDate AS start, C.endDate AS end  FROM citas C WHERE C.id_mecanico=%d AND C.startDate >= '%s'", $id_mecanico, $startDate);
+        $query = sprintf("SELECT C.id, id_cliente, C.title, C.id_mecanico, C.startDate AS start, C.endDate AS end  FROM citas C WHERE C.id_mecanico=%d AND C.startDate >= '%s'", $id_mecanico, $startDate);
         if ($endDate) {
             $query = sprintf($query . " AND C.startDate <= '%s'", $endDate);
         }
@@ -270,11 +270,11 @@ public static function fechasDisponibles(DateTime $start, DateTime $end)
      * @param string $title Título del evento.
      *
      */
-    public static function creaSimple(int $id_mecanico, string $title)
+    public static function creaSimple(int $id_cliente, int $id_mecanico, string $title)
     {
         $start = new \DateTime();
         $end = $start->add(new \DateInterval('PT1H'));
-        return self::creaDetallado($id_mecanico, $title, $start, $end);
+        return self::creaDetallado($id_cliente, $id_mecanico, $title, $start, $end);
     }
   
     /**
@@ -285,14 +285,14 @@ public static function fechasDisponibles(DateTime $start, DateTime $end)
      * @param string $title Título del evento.
      * @param DateTime $start Fecha y horas de comienzo.
      */
-    public static function creaComenzandoEn(int $id_mecanico, string $title, \DateTime $start)
+    public static function creaComenzandoEn(int $id_cliente, int $id_mecanico, string $title, \DateTime $start)
     {    
         if (empty($start)) {
             throw new \BadMethodCallException('$start debe ser un timestamp valido no nulo');
         }
 
         $end = $start->add(new \DateInterval('PT1H'));
-        return self::creaDetallado($id_mecanico, $title, $start, $end);
+        return self::creaDetallado($id_cliente, $id_mecanico, $title, $start, $end);
     }
   
     /**
@@ -327,7 +327,7 @@ public static function fechasDisponibles(DateTime $start, DateTime $end)
     public static function creaDesdeDicionario(array $diccionario)
     {
         $e = new Evento();
-        $e->asignaDesdeDiccionario($diccionario, ['id_mecanico', 'title', 'start', 'end']);
+        $e->asignaDesdeDiccionario($diccionario, ['id_cliente', 'id_mecanico', 'title', 'start', 'end']);
         return $e;
     }
     
@@ -362,7 +362,7 @@ public static function fechasDisponibles(DateTime $start, DateTime $end)
     /**
      * @param array[string] Nombre de las propiedades de la clase.
      */
-    const PROPERTIES = ['id', 'id_mecanico', 'title', 'start', 'end'];
+    const PROPERTIES = ['id', 'id_cliente', 'id_mecanico', 'title', 'start', 'end'];
     
     private $id;
 
@@ -491,6 +491,7 @@ public static function fechasDisponibles(DateTime $start, DateTime $end)
     {
         $o = new \stdClass();
         $o->id = $this->id;
+        $o->id_cliente = $this->id_cliente;
         $o->id_mecanico = $this->id_mecanico;
         $o->title = $this->title;
         $o->start = $this->start->format(self::MYSQL_DATE_TIME_FORMAT);
@@ -553,6 +554,17 @@ public static function fechasDisponibles(DateTime $start, DateTime $end)
                 throw new \BadMethodCallException('$diccionario[\'id\'] tiene que ser un número entero');
             } else {
                 $this->id =(int)$id;
+            }
+        }
+
+        if (array_key_exists('id_cliente', $diccionario)) {
+            $id_cliente = $diccionario['id_cliente'];
+            if (empty($id_cliente)) {
+                throw new \BadMethodCallException('$diccionario[\'id_cliente\'] no puede ser una cadena vacía o nulo');
+            } else if (!is_int($id_cliente) && ! ctype_digit($id_cliente)) {
+                throw new \BadMethodCallException('$diccionario[\'id_cliente\'] tiene que ser un número entero: '.$id_cliente);
+            } else {
+                $this->setid_cliente((int)$id_cliente);
             }
         }
 

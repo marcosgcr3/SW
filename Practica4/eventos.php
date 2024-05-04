@@ -88,7 +88,8 @@ switch($_SERVER['REQUEST_METHOD']) {
         
         // 3. Reprocesamos el cuerpo de la petición como un array PHP
         $dictionary = json_decode($entityBody, true);
-        $dictionary['id_mecanico'] = 1;// HACK: normalmente debería de ser App::getSingleton()->idUsuario();
+        $dictionary['id_mecanico'] = 12;// HACK: normalmente debería de ser App::getSingleton()->idUsuario();
+        $dictionary['id_cliente'] = $_SESSION['id'];
         $e = Evento::creaDesdeDicionario($dictionary);
         
         // 4. Guardamos el evento en BD
@@ -118,7 +119,7 @@ switch($_SERVER['REQUEST_METHOD']) {
         // 4. Reprocesamos el cuerpo de la petición como un array PHP
         $dictionary = json_decode($entityBody, true);
         $e = Evento::buscaPorId($idEvento);
-        $e->actualizaDesdeDiccionario($dictionary, ['id', 'id_mecanico']);
+        $e->actualizaDesdeDiccionario($dictionary, ['id', 'id_cliente', 'id_mecanico']);
         $result = Evento::guardaOActualiza($e);
         
         // 5. Generamos un objecto como salida.
