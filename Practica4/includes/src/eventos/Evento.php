@@ -28,23 +28,24 @@ class Evento implements \JsonSerializable
         }
 
         $result = [];
-        $conn = App::getInstance()->getConexionBd();
+        $app = App::getSingleton();
+        $conn = $app->conexionBd();
         $query = sprintf('SELECT C.id_cita, C.id_mecanico AS id_mecanico, C.title, C.startDate AS start, C.endDate AS end FROM citas C WHERE C.id_mecanico = %d'
             , $id_mecanico);
 
-        $rs = $conn->query($query);
-        if ($rs) {
-            while($fila = $rs->fetch_assoc()) {
-                $e = new Evento();
-                $e->asignaDesdeDiccionario($fila);
-                $result[] = $e;
+            $rs = $conn->query($query);
+            if ($rs) {
+                while($fila = $rs->fetch_assoc()) {
+                    $e = new Evento();
+                    $e->asignaDesdeDiccionario($fila);
+                    $result[] = $e;
+                }
+                $rs->free();
+            } else {
+                throw new DataAccessException("Se esperaba 1 evento y se han obtenido: ".$rs->num_rows);
             }
-            $rs->free();
-        } else {
-            throw new DataAccessException("Se esperaba 1 evento y se han obtenido: ".$rs->num_rows);
+            return $result;
         }
-        return $result;
-    }
 
     /**
      * Busca un evento con id $idEvento.
@@ -60,7 +61,8 @@ class Evento implements \JsonSerializable
         }
 
         $result = null;
-        $conn = App::getInstance()->getConexionBd();
+        $app = App::getSingleton();
+        $conn = $app->conexionBd();
         $query = sprintf("SELECT C.id_cita, C.title, C.id_mecanico, C.startDate AS start, C.endDate AS end FROM citas C WHERE C.id_cita = %d", $idEvento);
         $rs = $conn->query($query);
         if ($rs && $rs->num_rows == 1) {
@@ -89,7 +91,9 @@ class Evento implements \JsonSerializable
      */
     public static function cuentaMecanicosDistintos()
 {
-    $conn = App::getInstance()->getConexionBd();
+    $result = null;
+    $app = App::getSingleton();
+    $conn = $app->conexionBd();
     
     $query = "SELECT COUNT(DISTINCT id_mecanico) AS num_mecanicos FROM citas";
     
@@ -162,7 +166,8 @@ public static function fechasDisponibles(DateTime $start, DateTime $end)
             }
         }
         
-        $conn = App::getInstance()->getConexionBd();
+        $app = App::getSingleton();
+        $conn = $app->conexionBd();
         
         $query = sprintf("SELECT C.id, C.title, C.id_mecanico, C.startDate AS start, C.endDate AS end  FROM citas C WHERE C.id_mecanico=%d AND C.startDate >= '%s'", $id_mecanico, $startDate);
         if ($endDate) {
@@ -242,7 +247,8 @@ public static function fechasDisponibles(DateTime $start, DateTime $end)
             throw new \BadMethodCallException('$idEvento no puede ser nulo.');
         }
         $result = false;
-        $conn = App::getInstance()->getConexionBd();
+        $app = App::getSingleton();
+        $conn = $app->conexionBd();
         $query = sprintf('DELETE FROM citas WHERE id=%d', $idEvento);
         $result = $conn->query($query);
         if ($result && $conn->affected_rows == 1) {
@@ -474,11 +480,13 @@ public static function fechasDisponibles(DateTime $start, DateTime $end)
         }
     }
    
+       
     /**
      * Método utilizado por la función de PHP json_encode para serializar un objeto que no tiene atributos públicos.
      *
      * @return Devuelve un objeto con propiedades públicas y que represente el estado de este evento.
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         $o = new \stdClass();

@@ -61,7 +61,7 @@ $contenidoPrincipal = <<<HTML
           var event = info.event;
           var e = {
             "id": event.id,
-            "userId": event.userId,
+            "id_mecanico": event.id_mecanico,
             "start": moment(event.start).format("Y-MM-DD HH:mm:ss"),
             "end": moment(event.end).format("Y-MM-DD HH:mm:ss"),
             "title": event.title
@@ -90,7 +90,7 @@ $contenidoPrincipal = <<<HTML
          }
           var e = {
             "id": event.id,
-            "userId": event.userId,
+            "id_mecanico": event.id_mecanico,
             "start": moment(event.start).format("Y-MM-DD HH:mm:ss"),
             "end": moment(event.end).format("Y-MM-DD HH:mm:ss"),
             "title": event.title
