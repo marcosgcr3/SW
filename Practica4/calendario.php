@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__.'/includes/config.php';
 $tituloPagina = "Calendario";
-$ev = filter_input(INPUT_GET, 'tipo');
+$ev = filter_input(INPUT_GET, 'tipo', FILTER_SANITIZE_SPECIAL_CHARS);
 $contenidoPrincipal = <<<HTML
 <head>
   <title>JQuery Full Calendar</title>
@@ -28,7 +28,7 @@ $contenidoPrincipal = <<<HTML
           center: 'title',
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
-        events: $ev,
+        events: '$ev',
         editable: false,
         slotDuration: '01:00:00',
         businessHours: {
@@ -145,7 +145,7 @@ $contenidoPrincipal = <<<HTML
               "title": title
             };
             $.ajax({
-              url: $ev,
+              url: '$ev',
               type: "POST",
               contentType: 'application/json; charset=utf-8',
               dataType: "json",
