@@ -107,43 +107,6 @@ class Evento implements \JsonSerializable
     }
 }
 
-public static function misCitas(int $id_cliente, DateTime $start, DateTime $end){
-    if (!$id_cliente) {
-        throw new \BadMethodCallException('$id_cliente no puede ser nulo.');
-    }
-    $startDate = $start->format(self::MYSQL_DATE_TIME_FORMAT);
-    if (!$startDate) {
-        throw new \BadMethodCallException('$start no sigue el formato válido: '.self::MYSQL_DATE_TIME_FORMAT);
-    }
-    
-    $endDate = null;
-    if ($end) {
-        $endDate =  $end->format(self::MYSQL_DATE_TIME_FORMAT);
-        if (!$endDate) {
-            throw new \BadMethodCallException('$end no sigue el formato válido: '.self::MYSQL_DATE_TIME_FORMAT);
-        }
-    }
-    
-    $conn = App::getInstance()->getConexionBd();
-    
-    $result = [];
-    
-    $query = sprintf("SELECT C.id, id_mecanico, C.title, C.startDate AS start, C.endDate AS end  FROM citas C WHERE C.id_cliente=%d AND C.startDate >= '%s'", $id_cliente, $startDate);
-    if ($endDate) {
-        $query = sprintf($query . " AND C.startDate <= '%s'", $endDate);
-    }
-    
-    $rs = $conn->query($query);
-    if ($rs) {
-        while($fila = $rs->fetch_assoc()) {
-            $e = new Evento();
-            $e->asignaDesdeDiccionario($fila);
-            $result[] = $e;
-        }
-        $rs->free();
-    }
-    return $result;
-}
 
 public static function fechasDisponibles(int $id_cliente, DateTime $start, DateTime $end)
 {
@@ -252,7 +215,45 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
         }
         return $result;
     }
-
+    public static function misCitas(int $id_cliente, DateTime $start, DateTime $end){
+        if (!$id_cliente) {
+            throw new \BadMethodCallException('$id_cliente no puede ser nulo.');
+        }
+        $startDate = $start->format(self::MYSQL_DATE_TIME_FORMAT);
+        if (!$startDate) {
+            throw new \BadMethodCallException('$start no sigue el formato válido: '.self::MYSQL_DATE_TIME_FORMAT);
+        }
+        
+        $endDate = null;
+        if ($end) {
+            $endDate =  $end->format(self::MYSQL_DATE_TIME_FORMAT);
+            if (!$endDate) {
+                throw new \BadMethodCallException('$end no sigue el formato válido: '.self::MYSQL_DATE_TIME_FORMAT);
+            }
+        }
+        
+        $conn = App::getInstance()->getConexionBd();
+        
+        $result = [];
+        
+        $query = sprintf("SELECT C.id, C.id_cliente, C.estado, C.title, C.id_mecanico, C.startDate  AS start, C.endDate AS end  FROM citas C WHERE C.id_cliente=%d AND C.startDate >= '%s'", $id_cliente, $startDate);
+        if ($endDate) {
+            $query = sprintf($query . " AND C.startDate <= '%s'", $endDate);
+        }
+        
+        $result = [];
+        
+        $rs = $conn->query($query);
+        if ($rs) {
+            while($fila = $rs->fetch_assoc()) {
+                $e = new Evento();
+                $e->asignaDesdeDiccionario($fila);
+                $result[] = $e;
+            }
+            $rs->free();
+        }
+        return $result;
+    }
     
     /**
      * Guarda o actualiza un evento $evento en la BD.
@@ -392,7 +393,7 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
     public static function creaDesdeDicionario(array $diccionario)
     {
         $e = new Evento();
-        $e->asignaDesdeDiccionario($diccionario, ['id_cliente', 'id_mecanico', 'title', 'start', 'end']);
+        $e->asignaDesdeDiccionario($diccionario, ['id_cliente', 'id_mecanico', 'title', 'start', 'end','estado']);
         return $e;
     }
     
@@ -427,7 +428,7 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
     /**
      * @param array[string] Nombre de las propiedades de la clase.
      */
-    const PROPERTIES = ['id', 'id_cliente', 'id_mecanico', 'title', 'start', 'end'];
+    const PROPERTIES = ['id', 'id_cliente', 'id_mecanico', 'title', 'start', 'end', 'estado'];
     
     private $id;
 
@@ -561,6 +562,7 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
         $o->title = $this->title;
         $o->start = $this->start->format(self::MYSQL_DATE_TIME_FORMAT);
         $o->end = $this->end->format(self::MYSQL_DATE_TIME_FORMAT);
+        $o->estado = $this->estado;
         return $o;
     }
  
@@ -681,6 +683,12 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
                 $this->end = $endDate;
             }
         }
+        if (array_key_exists('estado', $diccionario)){
+            $estado = $diccionario['estado'] ?? null;
+            $this->estado = $estado;
+
+        }
+        
         
         self::compruebaConsistenciaFechas($this->start, $this->end);
         

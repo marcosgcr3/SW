@@ -28,6 +28,27 @@ $contenidoPrincipal = <<<HTML
           center: 'title',
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
+        eventDidMount: function(info) {
+          var event = info.event;
+          var backgroundColor;
+          switch (event.extendedProps.estado) {
+            case 0:
+              backgroundColor = 'green';
+              break;
+            case 1:
+              backgroundColor = '#a89400';
+              
+              break;
+            case 2:
+              backgroundColor = 'red';
+              break;
+            default:
+              backgroundColor = 'black';
+              break;
+          }
+          event.setProp('backgroundColor', backgroundColor);
+        },
+        
         events: '$ev',
         editable: false,
         slotDuration: '01:00:00',

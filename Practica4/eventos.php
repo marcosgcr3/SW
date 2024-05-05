@@ -55,14 +55,15 @@ $result = null;
                         $result = Evento::fechasDisponibles($_SESSION['id'], $startDateTime, $endDateTime);
                        
                     }
-
+                    
+                    
                 } else {
                     http_response_code(400);
                     echo 'Parámetros start o end incorrectos';
                     die();
                 }
             }
-
+            
             // Generamos un array de eventos en formato JSON
             $json = json_encode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
 
