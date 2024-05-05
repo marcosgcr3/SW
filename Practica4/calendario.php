@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__.'/includes/config.php';
 $tituloPagina = "Calendario";
+$ev = filter_input(INPUT_GET, 'tipo');
 $contenidoPrincipal = <<<HTML
 <head>
   <title>JQuery Full Calendar</title>
@@ -12,8 +13,11 @@ $contenidoPrincipal = <<<HTML
   <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/moment@5.11.0/main.global.min.js" integrity="sha256-oh4hswY1cPEqPhNdKfg+n3jATZilO3u2v7qAyYG3lVM=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha256-9SEPo+fwJFpMUet/KACSwO+Z/dKMReF9q4zFhU/fT9M=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  
   <script>
     
+  
+
     $(document).ready(function() {
       var calendarEl = $('#calendar')[0]
       var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -24,8 +28,8 @@ $contenidoPrincipal = <<<HTML
           center: 'title',
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
-        events: 'eventos.php',
-        editable: true,
+        events: $ev,
+        editable: false,
         slotDuration: '01:00:00',
         businessHours: {
           // Días hábiles de lunes a viernes
@@ -57,7 +61,7 @@ $contenidoPrincipal = <<<HTML
           return true; // Permitir selección en los demás días
         },
         // Ejecutado al cambiar la duración del evento arrastrando
-        eventResize: function(info) {
+       /* eventResize: function(info) {
           var event = info.event;
           var e = {
             "id": event.id,
@@ -106,7 +110,7 @@ $contenidoPrincipal = <<<HTML
               alert('Evento actualizado');
             }
           }); 
-        },
+        },*/
         // Ejecutado al hacer click sobre un evento
         eventClick: function(info) {
           var event = info.event;
@@ -141,7 +145,7 @@ $contenidoPrincipal = <<<HTML
               "title": title
             };
             $.ajax({
-              url: "eventos.php",
+              url: $ev,
               type: "POST",
               contentType: 'application/json; charset=utf-8',
               dataType: "json",

@@ -164,6 +164,7 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
                 $ocupado->setStart(new DateTime($currentDateTime));
                 $ocupado->setEnd(new DateTime($currentDateTimeF));
                 $result[] = $ocupado;
+                $rs->free();
             }
         }
         
