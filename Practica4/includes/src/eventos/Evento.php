@@ -312,8 +312,8 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
             throw new \BadMethodCallException('$idEvento no puede ser nulo.');
         }
         $result = false;
-        $app = App::getSingleton();
-        $conn = $app->conexionBd();
+        $conn = App::getInstance()->getConexionBd();
+        
         $query = sprintf('DELETE FROM citas WHERE id=%d', $idEvento);
         $result = $conn->query($query);
         if ($result && $conn->affected_rows == 1) {

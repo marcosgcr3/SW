@@ -135,10 +135,13 @@ $contenidoPrincipal = <<<HTML
         // Ejecutado al hacer click sobre un evento
         eventClick: function(info) {
           var event = info.event;
+          if($app->esMecanico()){
+            
+          }
           if (confirm("Seguro que desea eliminar el evento?")) {
             var id = event.id;
             $.ajax({
-              url: "eventos.php?idEvento=" + id,
+              url: '$ev?idEvento=' + id,
               contentType: 'application/json; charset=utf-8',
               dataType: "json",
               type: "DELETE",
