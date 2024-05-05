@@ -92,8 +92,7 @@ class Evento implements \JsonSerializable
     public static function cuentaMecanicosDistintos()
 {
     $result = null;
-    $app = App::getSingleton();
-    $conn = $app->conexionBd();
+    $conn = App::getInstance()->getConexionBd();
     
     $query = "SELECT COUNT(DISTINCT id_mecanico) AS num_mecanicos FROM citas";
     
@@ -109,8 +108,11 @@ class Evento implements \JsonSerializable
 }
 
 
-public static function fechasDisponibles(DateTime $start, DateTime $end)
+public static function fechasDisponibles(int $id_cliente, DateTime $start, DateTime $end)
 {
+    if (!$id_cliente) {
+        throw new \BadMethodCallException('$id_cliente  no puede ser nulo.');
+    }
     $startDate = $start->format(self::MYSQL_DATE_TIME_FORMAT);
     if (!$startDate) {
         throw new \BadMethodCallException('$start no sigue el formato válido: '.self::MYSQL_DATE_TIME_FORMAT);
@@ -137,7 +139,7 @@ public static function fechasDisponibles(DateTime $start, DateTime $end)
         $currentDateF->add(new DateInterval('PT1H'));
         $currentDateTimeF = $currentDateF->format(self::MYSQL_DATE_TIME_FORMAT);
         // Contar el número de eventos para el día y hora actual
-        $query = sprintf("SELECT COUNT(*) AS num_eventos FROM citas WHERE '%s' >= startDate AND '%s' < endDate", $currentDateTime, $currentDateTimeF );
+        $query = sprintf("SELECT COUNT(*) AS num_eventos FROM citas WHERE '%s' >= startDate AND '%s' <= endDate", $currentDateTime, $currentDateTimeF );
         $rs = $conn->query($query);
         $fila = $rs->fetch_assoc();
         $numEventos = intval($fila['num_eventos']);
@@ -152,6 +154,17 @@ public static function fechasDisponibles(DateTime $start, DateTime $end)
             $ocupado->setStart(new DateTime($currentDateTime));
             $ocupado->setEnd(new DateTime($currentDateTimeF));
             $result[] = $ocupado;
+        }else{
+            $query = sprintf("SELECT title FROM citas WHERE id_cliente =%d AND '%s' >= startDate AND '%s' <= endDate ",$id_cliente, $currentDateTime, $currentDateTimeF );
+            $rs = $conn->query($query);
+            $fila = $rs->fetch_assoc();
+            if($fila){
+                $ocupado = new Evento();
+                $ocupado->setTitle($fila['title']);
+                $ocupado->setStart(new DateTime($currentDateTime));
+                $ocupado->setEnd(new DateTime($currentDateTimeF));
+                $result[] = $ocupado;
+            }
         }
         
         // Incrementar la fecha y hora

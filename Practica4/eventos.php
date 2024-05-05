@@ -52,7 +52,7 @@ $result = null;
                     if ($app->esMecanico()){
                         $result = Evento::buscaEntreFechas($_SESSION['id'], $startDateTime, $endDateTime);
                     }else {
-                        $result = Evento::fechasDisponibles( $startDateTime, $endDateTime);
+                        $result = Evento::fechasDisponibles($_SESSION['id'], $startDateTime, $endDateTime);
                        
                     }
 
