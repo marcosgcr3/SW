@@ -50,7 +50,7 @@ $result = null;
                     $endDateTime = \DateTime::createFromFormat(DateTime::ISO8601, $end);
                     
                     
-                        $result = Evento::buscaEntreFechas($_SESSION['id'], $startDateTime, $endDateTime);
+                     $result = Evento::buscaEntreFechas($_SESSION['id'], $startDateTime, $endDateTime);
 
                 } else {
                     http_response_code(400);

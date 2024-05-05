@@ -175,7 +175,7 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
     return $result;
 }
     
-    public static function buscaEntreFechas(int $id_mecanico, DateTime $start, DateTime $end = null)
+    public static function buscaEntreFechas(int $id_mecanico, DateTime $start, DateTime $end)
     {
         if (!$id_mecanico) {
             throw new \BadMethodCallException('$id_mecanico no puede ser nulo.');
@@ -194,10 +194,9 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
             }
         }
         
-        $app = App::getSingleton();
-        $conn = $app->conexionBd();
+        $conn = App::getInstance()->getConexionBd();
         
-        $query = sprintf("SELECT C.id, id_cliente, C.title, C.id_mecanico, C.startDate AS start, C.endDate AS end  FROM citas C WHERE C.id_mecanico=%d AND C.startDate >= '%s'", $id_mecanico, $startDate);
+        $query = sprintf("SELECT C.id, C.id_cliente, C.estado, C.title, C.id_mecanico, C.startDate  AS start, C.endDate AS end  FROM citas C WHERE C.id_mecanico=%d AND C.estado != 2 AND C.startDate >= '%s'", $id_mecanico, $startDate);
         if ($endDate) {
             $query = sprintf($query . " AND C.startDate <= '%s'", $endDate);
         }

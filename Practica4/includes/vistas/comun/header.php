@@ -44,7 +44,7 @@ use es\ucm\fdi\aw\Aplicacion;
             }
 
             else if ($app->esMecanico()) {
-                echo "<li><a href='calendario.php' >MI HORARIO</a></li>";
+                echo "<li><a href='calendario.php?tipo=miHorario.php' >MI HORARIO</a></li>";
                 
                                 
             }
