@@ -40,7 +40,7 @@ use es\ucm\fdi\aw\Aplicacion;
             
             if ($app->esAdmin()) {
                //echo "<li><a href='gestionCitas.php' >GESTION DE CITAS</a></li>";
-               echo "<li><a href='calendario.php' >GESTION DE CITAS</a></li>";
+               echo "<li><a href='calendario.php?tipo=miHorario.php' >GESTION DE CITAS</a></li>";
             }
 
             else if ($app->esMecanico()) {

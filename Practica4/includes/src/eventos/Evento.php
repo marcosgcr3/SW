@@ -107,6 +107,43 @@ class Evento implements \JsonSerializable
     }
 }
 
+public static function misCitas(int $id_cliente, DateTime $start, DateTime $end){
+    if (!$id_cliente) {
+        throw new \BadMethodCallException('$id_cliente no puede ser nulo.');
+    }
+    $startDate = $start->format(self::MYSQL_DATE_TIME_FORMAT);
+    if (!$startDate) {
+        throw new \BadMethodCallException('$start no sigue el formato válido: '.self::MYSQL_DATE_TIME_FORMAT);
+    }
+    
+    $endDate = null;
+    if ($end) {
+        $endDate =  $end->format(self::MYSQL_DATE_TIME_FORMAT);
+        if (!$endDate) {
+            throw new \BadMethodCallException('$end no sigue el formato válido: '.self::MYSQL_DATE_TIME_FORMAT);
+        }
+    }
+    
+    $conn = App::getInstance()->getConexionBd();
+    
+    $result = [];
+    
+    $query = sprintf("SELECT C.id, id_mecanico, C.title, C.startDate AS start, C.endDate AS end  FROM citas C WHERE C.id_cliente=%d AND C.startDate >= '%s'", $id_cliente, $startDate);
+    if ($endDate) {
+        $query = sprintf($query . " AND C.startDate <= '%s'", $endDate);
+    }
+    
+    $rs = $conn->query($query);
+    if ($rs) {
+        while($fila = $rs->fetch_assoc()) {
+            $e = new Evento();
+            $e->asignaDesdeDiccionario($fila);
+            $result[] = $e;
+        }
+        $rs->free();
+    }
+    return $result;
+}
 
 public static function fechasDisponibles(int $id_cliente, DateTime $start, DateTime $end)
 {

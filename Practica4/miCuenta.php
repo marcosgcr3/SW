@@ -23,7 +23,7 @@ EOS;
 if($app->esCliente()){
     $contenidoPrincipal .=<<<EOS
     <button class="botonIni" onclick="location.href='misAlquileres.php'">Mis Alquileres</button>
-    <button class="botonIni" onclick="location.href='misCitas.php'">Mis Citas</button>
+    <button class="botonIni" onclick="location.href='calendario.php?tipo=misCitas.php'">Mis Citas</button>
     <button class="botonIni" onclick="location.href='misPedidos.php'">Mis Pedidos</button>
     <button class="botonC" onclick="location.href='logout.php'">Cerrar sesion</button>
     EOS;

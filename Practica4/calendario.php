@@ -40,7 +40,7 @@ $contenidoPrincipal = <<<HTML
         },
         slotMinTime: '09:00', // Hora mínima
         slotMaxTime: '20:00', // Hora máxima
-        
+        color: 'black', // Color de los eventos
         //Ajustar formato del horario
         slotLabelInterval: { hours: 1 },
         slotLabelContent: function(slotInfo) {
