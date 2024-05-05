@@ -31,7 +31,7 @@ $result = null;
  * https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods
  */
 
-switch($_SERVER['REQUEST_METHOD']) {
+ switch($_SERVER['REQUEST_METHOD']) {
     // Consulta de datos
     case 'GET':
         try {
