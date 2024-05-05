@@ -182,7 +182,7 @@ class Usuario
         return $lista_mecanicos;
 
     }
-    public static function obtenerMecanicoDisponible($fecha, $hora)
+    public static function obtenerMecanicoDisponible($fechaHora)
     {
     
         // Obtener todos los mecánicos
@@ -191,7 +191,7 @@ class Usuario
         $citasMenosCitas = PHP_INT_MAX;
     
         foreach ($mecanicos as $mecanico) {
-            if (self::estaDisponible($mecanico, $hora, $fecha)) {
+            if (self::estaDisponible($mecanico, $fechaHora)) {
                 $numCitas = self::numCitasTotales($mecanico);
                 if ($numCitas < $citasMenosCitas) {
                     $citasMenosCitas = $numCitas;
@@ -205,12 +205,12 @@ class Usuario
     // Función para verificar si un mecánico está disponible en una hora y día específicos
 // Función para verificar si un mecánico está disponible en una hora y día específicos
 // Función para verificar si un mecánico está disponible en una hora y día específicos
-private static function estaDisponible($mecanico, $hora, $dia) {
+private static function estaDisponible($mecanico, $fechaHora) {
     $conn = Aplicacion::getInstance()->getConexionBd();
     $idMecanico = $mecanico->getId();
 
     // Formatear la fecha y hora para compararla con las citas del mecánico
-    $fechaHora = $dia . ' ' . $hora;
+    $fechaHora = $fechaHora->format('Y-m-d H:i:s');
 
     // Consultar si hay citas para el mecánico en la hora y día dados
     $query = "SELECT COUNT(*) AS numCitas FROM citas WHERE id_mecanico = $idMecanico AND startDate = '$fechaHora' AND estado = 0";
