@@ -200,7 +200,7 @@ class Usuario
             }
         }
     
-        return $mecanicoDisponible;
+        return $mecanicoDisponible->id;
     }
     // Función para verificar si un mecánico está disponible en una hora y día específicos
 // Función para verificar si un mecánico está disponible en una hora y día específicos
@@ -210,7 +210,7 @@ private static function estaDisponible($mecanico, $fechaHora) {
     $idMecanico = $mecanico->getId();
 
     // Formatear la fecha y hora para compararla con las citas del mecánico
-    $fechaHora = $fechaHora->format('Y-m-d H:i:s');
+    //$fechaHora = $fechaHora->format('Y-m-d H:i:s');
 
     // Consultar si hay citas para el mecánico en la hora y día dados
     $query = "SELECT COUNT(*) AS numCitas FROM citas WHERE id_mecanico = $idMecanico AND startDate = '$fechaHora' AND estado = 0";

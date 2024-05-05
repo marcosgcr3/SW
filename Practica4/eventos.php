@@ -48,8 +48,7 @@ switch($_SERVER['REQUEST_METHOD']) {
                 if ($start) {
                     $startDateTime = \DateTime::createFromFormat(DateTime::ISO8601, $start);
                     $endDateTime = \DateTime::createFromFormat(DateTime::ISO8601, $end);
-                    $mecanicoDisp = Usuario::obtenerMecanicoDisponible($startDateTime);
-
+                    
                     if ($app->esMecanico()){
                         $result = Evento::buscaEntreFechas($_SESSION['id'], $startDateTime, $endDateTime);
                     }else {
@@ -91,7 +90,8 @@ switch($_SERVER['REQUEST_METHOD']) {
         }
         
         // 3. Reprocesamos el cuerpo de la petición como un array PHP
-        
+        $fecha = $dictionary->start;
+        $mecanicoDisp = Usuario::obtenerMecanicoDisponible($fecha);
         $dictionary = json_decode($entityBody, true);
         $dictionary['id_mecanico'] = $mecanicoDisp;// HACK: normalmente debería de ser App::getSingleton()->idUsuario();
         $dictionary['id_cliente'] = $_SESSION['id'];

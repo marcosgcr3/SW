@@ -570,13 +570,13 @@ public static function fechasDisponibles(DateTime $start, DateTime $end)
 
         if (array_key_exists('id_mecanico', $diccionario)) {
             $id_mecanico = $diccionario['id_mecanico'];
-            if (empty($id_mecanico)) {
-                throw new \BadMethodCallException('$diccionario[\'id_mecanico\'] no puede ser una cadena vacía o nulo');
-            } else if (!is_int($id_mecanico) && ! ctype_digit($id_mecanico)) {
-                throw new \BadMethodCallException('$diccionario[\'id_mecanico\'] tiene que ser un número entero: '.$id_mecanico);
-            } else {
-                $this->setid_mecanico((int)$id_mecanico);
-            }
+                if (empty($id_mecanico)) {
+                    throw new \BadMethodCallException('$diccionario[\'id_mecanico\'] no puede ser una cadena vacía o nulo');
+                } else if (!is_int($id_mecanico) && ! ctype_digit($id_mecanico)) {
+                    throw new \BadMethodCallException('$diccionario[\'id_mecanico\'] tiene que ser un número entero: '.$id_mecanico);
+                } else {
+                    $this->setid_mecanico((int)$id_mecanico);
+                }
         }
        
 
