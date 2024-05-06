@@ -155,7 +155,7 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
             $ocupado->setEnd(new DateTime($currentDateTimeF));
             $result[] = $ocupado;
         }else{
-            $query = sprintf("SELECT title FROM citas WHERE id_cliente =%d AND '%s' >= startDate AND '%s' <= endDate ",$id_cliente, $currentDateTime, $currentDateTimeF );
+            $query = sprintf("SELECT id, id_cliente, estado, title, id_mecanico, startDate FROM citas WHERE id_cliente =%d AND '%s' >= startDate AND '%s' <= endDate ",$id_cliente, $currentDateTime, $currentDateTimeF );
             $rs = $conn->query($query);
             $fila = $rs->fetch_assoc();
             if($fila){
@@ -163,6 +163,7 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
                 $ocupado->setTitle($fila['title']);
                 $ocupado->setStart(new DateTime($currentDateTime));
                 $ocupado->setEnd(new DateTime($currentDateTimeF));
+                $ocupado->setEstado($fila['estado']);
                 $result[] = $ocupado;
                 $rs->free();
             }
