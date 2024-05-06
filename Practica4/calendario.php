@@ -9,7 +9,11 @@ $ev = filter_input(INPUT_GET, 'tipo', FILTER_SANITIZE_SPECIAL_CHARS);
 if($app->esMecanico()){
   $rol = 'mecanico';
 }
+
+
+
 $contenidoPrincipal = <<<HTML
+
 <head>
   <title>JQuery Full Calendar</title>
   
@@ -209,9 +213,11 @@ $contenidoPrincipal = <<<HTML
       <style>
         /* Estilo para el contenedor del calendario */
         #calendar {
-            width: 100%;
+            width: 90%;
             height: 460px; /* Establece la altura fija del calendario */
-           
+            display: flex;
+            justify-content: center;
+            margin: 0 auto;
         }
     </style>
 </head>

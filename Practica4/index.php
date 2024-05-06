@@ -20,5 +20,8 @@ $tituloPagina = 'Portada';
     </p>
     <button class="botonIni" onclick="location.href='entrar.php'">LOGIN/REGISTER</button>
     EOS;
+
+    //$scripts = ['js/index.js']; // Añadir los scripts que se necesiten 
+
     $params = ['tituloPagina' => $tituloPagina, 'contenidoPrincipal' => $contenidoPrincipal];
     $app->generaVista('/plantillas/plantilla.php', $params);
