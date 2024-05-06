@@ -76,37 +76,17 @@ $result = null;
 
     break;
     case 'POST':
-        if(!$app->esMecanico() && $app->usuarioLogueado()){
-        // 1. Leemos el contenido que nos envían
-        $entityBody = file_get_contents('php://input');
-        // 2. Verificamos que nos envían un objeto
-        $dictionary = json_decode($entityBody);
-        if (!is_object($dictionary)) {
-            throw new ParametroNoValidoException('El cuerpo de la petición no es valido');
-        }
+        $idEvento = filter_input(INPUT_GET, 'idEvento', FILTER_VALIDATE_INT);
         
-        // 3. Reprocesamos el cuerpo de la petición como un array PHP
-        $fecha = $dictionary->start;
-        $mecanicoDisp = Usuario::obtenerMecanicoDisponible($fecha);
-        $dictionary = json_decode($entityBody, true);
-        $dictionary['id_mecanico'] = $mecanicoDisp;// HACK: normalmente debería de ser App::getSingleton()->idUsuario();
-        $dictionary['id_cliente'] = $_SESSION['id'];
-        $e = Evento::creaDesdeDicionario($dictionary);
-        
-        // 4. Guardamos el evento en BD
-        $result = Evento::guardaOActualiza($e);
-        
-        // 5. Generamos un objecto como salida.
-        $json = json_encode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
-
-        http_response_code(201); // 201 Created
+        Evento::cambiarEstado($idEvento, 0);
         header('Content-Type: application/json; charset=utf-8');
-        header('Content-Length: ' . mb_strlen($json));
 
-        echo $json;  
-    } 
 
-    break;
+        break;
+        
+
+        
+   
     case 'PUT':
 
                     // 1. Comprobamos si es una consulta de un evento concreto -> eventos.php?idEvento=XXXXX
