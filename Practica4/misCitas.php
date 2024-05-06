@@ -138,7 +138,7 @@ $result = null;
   
         break;
     case 'DELETE':
-        if(!$app->esMecanico() && $app->usuarioLogueado()){
+        
         // 1. Comprobamos si es una consulta de un evento concreto -> eventos.php?idEvento=XXXXX
         $idEvento = filter_input(INPUT_GET, 'idEvento', FILTER_VALIDATE_INT);
         // 2. Borramos el evento
@@ -148,7 +148,7 @@ $result = null;
         header('Content-Type: application/json; charset=utf-8');
         header('Content-Length: 0');
         break;
-        }
+        
     default:
         throw new MetodoNoSoportadoException($_SERVER['REQUEST_METHOD']. ' no está soportado');
     break;

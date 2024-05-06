@@ -214,6 +214,24 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
         }
         return $result;
     }
+    public static function cambiarEstado(int $idEvento, int $estado)
+    {
+        if (!$idEvento) {
+            throw new \BadMethodCallException('$idEvento no puede ser nulo.');
+        }
+        $result = false;
+        $conn = App::getInstance()->getConexionBd();
+        $query = sprintf("UPDATE citas E SET estado=%d WHERE E.id = %d"
+            , $estado
+                , $idEvento);      
+        $result = $conn->query($query);
+        if ($result) {
+            $result = true;
+        } else {
+            throw new DataAccessException("Se han actualizado más de 1 fila cuando sólo se esperaba 1 actualización: ".$conn->affected_rows);
+        }
+        return $result;
+    }
     public static function misCitas(int $id_cliente, DateTime $start, DateTime $end){
         if (!$id_cliente) {
             throw new \BadMethodCallException('$id_cliente no puede ser nulo.');

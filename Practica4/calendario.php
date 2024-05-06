@@ -2,6 +2,12 @@
 require_once __DIR__.'/includes/config.php';
 $tituloPagina = "Calendario";
 $ev = filter_input(INPUT_GET, 'tipo', FILTER_SANITIZE_SPECIAL_CHARS);
+/*if($app->esCliente()){
+  $ev = 'misCitas.php';
+}*/
+if($app->esMecanico()){
+  $rol = 'mecanico';
+}
 $contenidoPrincipal = <<<HTML
 <head>
   <title>JQuery Full Calendar</title>
@@ -135,26 +141,40 @@ $contenidoPrincipal = <<<HTML
         // Ejecutado al hacer click sobre un evento
         eventClick: function(info) {
           var event = info.event;
-          if($app->esMecanico()){
-            
-          }
-          if (confirm("Seguro que desea eliminar el evento?")) {
-            var id = event.id;
-            $.ajax({
-              url: '$ev?idEvento=' + id,
-              contentType: 'application/json; charset=utf-8',
-              dataType: "json",
-              type: "DELETE",
-              success: function() {
-                calendar.refetchEvents();
-                alert('Evento eliminado');
-              },
-              error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert("Status: " + textStatus);
-                alert("Error: " + errorThrown);
+            if(event.extendedProps.estado == 1){
+              if (confirm("¿Desea aceptar esta cita?")) {
+                var id = event.id;
+                $.ajax({
+                    url: '$ev?idEvento=' + id,
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: "json",
+                    type: "ACEPTAR", // Cambiado a POST para aceptar la cita
+                    success: function() {
+                        calendar.refetchEvents();
+                        alert('Cita aceptada');
+                    }
+                    
+                });
+              }else{
+              
+                  var id = event.id;
+                  $.ajax({
+                      url: '$ev?idEvento=' + id,
+                      contentType: 'application/json; charset=utf-8',
+                      dataType: "json",
+                      type: "RECHAZAR", // Cambiado a POST para rechazar la cita
+                      success: function() {
+                          calendar.refetchEvents();
+                          alert('Cita rechazada');
+                      },
+                      error: function(XMLHttpRequest, textStatus, errorThrown) {
+                          alert("Status: " + textStatus);
+                          alert("Error: " + errorThrown);
+                      }
+                  });
               }
-            })
-          }
+            }
+            
         },
         selectable: true,
         select: function(info) {
