@@ -2,6 +2,7 @@
 require_once __DIR__.'/includes/config.php';
 $tituloPagina = "Calendario";
 $ev = filter_input(INPUT_GET, 'tipo', FILTER_SANITIZE_SPECIAL_CHARS);
+
 /*if($app->esCliente()){
   $ev = 'misCitas.php';
 }*/
