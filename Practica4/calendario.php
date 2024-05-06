@@ -24,7 +24,10 @@ $contenidoPrincipal = <<<HTML
   <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/moment@5.11.0/main.global.min.js" integrity="sha256-oh4hswY1cPEqPhNdKfg+n3jATZilO3u2v7qAyYG3lVM=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha256-9SEPo+fwJFpMUet/KACSwO+Z/dKMReF9q4zFhU/fT9M=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-  
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.js"></script>
+  <script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
+  <script src="https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js"></script>
+
   <script>
     
   
@@ -58,6 +61,12 @@ $contenidoPrincipal = <<<HTML
               break;
           }
           event.setProp('backgroundColor', backgroundColor);
+          var tooltip = new Tooltip(info.el, {
+            title: event.title,
+            placement: 'top',
+            trigger: 'hover',
+            container: 'body'
+          });
         },
         
         events: '$ev',
@@ -153,7 +162,7 @@ $contenidoPrincipal = <<<HTML
                     url: '$ev?idEvento=' + id,
                     contentType: 'application/json; charset=utf-8',
                     dataType: "json",
-                    type: "ACEPTAR", // Cambiado a POST para aceptar la cita
+                    type: "POST", // Cambiado a POST para aceptar la cita
                     success: function() {
                         calendar.refetchEvents();
                         alert('Cita aceptada');
@@ -167,7 +176,7 @@ $contenidoPrincipal = <<<HTML
                       url: '$ev?idEvento=' + id,
                       contentType: 'application/json; charset=utf-8',
                       dataType: "json",
-                      type: "RECHAZAR", // Cambiado a POST para rechazar la cita
+                      type: "POST", // Cambiado a POST para rechazar la cita
                       success: function() {
                           calendar.refetchEvents();
                           alert('Cita rechazada');
