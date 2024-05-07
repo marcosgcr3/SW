@@ -62,7 +62,7 @@ $contenidoPrincipal = <<<HTML
           }
           event.setProp('backgroundColor', backgroundColor);
           var tooltip = new Tooltip(info.el, {
-            title: event.title,
+            title: event.title + ' - ' + moment(event.start).format("HH:mm") + ' - ' + moment(event.end).format("HH:mm"),
             placement: 'top',
             trigger: 'hover',
             container: 'body'
