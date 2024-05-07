@@ -164,6 +164,8 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
                 $ocupado->setStart(new DateTime($currentDateTime));
                 $ocupado->setEnd(new DateTime($currentDateTimeF));
                 $ocupado->setEstado($fila['estado']);
+                $nombreMecanico = Usuario::buscaPorId($fila['id_mecanico']);
+                $ocupado-> __set('nombre',$nombreMecanico->getNombre());
                 $result[] = $ocupado;
                 $rs->free();
             }
@@ -172,6 +174,7 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
         // Incrementar la fecha y hora
         $currentDate->add(new DateInterval('PT1H'));
     }
+    
     
     return $result;
 }
@@ -210,6 +213,10 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
                 $e = new Evento();
                 $e->asignaDesdeDiccionario($fila);
                 $result[] = $e;
+            }
+            foreach($result as $evento){
+                $nombreMecanico = Usuario::buscaPorId($evento->getid_mecanico());
+                $evento-> __set('nombre',$nombreMecanico->getNombre());
             }
             $rs->free();
         }

@@ -45,7 +45,6 @@ $result = null;
                 // https://fullcalendar.io/docs/events-json-feed
                 $start = filter_input(INPUT_GET, 'start', FILTER_SANITIZE_SPECIAL_CHARS);
                 $end = filter_input(INPUT_GET, 'end', FILTER_SANITIZE_SPECIAL_CHARS);
-                //$nombre = filter_input(INPUT_GET, 'nombre', FILTER_SANITIZE_SPECIAL_CHARS);
                 if ($start) {
                     $startDateTime = \DateTime::createFromFormat(DateTime::ISO8601, $start);
                     $endDateTime = \DateTime::createFromFormat(DateTime::ISO8601, $end);
