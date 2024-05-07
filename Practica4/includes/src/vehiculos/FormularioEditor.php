@@ -12,15 +12,17 @@ use es\ucm\fdi\aw\vehiculos\vehiculo;
 
 
 class FormularioEditor extends Formulario{
+    const EXTENSIONES_PERMITIDAS = array('gif', 'jpg', 'jpe', 'jpeg', 'png', 'webp', 'avif');
     private $matricula;
     public function __construct($matricula) {
 
-        parent::__construct('formVehiculoEditor', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('alquiler.php')]);
+        parent::__construct('formVehiculoEditor', ['enctype' => 'multipart/form-data', 'urlRedireccion' => Aplicacion::getInstance()->resuelve('alquiler.php')]);
         $this->matricula = $matricula;
     }
 
     protected function generaCamposFormulario(&$datos){
         $vehiculo = Vehiculo::buscaPorMatricula($this->matricula);
+        $id = $vehiculo->getId();
         $matricula = $vehiculo->getMatricula();
         $marca = $vehiculo->getMarca();
         $modelo = $vehiculo->getModelo();
@@ -38,7 +40,7 @@ class FormularioEditor extends Formulario{
         <div class="container-registro">
                 
                 <label for="Matricula">Matricula:</label>
-                <input id="matricula" type="text" name="matricula" value="$this->matricula" readonly />
+                <input id="matricula" type="text" name="matricula" value="$matricula"  />
                 {$erroresCampos['matricula']}
                 
                 <label for="Marca">Marca:</label>
@@ -62,10 +64,12 @@ class FormularioEditor extends Formulario{
                 {$erroresCampos['year']}
 
                 <label for="Imagen">Imagen:</label>
-                <input id="imagen" type="text" name="imagen" value="$imagen" />
+                <input id="imagen" type="file" name="imagen" />
                 {$erroresCampos['imagen']}
-            
-                <button class="botonIni" type="submit" name="registro">Registrar</button>
+
+                <input type="hidden" id="viejaImagen" name="viejaImagen" value="$imagen"/>
+                <input type="hidden" id="id" name="id" value="$id"/>
+                <button class="botonIni" type="submit" name="registro">Actualizar</button>
         
         </div>
         EOF;
@@ -74,8 +78,9 @@ class FormularioEditor extends Formulario{
     protected function procesaFormulario(&$datos)
     {
         $this->errores = [];
+        $id = $datos['id'] ?? '';
+
         $matricula = $datos['matricula'] ?? '';
-        
         $matricula = filter_var($matricula, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         if ( ! $matricula || empty($matricula) ) {
             $this->errores['matricula'] = 'El matricula no puede estar vacío';
@@ -110,15 +115,63 @@ class FormularioEditor extends Formulario{
             $this->errores['disponibilidad'] = 'Formato no valido para la dsiponibilidad.';
         }
         
-        $imagen = $datos['imagen'] ?? '';
-        $imagen = filter_var($imagen, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if ( ! $imagen || empty($imagen) ) {
-            $this->errores['imagen'] = 'La imagen no puede estar vacía.';
+        //$imagen = $datos['imagen'] ?? '';
+        //$imagen = filter_var($imagen, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        //if ( ! $imagen || empty($imagen) ) {
+            //$this->errores['imagen'] = 'La imagen no puede estar vacía.';
+        //}
+        
+        $imagen = '';
+        $ok = $_FILES['imagen']['error'] == UPLOAD_ERR_OK && count($_FILES) == 1;
+        if(!$ok){
+            //$this->errores['imagen'] = 'Error en la subida de la imagen';
+            $imagen = $datos['viejaImagen'] ?? '';
+            $imagen = filter_var($imagen, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            if ( ! $imagen || empty($imagen) ) {
+                $this->errores['viejaImagen'] = 'La imagen no puede estar vacía.';
+            }
+            //return;
         }
+        else{
+            $nombreArchivo = $_FILES['imagen']['name'];
+            //Valida el nombre del archivo 
+            $ok = self::check_file_uploaded_name($nombreArchivo) && self::check_file_uploaded_length($nombreArchivo);  
+            //Comprueba si la extension esta permitida
+            $extension = pathinfo($nombreArchivo, PATHINFO_EXTENSION);
+            $ok = $ok && in_array($extension, self::EXTENSIONES_PERMITIDAS);
+            //Comprueba el tipo mime del archivo corresponde a una imagen image
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->file($_FILES['imagen']['tmp_name']);
+            $ok = $ok && preg_match('/image\/.+/', $mimeType) === 1;
+            if(!$ok){
+                $this->errores['imagen'] = 'La imagen no es válida';
+            }
+            if(count($this->errores) > 0){
+                return;
+            }
+            $tmp_name = $_FILES['imagen']['tmp_name'];
+            $fichero = "{$nombreArchivo}";
+            $ruta = "img/imgVehiculos/$fichero";
+            if(!move_uploaded_file($tmp_name, $ruta)){
+                $this->errores['imagen'] = 'Error al mover el archivo';
+                return;
+            }
+        }
+         
         if (count($this->errores) === 0) {
            //$vehiculo = Vehiculo::buscaPorMatricula($matricula); 
             //$vehiculo->actualiza2($matricula, $marca, $modelo, $precio, $year,$imagen, $id);
-            $vehiculo = Vehiculo::actualiza2($matricula, $marca, $modelo, $precio, $year, $disponibilidad, $imagen);
+            if($ok){
+                //$vehiculo = new Vehiculo($matricula, $marca, $modelo, $precio, $year, $disponibilidad, $ruta, $id);
+                //$vehiculo = Vehiculo::actualiza($vechiculo);
+                $vehiculo = Vehiculo::actualiza2($matricula, $marca, $modelo, $precio, $year, $disponibilidad, $ruta, $id);
+            }
+            else{
+                //$vehiculo = new Vehiculo($matricula, $marca, $modelo, $precio, $year, $disponibilidad, $imagen, $id);
+                //$vehiculo = Vehiculo::actualiza($vechiculo);
+                $vehiculo = Vehiculo::actualiza2($matricula, $marca, $modelo, $precio, $year, $disponibilidad, $imagen, $id);
+            }
+            //$vehiculo = Vehiculo::actualiza2($matricula, $marca, $modelo, $precio, $year, $disponibilidad, $ruta);
             if ($vehiculo) {
                 echo "El vehículo ha sido actualizado correctamente.";
             } else {
@@ -131,10 +184,13 @@ class FormularioEditor extends Formulario{
         }
     }
 
-    
-    
-    
-    
+    private static function check_file_uploaded_name($filename){
+        return (bool) ((preg_match('/^[0-9A-Z-_\.]+$/i', $filename) === 1) ? true : false);
+    }
 
+    private function check_file_uploaded_length($filename)
+    {
+        return (bool) ((mb_strlen($filename, 'UTF-8') < 250) ? true : false);
+    }
 
 }
