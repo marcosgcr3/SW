@@ -75,47 +75,7 @@ $result = null;
         }
 
     break;
-    case 'POST':
-        $idEvento = filter_input(INPUT_GET, 'idEvento', FILTER_VALIDATE_INT);
-        
-        Evento::cambiarEstado($idEvento, 0);
-        header('Content-Type: application/json; charset=utf-8');
-
-
-        break;
-        
-
-        
-   
-    case 'PUT':
-
-                    // 1. Comprobamos si es una consulta de un evento concreto -> eventos.php?idEvento=XXXXX
-            $idEvento = filter_input(INPUT_GET, 'idEvento', FILTER_VALIDATE_INT);
-            // 2. Leemos el contenido que nos envían
-            $entityBody = file_get_contents('php://input');
-            // 3. Verificamos que nos envían un objeto
-            $dictionary = json_decode($entityBody);
-            if (!is_object($dictionary)) {
-                throw new ParametroNoValidoException('El cuerpo de la petición no es valido');
-            }    
-
-            // 4. Reprocesamos el cuerpo de la petición como un array PHP
-            $dictionary = json_decode($entityBody, true);
-            $e = Evento::buscaPorId($idEvento);
-            $e->actualizaDesdeDiccionario($dictionary, ['id', 'id_cliente', 'id_mecanico']);
-            $result = Evento::guardaOActualiza($e);
-            
-            // 5. Generamos un objecto como salida.
-            $json = json_encode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
-            
-            http_response_code(200); // 200 OK
-            header('Content-Type: application/json; charset=utf-8');
-            header('Content-Length: ' . mb_strlen($json));
-
-            echo $json; 
-
-  
-        break;
+    
     case 'ACEPTAR':
         
       
@@ -123,7 +83,9 @@ $result = null;
         
         Evento::cambiarEstado($idEvento, 0);
         header('Content-Type: application/json; charset=utf-8');
-
+        http_response_code(204); // 204 No content (como resultado)
+        header('Content-Type: application/json; charset=utf-8');
+        header('Content-Length: 0');
 
         break;
         
@@ -133,6 +95,9 @@ $result = null;
             $idEvento = filter_input(INPUT_GET, 'idEvento', FILTER_VALIDATE_INT);
            
             Evento::cambiarEstado($idEvento, 2);
+            http_response_code(204); // 204 No content (como resultado)
+            header('Content-Type: application/json; charset=utf-8');
+            header('Content-Length: 0');
     
             break;
     default:

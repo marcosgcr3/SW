@@ -162,11 +162,15 @@ $contenidoPrincipal = <<<HTML
                     url: '$ev?idEvento=' + id,
                     contentType: 'application/json; charset=utf-8',
                     dataType: "json",
-                    type: "POST", // Cambiado a POST para aceptar la cita
+                    type: "ACEPTAR", // Cambiado a POST para aceptar la cita
                     success: function() {
                         calendar.refetchEvents();
                         alert('Cita aceptada');
-                    }
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                          alert("Status: " + textStatus);
+                          alert("Error: " + errorThrown);
+                      }
                     
                 });
               }else{
@@ -176,7 +180,7 @@ $contenidoPrincipal = <<<HTML
                       url: '$ev?idEvento=' + id,
                       contentType: 'application/json; charset=utf-8',
                       dataType: "json",
-                      type: "POST", // Cambiado a POST para rechazar la cita
+                      type: "RECHAZAR", // Cambiado a POST para rechazar la cita
                       success: function() {
                           calendar.refetchEvents();
                           alert('Cita rechazada');
