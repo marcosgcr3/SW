@@ -268,6 +268,10 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
                 $e->asignaDesdeDiccionario($fila);
                 $result[] = $e;
             }
+            foreach($result as $evento){
+                $nombreMecanico = Usuario::buscaPorId($evento->getid_mecanico());
+                $evento-> __set('nombre',$nombreMecanico->getNombre());
+            }
             $rs->free();
         }
         return $result;
@@ -446,7 +450,7 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
     /**
      * @param array[string] Nombre de las propiedades de la clase.
      */
-    const PROPERTIES = ['id', 'id_cliente', 'id_mecanico', 'title', 'start', 'end', 'estado'];
+    const PROPERTIES = ['id', 'id_cliente', 'id_mecanico', 'nombre' , 'title', 'start', 'end', 'estado'];
     
     private $id;
 
@@ -454,6 +458,7 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
 
     private $estado;
     private $id_mecanico;
+    private $nombre;
 
     private $title;
 
@@ -563,6 +568,13 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
             return $this->$property;
         }
     }
+
+    public function __set($property, $value)
+    {
+        if (property_exists($this, $property)) {
+            $this->$property = $value;
+        }
+    }
    
        
     /**
@@ -581,6 +593,7 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
         $o->start = $this->start->format(self::MYSQL_DATE_TIME_FORMAT);
         $o->end = $this->end->format(self::MYSQL_DATE_TIME_FORMAT);
         $o->estado = $this->estado;
+        $o->nombre = $this->nombre;
         return $o;
     }
  
@@ -706,7 +719,11 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
             $this->estado = $estado;
 
         }
-        
+
+        if(array_key_exists('nombre', $diccionario)){
+            $nombre = $diccionario['nombre'] ?? null;
+            $this->nombre = $nombre;
+        }
         
         self::compruebaConsistenciaFechas($this->start, $this->end);
         
