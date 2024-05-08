@@ -65,7 +65,7 @@ class Usuario
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("SELECT * FROM usuarios WHERE id=%d", $id);
         $rs = $conn->query($query);
-        $result = false;
+        $result = NULL;
         if ($rs) {
             $fila = $rs->fetch_assoc();
             if ($fila) {
@@ -73,6 +73,7 @@ class Usuario
             }
             $rs->free();
         } else {
+            //$resul = NULL;
             error_log("Error BD ({$conn->errno}): {$conn->error}");
         }
         return $result;

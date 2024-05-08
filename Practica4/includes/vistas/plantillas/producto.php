@@ -68,37 +68,6 @@ function buildArticulo($producto)
         </div></div></div>
         EOS;
     }
-    //---------------------------------------------------------------------------------------------------------------------------------
-    $productos .= <<<EOS
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        <script>
-            
-            $(document).ready(function() {
-
-                var mensajeMostrado = false;
-
-                //VALIDAR FORMULARIO DE bottonCompra (añadir al carrito)
-                $('[id^="formAddProducto"]').submit(function(event) {
-                    var unidades = $(this).find('[name="unidades"]').val();
-                    var idProducto = $(this).find('[name="id_producto"]').val();
-                    var nombre = $(this).find('[name="nombre"]').val();
-                    var stock = $unidades;
-                    if (unidades > stock) {
-                        alert('No hay suficiente stock');
-                        event.preventDefault();
-                    }
-                    else{
-                        if (!mensajeMostrado) { // Verificar si el mensaje ya se ha mostrado
-                            alert('Se ha añadido al carro ' + unidades + ' ' + nombre);
-                            mensajeMostrado = true; // Establecer la bandera a true para indicar que el mensaje se ha mostrado
-                        }
-
-                    }
-                    
-                });
-            });            
-        </script>
-        EOS;
                 
     return $productos;
 }

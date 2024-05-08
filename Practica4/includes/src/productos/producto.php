@@ -201,11 +201,11 @@ class Producto
         return $result;
     }
 
-    public static function actualiza2($nombre, $precio, $descripcion, $imagen)
+    public static function actualiza2($nombre, $precio, $descripcion, $imagen, $id)
     {
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("UPDATE productos SET precio = '$precio', descripcion = '$descripcion', imagen = '$imagen' WHERE nombre ='$nombre'");
+        $query = sprintf("UPDATE productos SET precio = '$precio', descripcion = '$descripcion', imagen = '$imagen' WHERE id_producto ='$id'");
         if ($conn->query($query)) {
             if ($conn->affected_rows == 0) {
                 error_log("No se ha actualizado el producto");

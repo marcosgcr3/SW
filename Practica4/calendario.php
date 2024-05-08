@@ -9,7 +9,11 @@ $ev = filter_input(INPUT_GET, 'tipo', FILTER_SANITIZE_SPECIAL_CHARS);
 if($app->esMecanico()){
   $rol = 'mecanico';
 }
+
+
+
 $contenidoPrincipal = <<<HTML
+
 <head>
   <title>JQuery Full Calendar</title>
   
@@ -20,7 +24,10 @@ $contenidoPrincipal = <<<HTML
   <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/moment@5.11.0/main.global.min.js" integrity="sha256-oh4hswY1cPEqPhNdKfg+n3jATZilO3u2v7qAyYG3lVM=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha256-9SEPo+fwJFpMUet/KACSwO+Z/dKMReF9q4zFhU/fT9M=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-  
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.js"></script>
+  <script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
+  <script src="https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js"></script>
+
   <script>
     
   
@@ -54,10 +61,28 @@ $contenidoPrincipal = <<<HTML
               break;
           }
           event.setProp('backgroundColor', backgroundColor);
+
+          if(!info.isMirror){
+            $(info.el).tooltip({
+              html: true,
+              title: event.title + ' - ' + moment(event.start).format("HH:mm") + ' - ' + moment(event.end).format("HH:mm") + ' - ' + event.extendedProps.nombre,
+              placement: "top",
+              trigger: "hover",
+              container: "body"
+            });
+          }
+          /*          
+          var tooltip = new Tooltip(info.el, {
+            title: event.title + ' - ' + moment(event.start).format("HH:mm") + ' - ' + moment(event.end).format("HH:mm") + ' - ' + event.extendedProps.nombre,
+            placement: 'top',
+            trigger: 'hover',
+            container: 'body'
+          });
+          */
         },
         
         events: '$ev',
-        editable: false,
+        editable: true,
         slotDuration: '01:00:00',
         businessHours: {
           // Días hábiles de lunes a viernes
@@ -110,6 +135,13 @@ $contenidoPrincipal = <<<HTML
             }
           })
         },
+        */
+        //Ejecutado al pasar el mause por encima 
+        
+        eventMouseLeave: function(info) {
+          tooltip.dispose();
+        },
+
         // Ejecutado al arrastrar un evento
         eventDrop: function(info) {
           var event = info.event;
@@ -120,6 +152,15 @@ $contenidoPrincipal = <<<HTML
             alert('No puedes arrastrar eventos a sábado o domingo');
             return;
          }
+         //variable date del dia de hoy
+          var date = new Date();
+          if(info.event.start.getDay() < date.getDay()){
+            // Revertir el cambio (no permitir el arrastre a una hora pasada)
+            info.revert();
+            // Mostrar un mensaje de alerta indicando que no se puede mover a una hora pasada
+            alert('No puedes arrastrar eventos a una hora pasada');
+            return;
+          }
           var e = {
             "id": event.id,
             "id_mecanico": event.id_mecanico,
@@ -128,7 +169,7 @@ $contenidoPrincipal = <<<HTML
             "title": event.title
           };
           $.ajax({
-            url: "eventos.php?idEvento=" + event.id,
+            url: "$ev?idEvento=" + event.id,
             contentType: 'application/json; charset=utf-8',
             dataType: "json",
             type: "PUT",
@@ -138,7 +179,7 @@ $contenidoPrincipal = <<<HTML
               alert('Evento actualizado');
             }
           }); 
-        },*/
+        },
         // Ejecutado al hacer click sobre un evento
         eventClick: function(info) {
           var event = info.event;
@@ -153,7 +194,11 @@ $contenidoPrincipal = <<<HTML
                     success: function() {
                         calendar.refetchEvents();
                         alert('Cita aceptada');
-                    }
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                          alert("Status: " + textStatus);
+                          alert("Error: " + errorThrown);
+                      }
                     
                 });
               }else{
@@ -209,9 +254,11 @@ $contenidoPrincipal = <<<HTML
       <style>
         /* Estilo para el contenedor del calendario */
         #calendar {
-            width: 100%;
+            width: 90%;
             height: 460px; /* Establece la altura fija del calendario */
-           
+            display: flex;
+            justify-content: center;
+            margin: 0 auto;
         }
     </style>
 </head>

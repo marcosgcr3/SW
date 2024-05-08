@@ -25,6 +25,18 @@ $app = Aplicacion::getInstance();
 	
 	<title><?= $params['tituloPagina'] ?></title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    
+    
+    <?php
+    /*
+    $scripts = $scripts ?? [];
+    foreach ($scripts as $scriptSrc) {
+        echo "<script src=\"$scriptSrc\"></script>";        
+    }
+    */
+    ?>
+
+
 	<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 	<script>
         $(document).ready(function() {

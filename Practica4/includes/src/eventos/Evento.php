@@ -62,7 +62,7 @@ class Evento implements \JsonSerializable
 
         $result = null;
         $app = App::getSingleton();
-        $conn = $app->conexionBd();
+        $conn = $app->getConexionBd();
         $query = sprintf("SELECT C.id, C.id_cliente, C.title, C.id_mecanico, C.startDate AS start, C.endDate AS end FROM citas C WHERE C.id = %d", $idEvento);
         $rs = $conn->query($query);
         if ($rs && $rs->num_rows == 1) {
@@ -164,6 +164,8 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
                 $ocupado->setStart(new DateTime($currentDateTime));
                 $ocupado->setEnd(new DateTime($currentDateTimeF));
                 $ocupado->setEstado($fila['estado']);
+                $nombreMecanico = Usuario::buscaPorId($fila['id_mecanico']);
+                $ocupado-> __set('nombre',$nombreMecanico->getNombre());
                 $result[] = $ocupado;
                 $rs->free();
             }
@@ -172,6 +174,7 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
         // Incrementar la fecha y hora
         $currentDate->add(new DateInterval('PT1H'));
     }
+    
     
     return $result;
 }
@@ -210,6 +213,10 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
                 $e = new Evento();
                 $e->asignaDesdeDiccionario($fila);
                 $result[] = $e;
+            }
+            foreach($result as $evento){
+                $nombreMecanico = Usuario::buscaPorId($evento->getid_mecanico());
+                $evento-> __set('nombre',$nombreMecanico->getNombre());
             }
             $rs->free();
         }
@@ -267,6 +274,10 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
                 $e = new Evento();
                 $e->asignaDesdeDiccionario($fila);
                 $result[] = $e;
+            }
+            foreach($result as $evento){
+                $nombreMecanico = Usuario::buscaPorId($evento->getid_mecanico());
+                $evento-> __set('nombre',$nombreMecanico->getNombre());
             }
             $rs->free();
         }
@@ -446,7 +457,7 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
     /**
      * @param array[string] Nombre de las propiedades de la clase.
      */
-    const PROPERTIES = ['id', 'id_cliente', 'id_mecanico', 'title', 'start', 'end', 'estado'];
+    const PROPERTIES = ['id', 'id_cliente', 'id_mecanico', 'nombre' , 'title', 'start', 'end', 'estado'];
     
     private $id;
 
@@ -454,6 +465,7 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
 
     private $estado;
     private $id_mecanico;
+    private $nombre;
 
     private $title;
 
@@ -563,6 +575,13 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
             return $this->$property;
         }
     }
+
+    public function __set($property, $value)
+    {
+        if (property_exists($this, $property)) {
+            $this->$property = $value;
+        }
+    }
    
        
     /**
@@ -581,6 +600,7 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
         $o->start = $this->start->format(self::MYSQL_DATE_TIME_FORMAT);
         $o->end = $this->end->format(self::MYSQL_DATE_TIME_FORMAT);
         $o->estado = $this->estado;
+        $o->nombre = $this->nombre;
         return $o;
     }
  
@@ -706,7 +726,11 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
             $this->estado = $estado;
 
         }
-        
+
+        if(array_key_exists('nombre', $diccionario)){
+            $nombre = $diccionario['nombre'] ?? null;
+            $this->nombre = $nombre;
+        }
         
         self::compruebaConsistenciaFechas($this->start, $this->end);
         

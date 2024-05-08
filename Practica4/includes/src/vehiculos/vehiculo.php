@@ -173,11 +173,12 @@ class Vehiculo
         return self::inserta($this);
     }
 
-    public static function actualiza2($matricula, $marca, $modelo, $precio, $year, $disponibilidad, $imagen)
+    public static function actualiza2($matricula, $marca, $modelo, $precio, $year, $disponibilidad, $imagen, $id)
 {   
     $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("UPDATE vehiculos V SET marca='%s', modelo='%s', precio='%s', year='%s', disponibilidad='%s',imagen='%s' WHERE V.matricula='$matricula'"
+        $query = sprintf("UPDATE vehiculos V SET matricula='%s', marca='%s', modelo='%s', precio='%s', year='%s', disponibilidad='%s',imagen='%s' WHERE V.id_vehiculo='$id'"
+            , $matricula
             , $marca
             , $modelo
             , $precio
