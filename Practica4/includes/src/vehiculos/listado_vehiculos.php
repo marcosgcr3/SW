@@ -20,6 +20,36 @@ function listavehiculos()
     return $contenido;
 }
 
+function listavehiculosPorMarca($marca)
+{
+    $vehiculos = Vehiculo::listaVehiculosMarca($marca);
+    $contenido = '';
+    if (empty($vehiculos)) {
+        return sinVehiculo();
+    }
+
+    foreach ($vehiculos as $vehiculo) {
+        $contenido .= elVehiculo($vehiculo);
+    }
+
+    return $contenido;
+}
+
+function listavehiculosPorAnyo($anyo)
+{
+    $vehiculos = Vehiculo::listavehiculosPorAnyo($anyo);
+    $contenido = '';
+    if (empty($vehiculos)) {
+        return sinVehiculo();
+    }
+
+    foreach ($vehiculos as $vehiculo) {
+        $contenido .= elVehiculo($vehiculo);
+    }
+
+    return $contenido;
+}
+
 function elVehiculo($vehiculo){
    $contenido = buildVehiculo($vehiculo);
    return $contenido;

@@ -69,7 +69,7 @@ function mostrarPedidos($pedidos)
             $precio2 = $precio*$cantidad;
             $imagen = $producto->getImagen();
             $productos .= <<<EOS
-                <div class="producto">
+                <div class="productoX">
                 <div class="producto-info">
                     <img src="$imagen" alt="imagen" class="producto-imagen">
                     <div class="producto-detalle">
@@ -119,7 +119,7 @@ function listarPedido($carrito, $id_pedido)
             
 
             $productos .= <<<EOS
-            <div class="producto">
+            <div class="productoX">
                 <div class="producto-info">
                     <img src="$imagen" alt="imagen" class="producto-imagen">
                     <div class="producto-detalle">

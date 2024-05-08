@@ -347,4 +347,87 @@ public static function archivarVehiculo($vehiculo){
         return self::eliminarVehiculo($matricula);
     }
 
+    public static function listaMarcas(){//devuelve una lista con todas las marcas disponibles
+        $lista_marca = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT marca
+                            FROM vehiculos v 
+                            WHERE v.archivado='0'
+                            GROUP BY v.marca
+                            ORDER BY v.marca");
+        $rs = $conn->query($query);
+        if($rs -> num_rows > 0){
+            while($row = $rs->fetch_assoc()){
+                $marca = $row['marca'];
+                array_push($lista_marca, $marca);
+            }
+            $rs->free();
+        }
+        else{
+            //echo "No hay pedidos en la base de datos";
+        }
+        return $lista_marca;
+    }
+
+    public static function listaVehiculosMarca($marca){//devuelve una lista con todas las marcas disponibles
+
+        $lista_vehiculos = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT *
+                 FROM vehiculos v 
+                 WHERE v.archivado='0' AND v.marca = '%s'", $marca );
+        $rs = $conn->query($query);
+        if ($rs) {
+            while($fila = $rs->fetch_assoc()) {
+                $vehiculo = new Vehiculo( $fila['matricula'], $fila['marca'], $fila['modelo'], $fila['precio'], $fila['year'],$fila['disponibilidad'], $fila['archivado'], $fila['imagen'], $fila['id_vehiculo']);
+                array_push($lista_vehiculos, $vehiculo);
+            }
+            $rs->free();
+        } else {
+            error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_vehiculos;
+    }
+
+    public static function listaAnyos(){//devuelve una lista con todas las marcas disponibles
+        $lista_anyo = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT year
+                            FROM vehiculos v 
+                            WHERE v.archivado='0'
+                            GROUP BY v.year
+                            ORDER BY v.year");
+        $rs = $conn->query($query);
+        if($rs -> num_rows > 0){
+            while($row = $rs->fetch_assoc()){
+                $anyo = $row['year'];
+                array_push($lista_anyo, $anyo);
+            }
+            $rs->free();
+        }
+        else{
+            //echo "No hay pedidos en la base de datos";
+        }
+        return $lista_anyo;
+    }
+
+    public static function listavehiculosPorAnyo($anyo){//devuelve una lista con todas las marcas disponibles
+
+        $lista_vehiculos = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT *
+                 FROM vehiculos v 
+                 WHERE v.archivado='0' AND v.year = '%d'", $anyo );
+        $rs = $conn->query($query);
+        if ($rs) {
+            while($fila = $rs->fetch_assoc()) {
+                $vehiculo = new Vehiculo( $fila['matricula'], $fila['marca'], $fila['modelo'], $fila['precio'], $fila['year'],$fila['disponibilidad'], $fila['archivado'], $fila['imagen'], $fila['id_vehiculo']);
+                array_push($lista_vehiculos, $vehiculo);
+            }
+            $rs->free();
+        } else {
+            error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_vehiculos;
+    }
 }

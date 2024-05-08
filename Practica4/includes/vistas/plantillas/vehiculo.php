@@ -22,9 +22,7 @@ function buildVehiculo($vehiculo)
                 <h2>$marca : $modelo ($year)</h2>
                 <p>$matricula</p>
                 <p>Precio: $precio&euro;</p>
-                <p>Archivado: $archivado</p>
-               
-                
+                <p>Archivado: $archivado</p>               
             
     EOS;
     $app = Aplicacion::getInstance();

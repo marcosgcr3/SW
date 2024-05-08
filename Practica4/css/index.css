@@ -209,6 +209,34 @@ footer{
     position: relative;
     border: #000000 2px solid;
     margin-bottom: 20px;
+    margin-left: 16%;
+}
+
+.buscar {
+    background-color: #902918; /* Blue background */
+    border: none; /* Remove borders */
+    border-radius:5px;
+    color: white;
+    padding: 5px 10px; /* Some padding */
+    font-size: 10px; /* Set a font size */
+    cursor: pointer; /* Mouse pointer on hover */
+  }
+
+.barra {
+    height:100%;
+    background-color:#f5f5f5;
+    font-family: "Montserrat", sans-serif;
+    text-align: center;
+    position:fixed;
+    z-index:1;
+    overflow:auto;
+    width:15%;
+}
+
+.productoX {
+    position: relative;
+    border: #000000 2px solid;
+    margin-bottom: 20px;
 }
 
 .producto-info {
