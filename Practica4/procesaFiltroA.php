@@ -41,7 +41,7 @@ foreach($vehiculos as $vehiculo){
 
 */
 
-if ($request === 'nada') {
+if ($request === 0) {
 
     Vehiculo::comprobarDisponibilidadTodos();
     // Alquilar::comprobarFecha();
