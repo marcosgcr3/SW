@@ -152,6 +152,15 @@ $contenidoPrincipal = <<<HTML
             alert('No puedes arrastrar eventos a sábado o domingo');
             return;
          }
+         //variable date del dia de hoy
+          var date = new Date();
+          if(info.event.start.getDay() < date.getDay()){
+            // Revertir el cambio (no permitir el arrastre a una hora pasada)
+            info.revert();
+            // Mostrar un mensaje de alerta indicando que no se puede mover a una hora pasada
+            alert('No puedes arrastrar eventos a una hora pasada');
+            return;
+          }
           var e = {
             "id": event.id,
             "id_mecanico": event.id_mecanico,
