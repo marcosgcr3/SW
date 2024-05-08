@@ -62,7 +62,7 @@ class Evento implements \JsonSerializable
 
         $result = null;
         $app = App::getSingleton();
-        $conn = $app->conexionBd();
+        $conn = $app->getConexionBd();
         $query = sprintf("SELECT C.id, C.id_cliente, C.title, C.id_mecanico, C.startDate AS start, C.endDate AS end FROM citas C WHERE C.id = %d", $idEvento);
         $rs = $conn->query($query);
         if ($rs && $rs->num_rows == 1) {

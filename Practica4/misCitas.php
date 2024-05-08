@@ -110,7 +110,7 @@ $result = null;
     break;
     case 'PUT':
 
-                    // 1. Comprobamos si es una consulta de un evento concreto -> eventos.php?idEvento=XXXXX
+            // 1. Comprobamos si es una consulta de un evento concreto -> eventos.php?idEvento=XXXXX
             $idEvento = filter_input(INPUT_GET, 'idEvento', FILTER_VALIDATE_INT);
             // 2. Leemos el contenido que nos envían
             $entityBody = file_get_contents('php://input');

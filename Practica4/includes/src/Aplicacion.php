@@ -15,6 +15,14 @@ class Aplicacion
 
     private static $instancia;
 
+    public static function getSingleton()
+    {
+        if (  !self::$instancia instanceof self) {
+           self::$instancia = new self;
+        }
+        return self::$instancia;
+    }
+
     /**
      * Devuele una instancia de {@see Aplicacion}.
      *

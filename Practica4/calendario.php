@@ -61,16 +61,28 @@ $contenidoPrincipal = <<<HTML
               break;
           }
           event.setProp('backgroundColor', backgroundColor);
+
+          if(!info.isMirror){
+            $(info.el).tooltip({
+              html: true,
+              title: event.title + ' - ' + moment(event.start).format("HH:mm") + ' - ' + moment(event.end).format("HH:mm") + ' - ' + event.extendedProps.nombre,
+              placement: "top",
+              trigger: "hover",
+              container: "body"
+            });
+          }
+          /*          
           var tooltip = new Tooltip(info.el, {
             title: event.title + ' - ' + moment(event.start).format("HH:mm") + ' - ' + moment(event.end).format("HH:mm") + ' - ' + event.extendedProps.nombre,
             placement: 'top',
             trigger: 'hover',
             container: 'body'
           });
+          */
         },
         
         events: '$ev',
-        editable: false,
+        editable: true,
         slotDuration: '01:00:00',
         businessHours: {
           // Días hábiles de lunes a viernes
@@ -123,6 +135,13 @@ $contenidoPrincipal = <<<HTML
             }
           })
         },
+        */
+        //Ejecutado al pasar el mause por encima 
+        
+        eventMouseLeave: function(info) {
+          tooltip.dispose();
+        },
+
         // Ejecutado al arrastrar un evento
         eventDrop: function(info) {
           var event = info.event;
@@ -141,7 +160,7 @@ $contenidoPrincipal = <<<HTML
             "title": event.title
           };
           $.ajax({
-            url: "eventos.php?idEvento=" + event.id,
+            url: "$ev?idEvento=" + event.id,
             contentType: 'application/json; charset=utf-8',
             dataType: "json",
             type: "PUT",
@@ -151,7 +170,7 @@ $contenidoPrincipal = <<<HTML
               alert('Evento actualizado');
             }
           }); 
-        },*/
+        },
         // Ejecutado al hacer click sobre un evento
         eventClick: function(info) {
           var event = info.event;
