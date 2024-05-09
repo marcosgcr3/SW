@@ -50,6 +50,21 @@ function listavehiculosPorAnyo($anyo)
     return $contenido;
 }
 
+function listavehiculosPorPrecio($min, $max)
+{
+    $vehiculos = Vehiculo::listavehiculosPorPrecio($min, $max);
+    $contenido = '';
+    if (empty($vehiculos)) {
+        return sinVehiculo();
+    }
+
+    foreach ($vehiculos as $vehiculo) {
+        $contenido .= elVehiculo($vehiculo);
+    }
+
+    return $contenido;
+}
+
 function elVehiculo($vehiculo){
    $contenido = buildVehiculo($vehiculo);
    return $contenido;

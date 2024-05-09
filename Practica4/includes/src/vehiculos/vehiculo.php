@@ -431,4 +431,25 @@ public static function archivarVehiculo($vehiculo){
         }
         return $lista_vehiculos;
     }
+
+    public static function listavehiculosPorPrecio($min, $max){//devuelve una lista con todas las marcas disponibles
+
+        $lista_vehiculos = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT *
+                 FROM vehiculos v 
+                 WHERE v.archivado='0' AND v.precio >= '%d' AND v.precio <= '%d'
+                 ORDER BY v.precio", $min, $max );
+        $rs = $conn->query($query);
+        if ($rs) {
+            while($fila = $rs->fetch_assoc()) {
+                $vehiculo = new Vehiculo( $fila['matricula'], $fila['marca'], $fila['modelo'], $fila['precio'], $fila['year'],$fila['disponibilidad'], $fila['archivado'], $fila['imagen'], $fila['id_vehiculo']);
+                array_push($lista_vehiculos, $vehiculo);
+            }
+            $rs->free();
+        } else {
+            error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_vehiculos;
+    }
 }

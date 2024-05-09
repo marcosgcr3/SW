@@ -72,6 +72,27 @@ $contenidoPrincipal .=<<<EOS
                 });
             });
         });
+
+        $(document).ready(function(){
+            $("#filtrosP").click(function(){
+                var min = $("#min").val();
+                var max = $("#max").val();
+                //alert(min);
+                //alert(max);
+                $.ajax({
+                    url:"procesaFiltroP.php",
+                    type: "GET",
+                    data:{min:min, max:max},
+                    success:function(data){
+                        $(".prueba").html(data);
+                        console.log(data);
+                    },
+                    error: function(){
+                        alert("Hubo un error");
+                    }
+                });
+            });
+        });
     </script>
 EOS;
 
