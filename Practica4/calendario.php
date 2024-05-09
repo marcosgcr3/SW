@@ -136,15 +136,10 @@ $contenidoPrincipal = <<<HTML
           })
         },
         */
-        //Ejecutado al pasar el mause por encima 
-        
-        eventMouseLeave: function(info) {
-          tooltip.dispose();
-        },
-
         // Ejecutado al arrastrar un evento
         eventDrop: function(info) {
           var event = info.event;
+          $(info.el).tooltip('dispose');
           if (info.event.start.getDay() === 6 || info.event.start.getDay() === 0) {
             // Revertir el cambio (no permitir el arrastre a sábado o domingo)
             info.revert();
