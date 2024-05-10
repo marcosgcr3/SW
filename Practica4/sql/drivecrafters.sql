@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-05-2024 a las 15:31:24
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Tiempo de generación: 10-05-2024 a las 23:11:31
+-- Versión del servidor: 10.4.27-MariaDB
+-- Versión de PHP: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -91,7 +91,8 @@ CREATE TABLE `productos` (
   `archivado` tinyint(1) NOT NULL,
   `descripcion` text NOT NULL,
   `unidades` int(11) NOT NULL,
-  `imagen` text NOT NULL
+  `imagen` text NOT NULL,
+  `categoria` text NOT NULL DEFAULT 'Otros'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -158,7 +159,7 @@ ALTER TABLE `pedido`
 -- Indices de la tabla `pedido_producto`
 --
 ALTER TABLE `pedido_producto`
-  ADD PRIMARY KEY (`id_pedido`,`id_producto`);
+  ADD PRIMARY KEY (`id_pedido`,`id_producto`),
 
 --
 -- Indices de la tabla `productos`
@@ -220,12 +221,6 @@ ALTER TABLE `usuarios`
 --
 ALTER TABLE `vehiculos`
   MODIFY `id_vehiculo` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `citas`
---
-ALTER TABLE `citas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Restricciones para tablas volcadas
