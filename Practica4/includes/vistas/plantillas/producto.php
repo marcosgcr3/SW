@@ -45,7 +45,7 @@ function buildArticulo($producto)
             </form>
             <form id="formBorrarProducto_$nombre" action="borrarProducto.php" method="post">
                 <input type="hidden" name="nombre" value="$nombre">
-            </form></div>
+            </form>
             <i id="iconoBasura" class="fa-solid fa-trash" onclick="document.getElementById('formBorrarProducto_$nombre').submit();"></i>
 
             <form id="formEditarProducto_$nombre" action="editarProducto.php" method="post">

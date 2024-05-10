@@ -36,10 +36,5 @@ else{
     }
 }
 
-if( $app->esAdmin() ){
-    $html.= añadirVehiculo();
-}
-
-
 echo $html;
 

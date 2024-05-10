@@ -24,10 +24,6 @@ if ($marca === 'nada' and empty($min) and empty($max) and $anyo === 0) {
     $html .= listavehiculos();
     $html .= "</div>";
 
-
-    if( $app->esAdmin() ){
-        $html.= añadirVehiculo();
-    }
 } else {
     Vehiculo::comprobarDisponibilidadTodos();
     // Alquilar::comprobarFecha();
@@ -66,10 +62,6 @@ if ($marca === 'nada' and empty($min) and empty($max) and $anyo === 0) {
         $html .= "<div class = prueba>";
         $html .= listavehiculosFiltrados($marca, $min, $max, $anyo);
         $html .= "</div>";
-    }
-
-    if( $app->esAdmin() ){
-        $html.= añadirVehiculo();
     }
 }
 
