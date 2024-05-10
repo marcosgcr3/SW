@@ -4,6 +4,9 @@ namespace es\ucm\fdi\aw\pedidos;
 
 use es\ucm\fdi\aw\Aplicacion;
 use es\ucm\fdi\aw\MagicProperties;
+use mysqli_sql_exception;
+
+
 class Pedidos 
 {
     use MagicProperties;
@@ -12,7 +15,7 @@ class Pedidos
     private $estado;//FALSE == en carrito TRUE == comprado
     private $precio_total;
 
-    private function __construct($id_pedido, $id_usuario, $estado, $precio_total){
+    private function __construct($id_usuario, $estado, $precio_total, $id_pedido = null){
         $this->id_pedido = $id_pedido;
         $this->id_usuario = $id_usuario;
         $this->estado = $estado;
@@ -20,7 +23,7 @@ class Pedidos
     }
 
     public static function crea($id_usuario, $estado, $precio_total){//crea un pedido en la base de datos
-        $pedido = new Pedidos(null, $id_usuario, $estado, $precio_total);
+        $pedido = new Pedidos($id_usuario, $estado, $precio_total);
         return $pedido->guarda();
     }
 
@@ -32,7 +35,7 @@ class Pedidos
         $rs = $conn->query($query);
         if($rs -> num_rows > 0){
             while($row = $rs->fetch_assoc()){
-                $pedido = new Pedidos($row['id_pedido'], $row['id_usuario'], $row['estado'], 0);
+                $pedido = new Pedidos($row['id_usuario'], $row['estado'], 0, $row['id_pedido']);
             }
             $rs->free();
         }
@@ -46,19 +49,19 @@ class Pedidos
     public static function listaPedidos($id_usuario){//devuelve una lista con todos los pedidos del usuario
         $lista_pedidos = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("SELECT p.id_pedido, p.id_usuario, p.estado
+        $query = sprintf("SELECT *
                             FROM pedido p 
-                            WHERE P.id_usuario = '%d'", $id_usuario );
+                            WHERE p.id_usuario = '%d' AND p.estado = '1'", $id_usuario );
         $rs = $conn->query($query);
         if($rs -> num_rows > 0){
             while($row = $rs->fetch_assoc()){
-                $pedido = new Pedidos($row['id_pedido'], $row['id_usuario'], $row['estado'], $row['precio_total']);
+                $pedido = new Pedidos($row['id_usuario'], $row['estado'], $row['precio_total'],$row['id_pedido']);
                 array_push($lista_pedidos, $pedido);
             }
             $rs->free();
         }
         else{
-            echo "No hay pedidos en la base de datos";
+            //echo "No hay pedidos en la base de datos";
         }
         return $lista_pedidos;
     }
@@ -78,22 +81,37 @@ class Pedidos
 
     public function anyadirProducto($id_pedido,$id_producto, $cantidad){//añade un producto al CARRITO
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("INSERT INTO pedido_producto (id_pedido, id_producto, cantidad) VALUES ('%d', '%d', '%d')",
+        try{
+            $query = sprintf("INSERT INTO pedido_producto (id_pedido, id_producto, cantidad) VALUES ('%d', '%d', '%d')",
             $id_pedido,
             $id_producto,
-            $cantidad
-        );
-       if($conn->query($query)){
-            return true;
+            $cantidad);
+            //
+            if($conn->query($query)){
+                return true;
+            }
+            else{
+                throw new mysqli_sql_exception("Error al ejecutar la consulta de inserción: " . $conn->errno . "<br>" . utf8_encode($conn->error));
+            }
         }
-        else{
-            echo "Error en la BD: " . $conn->errno . "<br>" . utf8_encode($conn->error);
-            return false;
+        catch(mysqli_sql_exception $ex){
+            //Manejar la excepción
+            $query = sprintf("UPDATE pedido_producto SET cantidad = cantidad + '%d' WHERE id_pedido = '%d' AND id_producto = '%d'",
+                $cantidad,
+                $id_pedido,
+                $id_producto);
+            if($conn->query($query)){
+                return true;
+            }
+            else{
+                echo "Error en la BD: " . $conn->errno . "<br>" . utf8_encode($conn->error);
+                return false;
+            }
         }
     }
     
 
-    public function eliminarProducto($id_pedido,$id_producto){//elimina un producto del carrito y devuelve la cantidad al producto a la BD 
+    public function eliminarProducto($id_pedido,$id_producto){//elimina un producto del carrito 
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("DELETE FROM pedido_producto WHERE id_pedido = '%d' AND id_producto = '%d'",
             $id_pedido,
@@ -108,7 +126,23 @@ class Pedidos
         }
     }
 
-    public function calculaPrecioTotal($id_pedido){//calcula el precio total del carrito
+    public static function cantidadDeProducto($id_pedido, $id_producto){//devulve la cantidad de un producto en un pedido
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT cantidad FROM pedido_producto WHERE id_pedido = '$id_pedido' AND id_producto = '$id_producto'");
+        $rs = $conn->query($query);
+        if($rs -> num_rows >= 0){
+            while($row = $rs->fetch_assoc()){
+                $cantidad = $row['cantidad'];
+            }
+            $rs->free();
+        }
+        else{
+            echo "No se pudo calcular la cantidad del producto";
+        }
+        return $cantidad;
+    }
+
+    public static function calculaPrecioTotal($id_pedido){//calcula el precio total del carrito
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("SELECT SUM(PR.precio * PP.cantidad) as precio_total
                            FROM pedido P
@@ -160,8 +194,11 @@ class Pedidos
     private static function inserta($pedido){//insertamos pedido en la base de datos 
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("INSERT INTO pedido (id_usuario, estado, precio_total) 
-        VALUES ('$pedido->id_usuario', '$pedido->estado', '$pedido->precio_total')");
+        $query = sprintf("INSERT INTO pedido (id_usuario, estado, precio_total) VALUES ('%d', '%d', '%d')",
+        $conn -> real_escape_string($pedido->id_usuario),
+        $conn -> real_escape_string($pedido->estado),
+        $conn -> real_escape_string($pedido->precio_total)); 
+
         if ($conn->query($query)) {
             $pedido->id_pedido = $conn->insert_id;
             $result = $pedido;
@@ -176,10 +213,10 @@ class Pedidos
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("UPDATE pedido P SET id_usuario = '%d', estado = '%d', precio_total = '%d' WHERE P.id_pedido = '%d'",
-            $pedido->real_escape_string($pedido->id_usuario),
-            $pedido->real_escape_string($pedido->estado),
-            $pedido->$pedido->precio_total,
-            $pedido->id_pedido
+            $conn->real_escape_string($pedido->id_usuario),
+            $conn->real_escape_string($pedido->estado),
+            $conn->$pedido->precio_total,
+            $conn->id_pedido
         );
         if ( $conn->query($query) ) {
             if ( $conn->affected_rows == 0) {
@@ -192,7 +229,7 @@ class Pedidos
         return $result;
     }
 
-    public function guarda(){//guarda el pedido en la base de datos
+    public function guarda(){
         if ($this->id_pedido != null) {
             return self::actualiza($this);
         }

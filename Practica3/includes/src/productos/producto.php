@@ -19,7 +19,7 @@ class Producto
         
         return $producto->guarda();
     }
-    
+
     public static function buscaPorNombre($nombre)
     {
         $conn = Aplicacion::getInstance()->getConexionBd();
@@ -29,7 +29,7 @@ class Producto
         if ($rs) {
             $fila = $rs->fetch_assoc();
             if ($fila) {
-                $result = new Producto( $fila['nombre'], $fila['precio'], $fila['descripcion'], $fila['unidades'], $fila['imagen']);
+                $result = new Producto($fila['nombre'], $fila['precio'], $fila['descripcion'], $fila['unidades'], $fila['imagen'],$fila['id_producto']);
             }
             $rs->free();
         } else {
@@ -62,7 +62,7 @@ class Producto
         if ($rs) {
             $fila = $rs->fetch_assoc();
             if ($fila) {
-                $result = new Producto( $fila['nombre'], $fila['precio'], $fila['descripcion'], $fila['unidades'], $fila['imagen']);
+                $result = new Producto($fila['nombre'], $fila['precio'], $fila['descripcion'], $fila['unidades'], $fila['imagen'],$fila['id_producto']);
             }
             $rs->free();
         } else {
@@ -74,14 +74,14 @@ class Producto
     public static function listaProductos($id_pedido){//devuelve una lista con todos los productos del pedido
         $lista_productos = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("SELECT p.id_producto, p.nombre, p.precio, p.descripcion, p.unidades, p.imagen
+        $query = sprintf("SELECT p.id_producto, p.nombre, p.precio, p.descripcion, p.imagen, pp.cantidad
                             FROM productos p 
                             INNER JOIN pedido_producto pp ON p.id_producto = pp.id_producto
                             WHERE pp.id_pedido = '%d'", $id_pedido );
         $rs = $conn->query($query);
         if($rs -> num_rows > 0){
             while($row = $rs->fetch_assoc()){
-                $producto = new Producto($row['nombre'], $row['precio'], $row['descripcion'], $row['unidades'], $row['imagen']);
+                $producto = new Producto($row['nombre'], $row['precio'], $row['descripcion'], $row['cantidad'], $row['imagen'], $row['id_producto']);
                 array_push($lista_productos, $producto);
             }
             $rs->free();
@@ -135,6 +135,10 @@ class Producto
         $this->imagen = $imagen;
     }
 
+    public function setUnidades($unidades){
+        $this->unidades = $unidades;
+    }
+
     public function getId()
     {
         return $this->id_producto;
@@ -162,7 +166,7 @@ class Producto
     }
     public function guarda()
     {
-        if ($this->nombre != null) {
+        if ($this->id_producto != null) {
             return self::actualiza($this);
         }
         return self::inserta($this);
@@ -171,7 +175,7 @@ class Producto
     {
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query=sprintf("UPDATE productos P SET unidades = '$producto->unidades' WHERE p.nombre='$producto->nombre'"
+        $query=sprintf("UPDATE productos p SET unidades = '$producto->unidades' WHERE p.nombre='$producto->nombre'"
         );
         if ( $conn->query($query) ) {
             if ( $conn->affected_rows == 0) {
@@ -193,7 +197,8 @@ class Producto
         
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "DELETE FROM productos WHERE nombre='$nombre'";
+        //$query = "DELETE FROM productos WHERE nombre='$nombre'";
+        $query = "UPDATE productos SET unidades = '0' WHERE nombre='$nombre'";
         if ( $conn->query($query) ) {
             if ( $conn->affected_rows == 0) {
                 error_log("No se ha eliminado el producto");
@@ -211,13 +216,8 @@ class Producto
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("INSERT INTO productos(nombre, precio, descripcion, unidades, imagen)
-            VALUES ('%s', '%s', '%s', '%s', '%s')",
-            $conn->real_escape_string($producto->nombre),
-            $conn->real_escape_string($producto->precio),
-            $conn->real_escape_string($producto->descripcion),
-            $conn->real_escape_string($producto->unidades),
-            $conn->real_escape_string($producto->imagen));
-    
+            VALUES ('$producto->nombre', '$producto->precio', '$producto->descripcion', '$producto->unidades', '$producto->imagen')");
+      
         if ($conn->query($query)) {
             $result = $producto;
         } else {

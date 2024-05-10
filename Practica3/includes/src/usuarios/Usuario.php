@@ -28,7 +28,7 @@ class Usuario
     public static function buscaPorNIF($NIF)
     {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "SELECT * FROM Usuarios WHERE NIF=$NIF";
+        $query = "SELECT * FROM usuarios WHERE NIF='$NIF'";
         $rs = $conn->query($query);
         $result = false;
         if ($rs) {
@@ -45,7 +45,7 @@ class Usuario
     public static function buscaPorCorreo($correo)
     {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "SELECT * FROM Usuarios WHERE correo='$correo'";
+        $query = "SELECT * FROM usuarios WHERE correo='$correo'";
         $rs = $conn->query($query);
         $result = false;
         if ($rs) {
@@ -63,7 +63,7 @@ class Usuario
     public static function buscaPorId($id)
     {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("SELECT * FROM Usuarios WHERE id=%d", $id);
+        $query = sprintf("SELECT * FROM usuarios WHERE id=%d", $id);
         $rs = $conn->query($query);
         $result = false;
         if ($rs) {
@@ -88,7 +88,7 @@ class Usuario
     {
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query=sprintf("INSERT INTO Usuarios(NIF, nombre, apellido, correo, password, rol)
+        $query=sprintf("INSERT INTO usuarios(NIF, nombre, apellido, correo, password, rol)
         VALUES ('$usuario->NIF', '$usuario->nombre', '$usuario->apellido', '$usuario->correo', '$usuario->password', '$usuario->rol')");
         
         if ( $conn->query($query) ) {
@@ -108,7 +108,7 @@ class Usuario
     {
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query=sprintf("UPDATE Usuarios U SET NIF = '%s', nombre='%s', password='%s' WHERE U.NIF=%d"
+        $query=sprintf("UPDATE usuarios U SET NIF = '%s', nombre='%s', password='%s' WHERE U.NIF=%d"
             , $conn->real_escape_string($usuario->nombreUsuario)
             , $conn->real_escape_string($usuario->nombre)
             , $conn->real_escape_string($usuario->password)
@@ -153,7 +153,7 @@ class Usuario
          * $result = self::borraRoles($usuario) !== false;
          */
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("DELETE FROM Usuarios U WHERE U.id = %d"
+        $query = sprintf("DELETE FROM usuarios U WHERE U.id = %d"
             , $idUsuario
         );
         if ( ! $conn->query($query) ) {
@@ -162,6 +162,95 @@ class Usuario
         }
         return true;
     }
+    
+
+    public static function listaMecanicos(){
+        $lista_mecanicos = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = "SELECT * FROM usuarios WHERE rol='mecanico'";
+        $rs = $conn->query($query);
+        
+        if ($rs) {
+            while($fila = $rs->fetch_assoc()){
+                $mecanico = new Usuario($fila['NIF'], $fila['nombre'], $fila['apellido'], $fila['correo'],$fila['password'], $fila['rol'],$fila['id']);
+                array_push($lista_mecanicos, $mecanico);
+            }
+            $rs->free();
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_mecanicos;
+
+    }
+    public static function obtenerMecanicoDisponible($fecha, $hora)
+    {
+    
+        // Obtener todos los mecánicos
+        $mecanicos = self::listaMecanicos();
+        $mecanicoDisponible = null;
+        $citasMenosCitas = PHP_INT_MAX;
+    
+        foreach ($mecanicos as $mecanico) {
+            if (self::estaDisponible($mecanico, $hora, $fecha)) {
+                $numCitas = self::numCitasTotales($mecanico);
+                if ($numCitas < $citasMenosCitas) {
+                    $citasMenosCitas = $numCitas;
+                    $mecanicoDisponible = $mecanico;
+                }
+            }
+        }
+    
+        return $mecanicoDisponible;
+    }
+    // Función para verificar si un mecánico está disponible en una hora y día específicos
+// Función para verificar si un mecánico está disponible en una hora y día específicos
+// Función para verificar si un mecánico está disponible en una hora y día específicos
+private static function estaDisponible($mecanico, $hora, $dia) {
+    $conn = Aplicacion::getInstance()->getConexionBd();
+    $idMecanico = $mecanico->getId();
+
+    // Formatear la fecha y hora para compararla con las citas del mecánico
+    $fechaHora = $dia . ' ' . $hora;
+
+    // Consultar si hay citas para el mecánico en la hora y día dados
+    $query = "SELECT COUNT(*) AS numCitas FROM citas WHERE id_mecanico = $idMecanico AND dia = '$dia' AND hora = '$hora' AND estado = 0";
+    $rs = $conn->query($query);
+
+    if ($rs) {
+        $fila = $rs->fetch_assoc();
+        $numCitas = $fila['numCitas'];
+        $rs->free();
+
+        // Si el número de citas es 0, el mecánico está disponible
+        return $numCitas == 0;
+    } else {
+        error_log("Error BD ({$conn->errno}): {$conn->error}");
+        return false;
+    }
+}
+
+// Función para contar el número total de citas de un mecánico
+private static function numCitasTotales($mecanico) {
+    $conn = Aplicacion::getInstance()->getConexionBd();
+    $idMecanico = $mecanico->getId();
+
+    // Consultar el número total de citas para el mecánico
+    $query = "SELECT COUNT(*) AS numCitas FROM citas WHERE id_mecanico = $idMecanico";
+    $query = "SELECT COUNT(*) AS numCitas FROM citas WHERE id_mecanico = $idMecanico";
+    $rs = $conn->query($query);
+
+    if ($rs) {
+        $fila = $rs->fetch_assoc();
+        $numCitas = $fila['numCitas'];
+        $rs->free();
+
+        return $numCitas;
+    } else {
+        error_log("Error BD ({$conn->errno}): {$conn->error}");
+        return 0;
+    }
+}
+
 
     private $NIF;
 

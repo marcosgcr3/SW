@@ -4,6 +4,7 @@ namespace es\ucm\fdi\aw\vehiculos;
 
 use es\ucm\fdi\aw\Aplicacion;
 use es\ucm\fdi\aw\Formulario;
+use es\ucm\fdi\aw\vehiculos\vehiculo;
 
 
 
@@ -12,7 +13,7 @@ use es\ucm\fdi\aw\Formulario;
 
 class FormularioVehiculo extends Formulario{
     public function __construct() {
-        parent::__construct('formVehiculo', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('/alquiler.php')]);
+        parent::__construct('formVehiculo', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('alquiler.php')]);
     }
 
     protected function generaCamposFormulario(&$datos){

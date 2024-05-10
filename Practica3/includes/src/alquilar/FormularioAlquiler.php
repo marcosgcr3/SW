@@ -4,7 +4,8 @@ namespace es\ucm\fdi\aw\alquilar;
 
 use es\ucm\fdi\aw\Aplicacion;
 use es\ucm\fdi\aw\Formulario;
-use es\ucm\fdi\aw\vehiculos\Vehiculo;
+use es\ucm\fdi\aw\vehiculos\vehiculo;
+use es\ucm\fdi\aw\alquilar\alquilar;
 
 class FormularioAlquiler extends Formulario{
     
@@ -13,7 +14,7 @@ class FormularioAlquiler extends Formulario{
     private $vehiculo;
     
     public function __construct($matricula) {
-        parent::__construct('formAlquiler', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('/alquiler.php')]);
+        parent::__construct('formAlquiler', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('alquiler.php')]);
        
         $this->matricula = $matricula;
         $this->vehiculo = Vehiculo::buscaPorMatricula($matricula);
@@ -57,13 +58,21 @@ class FormularioAlquiler extends Formulario{
         if (empty($fechaIni)) {
             $this->errores['fechaIni'] = "La fecha de inicio no puede estar vacía";
         }
-
+        else if(strtotime($fechaIni) < strtotime(date('Y-m-d'))){
+            $this->errores['fechaIni'] = "El día no puede ser anterior a la fecha de hoy";
+        }
 
         $fechaFin = $datos['fechaFin'] ?? null;
      
         
         if (empty($fechaFin)) {
             $this->errores['fechaFin'] = "La fecha de fin no puede estar vacía";
+        }
+        else if(strtotime($fechaFin) < strtotime(date('Y-m-d'))){
+            $this->errores['fechaFin'] = "El día no puede ser anterior a la fecha de hoy";
+        }
+        else if(strtotime($fechaIni) > strtotime($fechaFin)){
+            $this->errores['fechaIni'] = "El día de fin no puede ser anterior al día de inicio";
         }
         if (count($this->errores) === 0) {
             $vehiculo=Vehiculo::buscaPorId($this->id_vehiculo);
@@ -75,11 +84,6 @@ class FormularioAlquiler extends Formulario{
             Vehiculo::cambiarDisponibilidad($vehiculo);
             Alquilar::crea($_SESSION['id'], $this->id_vehiculo, $fechaIni, $fechaFin, $vehiculo->getPrecio()*$numDias);
                  
-             
-             
-        
         }
-
-    
     }
 }

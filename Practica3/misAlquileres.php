@@ -1,7 +1,7 @@
 <?php
 
 use es\ucm\fdi\aw\Aplicacion;
-
+use es\ucm\fdi\aw\alquilar\vehiculo;
 require_once 'includes/config.php';
 require_once 'includes/src/alquilar/listaAlquileres.php';
 
@@ -12,9 +12,13 @@ $tituloPagina = 'Mis Alquileres';
 $contenidoPrincipal = '';
 
 
-
+    $contenidoPrincipal .= '<h1>Alquileres Activos</h1>';
     $contenidoPrincipal .= listaAlquileres();
-    
+    $contenidoPrincipal .= '<h1>Alquileres Pendientes de Devolver</h1>';
+    $contenidoPrincipal .= listaAlquileresPendientesDevolver();
+    $contenidoPrincipal .= '<h1>Historial de Alquileres</h1>';
+    $contenidoPrincipal .= listaHistorialAlquileres();
+
  
 
     

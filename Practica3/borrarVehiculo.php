@@ -1,5 +1,5 @@
 <?php
-use es\ucm\fdi\aw\vehiculos\Vehiculo;
+use es\ucm\fdi\aw\vehiculos\vehiculo;
 
 
 require_once __DIR__.'/includes/config.php';

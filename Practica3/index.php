@@ -4,33 +4,7 @@ require_once 'includes/config.php';
 
 
 $tituloPagina = 'Portada';
-if( $app->esMecanico() ){
-    $contenidoPrincipal=<<<EOS
-    <h1>Bienvenido mecanico {$_SESSION['nombre']},{$_SESSION['id']} </h1>
-    EOS;
-    $params = ['tituloPagina' => $tituloPagina, 'contenidoPrincipal' => $contenidoPrincipal];
-    $app->generaVista('/plantillas/plantilla.php', $params);
-    exit();
-}else if($app->esAdmin()){
-    $contenidoPrincipal=<<<EOS
-    <h1>Bienvenido admin {$_SESSION['nombre']},{$_SESSION['id']}</h1>
-    EOS;
-    $params = ['tituloPagina' => $tituloPagina, 'contenidoPrincipal' => $contenidoPrincipal];
-    $app->generaVista('/plantillas/plantilla.php', $params);
-    exit();
-}else if($app->usuarioLogueado()){
-   
-    $contenidoPrincipal=<<<EOS
-    <h1>Bienvenido usuario {$_SESSION['nombre']},{$_SESSION['id']}</h1>
 
-    EOS;
-    $params = ['tituloPagina' => $tituloPagina, 'contenidoPrincipal' => $contenidoPrincipal];
-    $app->generaVista('/plantillas/plantilla.php', $params);
-    exit();
-
-
-}
-else{
     $contenidoPrincipal=<<<EOS
     <h1>Página principal</h1> 
     <div class="imagen">
@@ -48,4 +22,3 @@ else{
     EOS;
     $params = ['tituloPagina' => $tituloPagina, 'contenidoPrincipal' => $contenidoPrincipal];
     $app->generaVista('/plantillas/plantilla.php', $params);
-}
