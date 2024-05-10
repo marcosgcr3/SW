@@ -6,7 +6,7 @@ use es\ucm\fdi\aw\Aplicacion;
 $params['app']->doInclude('/vistas/helpers/plantilla.php');
 $mensajes = mensajesPeticionAnterior();
 $app = Aplicacion::getInstance();
-$ev = filter_input(INPUT_GET, 'tipo', FILTER_SANITIZE_SPECIAL_CHARS);
+$ev = isset($params['tipo']) ? $params['tipo'] : '';
 ?>
 <!DOCTYPE html>
 <html>

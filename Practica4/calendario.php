@@ -54,6 +54,5 @@ $contenidoPrincipal  .= <<<HTML
 
 HTML;
 
-$params = ['tituloPagina' => $tituloPagina, 'contenidoPrincipal' => $contenidoPrincipal];
-$app->generaVista('/plantillas/plantilla.php?tipo='.$ev, $params);
-
+$params = ['tituloPagina' => $tituloPagina, 'contenidoPrincipal' => $contenidoPrincipal, 'tipo' => $ev];
+$app->generaVista('/plantillas/plantilla.php', $params);
