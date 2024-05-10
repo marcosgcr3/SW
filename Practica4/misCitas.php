@@ -92,6 +92,7 @@ $result = null;
         $dictionary = json_decode($entityBody, true);
         $dictionary['id_mecanico'] = $mecanicoDisp;// HACK: normalmente debería de ser App::getSingleton()->idUsuario();
         $dictionary['id_cliente'] = $_SESSION['id'];
+        $dictionary['estado'] = 1;
         $e = Evento::creaDesdeDicionario($dictionary);
         
         // 4. Guardamos el evento en BD

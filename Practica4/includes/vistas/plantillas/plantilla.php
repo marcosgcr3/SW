@@ -7,6 +7,16 @@ $params['app']->doInclude('/vistas/helpers/plantilla.php');
 $mensajes = mensajesPeticionAnterior();
 $app = Aplicacion::getInstance();
 $ev = isset($params['tipo']) ? $params['tipo'] : '';
+//si es un usuario cliente, el calendiario de eventos NO sera editable
+if($ev == 'eventos.php'){
+  if($app->esCliente()){
+    $editable = false;
+  }
+  $editable = false;
+}
+else{
+  $editable = true;
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -76,7 +86,7 @@ $ev = isset($params['tipo']) ? $params['tipo'] : '';
         },
         
         events: '<?= $ev ?>',
-        editable: true,
+        editable: <?= $editable ? 'true' : 'false' ?>,
         slotDuration: '01:00:00',
         businessHours: {
           // Días hábiles de lunes a viernes
@@ -142,7 +152,7 @@ $ev = isset($params['tipo']) ? $params['tipo'] : '';
             return;
          }
          //variable date del dia de hoy
-          var date = new Date();
+          var date = new Date("Y-MM-DD HH:mm:ss");
           if(info.event.start.getDay() < date.getDay()){
             // Revertir el cambio (no permitir el arrastre a una hora pasada)
             info.revert();
@@ -173,40 +183,43 @@ $ev = isset($params['tipo']) ? $params['tipo'] : '';
         eventClick: function(info) {
           var event = info.event;
             if(event.extendedProps.estado == 1){
-              if (confirm("¿Desea aceptar esta cita?")) {
-                var id = event.id;
-                $.ajax({
-                    url: '<?= $ev ?>?idEvento=' + id,
-                    contentType: 'application/json; charset=utf-8',
-                    dataType: "json",
-                    type: "ACEPTAR", // Cambiado a POST para aceptar la cita
-                    success: function() {
-                        calendar.refetchEvents();
-                        alert('Cita aceptada');
-                    },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                          alert("Status: " + textStatus);
-                          alert("Error: " + errorThrown);
-                      }
-                    
-                });
-              }else{
-              
+              var mecanico = <?= $app->esMecanico() ? 'true' : 'false' ?>;
+              if(mecanico){
+                  if (confirm("¿Desea aceptar esta cita?")) {
                   var id = event.id;
                   $.ajax({
                       url: '<?= $ev ?>?idEvento=' + id,
                       contentType: 'application/json; charset=utf-8',
                       dataType: "json",
-                      type: "RECHAZAR", // Cambiado a POST para rechazar la cita
+                      type: "ACEPTAR", // Cambiado a POST para aceptar la cita
                       success: function() {
                           calendar.refetchEvents();
-                          alert('Cita rechazada');
+                          alert('Cita aceptada');
                       },
                       error: function(XMLHttpRequest, textStatus, errorThrown) {
-                          alert("Status: " + textStatus);
-                          alert("Error: " + errorThrown);
-                      }
+                            alert("Status: " + textStatus);
+                            alert("Error: " + errorThrown);
+                        }
+                      
                   });
+                }else{
+                
+                    var id = event.id;
+                    $.ajax({
+                        url: '<?= $ev ?>?idEvento=' + id,
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: "json",
+                        type: "RECHAZAR", // Cambiado a POST para rechazar la cita
+                        success: function() {
+                            calendar.refetchEvents();
+                            alert('Cita rechazada');
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert("Status: " + textStatus);
+                            alert("Error: " + errorThrown);
+                        }
+                    });
+                }
               }
             }
             
