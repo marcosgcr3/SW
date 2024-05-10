@@ -158,7 +158,7 @@ $ev = isset($params['tipo']) ? $params['tipo'] : '';
             "title": event.title
           };
           $.ajax({
-            url: "$ev?idEvento=" + event.id,
+            url: "<?= $ev ?>?idEvento=" + event.id,
             contentType: 'application/json; charset=utf-8',
             dataType: "json",
             type: "PUT",
@@ -176,7 +176,7 @@ $ev = isset($params['tipo']) ? $params['tipo'] : '';
               if (confirm("¿Desea aceptar esta cita?")) {
                 var id = event.id;
                 $.ajax({
-                    url: '$ev?idEvento=' + id,
+                    url: '<?= $ev ?>?idEvento=' + id,
                     contentType: 'application/json; charset=utf-8',
                     dataType: "json",
                     type: "ACEPTAR", // Cambiado a POST para aceptar la cita
@@ -194,7 +194,7 @@ $ev = isset($params['tipo']) ? $params['tipo'] : '';
               
                   var id = event.id;
                   $.ajax({
-                      url: '$ev?idEvento=' + id,
+                      url: '<?= $ev ?>?idEvento=' + id,
                       contentType: 'application/json; charset=utf-8',
                       dataType: "json",
                       type: "RECHAZAR", // Cambiado a POST para rechazar la cita
@@ -224,7 +224,7 @@ $ev = isset($params['tipo']) ? $params['tipo'] : '';
               "title": title
             };
             $.ajax({
-              url: '$ev',
+              url: " <?= $ev ?>",
               type: "POST",
               contentType: 'application/json; charset=utf-8',
               dataType: "json",
