@@ -29,19 +29,17 @@ function buildVehiculo($vehiculo)
     if ($app->esAdmin()) {
         $contenido .= <<<EOS
             </div>
-            <form id="formBorrarVehiculo_$matricula" action="borrarVehiculo.php" method="post">
-                <input type="hidden" name="matricula" value="$matricula">
-            </form>
-            <i id="iconoBasura" class="fa-solid fa-trash" onclick="document.getElementById('formBorrarVehiculo_$matricula').submit();"></i>
+           
+            <div class="archivar">
             <form id="formEditarVehiculo_$matricula" action="editarVehiculo.php" method="post">
                 <input type="hidden" name="matricula" value="$matricula">
             </form>
-            <i id="iconoEditar" onclick="document.getElementById('formEditarVehiculo_$matricula').submit();">Editar</i>
+            <i id="botonEditar" class="fa-solid fa-pen-to-square" onclick="document.getElementById('formEditarVehiculo_$matricula').submit();"></i>
 
-            
+            </div>
             <form action="archivarVehiculo.php" method="post">
                 <input type="hidden" name="matricula" value="$matricula">
-                <button class="iconoArchivar" type="submit">ARCHIVAR</button>
+                <button class="botonA" type="submit">ARCHIVAR</button>
             </form>
             
 

@@ -36,6 +36,6 @@ $contenidoPrincipal = <<<EOS
 </div>
 
 EOS;
-$contenidoPrincipal .= listaCitasMecanico($idMecanico);
+$contenidoPrincipal .= ($idMecanico);
 $params = ['tituloPagina' => $tituloPagina, 'contenidoPrincipal' => $contenidoPrincipal];
 $app->generaVista('/plantillas/plantilla.php', $params);
