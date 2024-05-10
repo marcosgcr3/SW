@@ -64,6 +64,62 @@ function listavehiculosPorPrecio($min, $max)
 
     return $contenido;
 }
+function listavehiculosPorPA($min, $max, $anyo)
+{
+    $vehiculos = Vehiculo::listavehiculosPorPA($min, $max,$anyo);
+    $contenido = '';
+    if (empty($vehiculos)) {
+        return sinVehiculo();
+    }
+
+    foreach ($vehiculos as $vehiculo) {
+        $contenido .= elVehiculo($vehiculo);
+    }
+
+    return $contenido;
+}
+function listavehiculosPorPM($min, $max, $request)
+{
+    $vehiculos = Vehiculo::listavehiculosPorPM($min, $max, $request);
+    $contenido = '';
+    if (empty($vehiculos)) {
+        return sinVehiculo();
+    }
+
+    foreach ($vehiculos as $vehiculo) {
+        $contenido .= elVehiculo($vehiculo);
+    }
+
+    return $contenido;
+}
+function listavehiculosPorMA($request, $anyo)
+{
+    $vehiculos = Vehiculo::listavehiculosPorMA($request, $anyo);
+    $contenido = '';
+    if (empty($vehiculos)) {
+        return sinVehiculo();
+    }
+
+    foreach ($vehiculos as $vehiculo) {
+        $contenido .= elVehiculo($vehiculo);
+    }
+
+    return $contenido;
+}
+function listavehiculosFiltrados($request, $min, $max, $anyo)
+{
+    $vehiculos = Vehiculo::listavehiculosFiltrados($request, $min, $max, $anyo);
+    $contenido = '';
+    if (empty($vehiculos)) {
+        return sinVehiculo();
+    }
+
+    foreach ($vehiculos as $vehiculo) {
+        $contenido .= elVehiculo($vehiculo);
+    }
+
+    return $contenido;
+}
 
 function elVehiculo($vehiculo){
    $contenido = buildVehiculo($vehiculo);
@@ -71,7 +127,11 @@ function elVehiculo($vehiculo){
 }
 
 function sinVehiculo(){
-    $contenido = "<tr><td colspan='4'>No hay vehiculos disponibles</td></tr>";
+    $contenido = <<<EOS
+    <div class="producto">
+    <h3>No hay vehículos disponibles</h3>
+    </div>
+    EOS;
     return $contenido;
 }
 

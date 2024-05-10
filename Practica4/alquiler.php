@@ -6,7 +6,7 @@ use es\ucm\fdi\aw\vehiculos\vehiculo;
 require_once 'includes/config.php';
 require_once 'includes/src/vehiculos/listado_vehiculos.php';
 
-require_once 'includes/vistas/plantillas/filtrosAlquiler.php';
+require_once 'includes/vistas/plantillas/barraFiltrosAlquiler.php';
 
 $tituloPagina = 'Alquiler';
 
@@ -38,16 +38,23 @@ $contenidoPrincipal .=<<<EOS
     <script type="text/javascript">
         $(document).ready(function(){
             $("#filtrosC").on('change', function(){
-                var value = $(this).val();
-                //alert(value);
+                var marca = $(this).val();
+                var min = $("#min").val();
+                var max = $("#max").val();
+                var anyo = $("#filtrosA").val();
+                //alert(min);
+                //alert(max);
+                //alert(marca);
+                //alert(anyo);
                 $.ajax({
-                    url:"pruebaFiltros.php",
+                    url:"procesaFiltrosAlquiler.php",
                     type: "GET",
-                    data:{request:value},
+                    data: {marca:marca, min:min, max:max, anyo:anyo},
                     success:function(data){
                         $(".prueba").html(data);
                     },
                     error: function(){
+                        console.log(data);
                         alert("Hubo un error");
                     }
                 });
@@ -56,17 +63,24 @@ $contenidoPrincipal .=<<<EOS
 
         $(document).ready(function(){
             $("#filtrosA").on('change', function(){
-                var value = $(this).val();
-                //alert(value);
+                var anyo = $(this).val();
+                var min = $("#min").val();
+                var max = $("#max").val();
+                var marca = $("#filtrosC").val();
+                //alert(min);
+                //alert(max);
+                //alert(marca);
+                //alert(anyo);
                 $.ajax({
-                    url:"procesaFiltroA.php",
+                    url:"procesaFiltrosAlquiler.php",
                     type: "GET",
-                    data:{request:value},
+                    data:{marca:marca,min:min,max:max,anyo:anyo},
                     success:function(data){
                         $(".prueba").html(data);
                         console.log(data);
                     },
                     error: function(){
+                        console.log(data);
                         alert("Hubo un error");
                     }
                 });
@@ -77,17 +91,22 @@ $contenidoPrincipal .=<<<EOS
             $("#filtrosP").click(function(){
                 var min = $("#min").val();
                 var max = $("#max").val();
+                var marca = $("#filtrosC").val();
+                var anyo = $("#filtrosA").val();
                 //alert(min);
                 //alert(max);
+                //alert(marca);
+                //alert(anyo);
                 $.ajax({
-                    url:"procesaFiltroP.php",
+                    url:"procesaFiltrosAlquiler.php",
                     type: "GET",
-                    data:{min:min, max:max},
+                    data:{marca:marca,min:min,max:max,anyo:anyo},
                     success:function(data){
                         $(".prueba").html(data);
                         console.log(data);
                     },
                     error: function(){
+                        console.log(data);
                         alert("Hubo un error");
                     }
                 });

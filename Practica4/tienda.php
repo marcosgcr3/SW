@@ -6,27 +6,75 @@ require_once 'includes/config.php';
 require_once 'includes/src/productos/listado_tienda.php';
 
 require_once 'includes/src/productos/producto.php';
+require_once 'includes/vistas/plantillas/barraFiltrosTienda.php';
 
 $tituloPagina = 'Tienda';
 
 $contenidoPrincipal = '';
 
 $contenidoPrincipal .= <<<EOS
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<div class="barra">
-  <h2 class="filtros">Filtros</h3>
-  <form method="post" action="veremos">
-    <input type="text" name="nombreV"/>
-    <button class="buscar" type="submit"><i class="fa fa-search"></i> </button>
-  </form>  
-  <h3 class="tipo" href="#">Tipo de producto</a>
-  <h3 class="rango" href="#">Rango de precio</a>
-</div>
-
+<head>
+<meta charset="utf-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
 EOS;
+
+$contenidoPrincipal .= barraFiltros();
 $contenidoPrincipal .= listaproductos();
    
+
+$contenidoPrincipal .=<<<EOS
+</div>
+</body>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#filtrosP").click(function(){
+                var min = $("#min").val();
+                var max = $("#max").val();
+                var categoria = $("#filtrosCat").val();
+                //alert(min);
+                //alert(max);
+                //alert(categoria);
+                $.ajax({
+                    url:"procesaFiltroTienda.php",
+                    type: "GET",
+                    data:{min:min, max:max, categoria:categoria},
+                    success:function(data){
+                        $(".prueba").html(data);
+                        console.log(data);
+                    },
+                    error: function(){
+                        alert("Hubo un error");
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function(){
+            $("#filtrosCat").on('change', function(){
+                var min = $("#min").val();
+                var max = $("#max").val();
+                var categoria = $("#filtrosCat").val();
+                //alert(min);
+                //alert(max);
+                //alert(categoria);
+                $.ajax({
+                    url:"procesaFiltroTienda.php",
+                    type: "GET",
+                    data:{min:min, max:max, categoria:categoria},
+                    success:function(data){
+                        $(".prueba").html(data);
+                        console.log(data);
+                    },
+                    error: function(){
+                        alert("Hubo un error");
+                    }
+                });
+            });
+        });
+    </script>
+EOS;
 
 
 if( $app->esAdmin() ){

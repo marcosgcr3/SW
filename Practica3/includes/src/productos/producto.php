@@ -92,7 +92,7 @@ class Producto
         return $lista_productos;
 
     }
-    public static function listaProducto(){//devuelve una lista con todos los productos de la BD
+    public static function  listaProducto(){//devuelve una lista con todos los productos de la BD
 
         $lista_productos = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
