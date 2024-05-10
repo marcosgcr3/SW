@@ -65,7 +65,7 @@ function buildArticulo($producto)
                 </form>
         </div>
 
-        </div></div></div>
+        </div></div>
         EOS;
     }
                 

@@ -452,4 +452,85 @@ public static function archivarVehiculo($vehiculo){
         }
         return $lista_vehiculos;
     }
+
+    public static function listavehiculosPorPA($min, $max, $anyo){//precio y año
+
+        $lista_vehiculos = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT *
+                 FROM vehiculos v 
+                 WHERE v.archivado='0' AND v.precio >= '%d' AND v.precio <= '%d' AND v.year = '%d'
+                 ORDER BY v.precio", $min, $max, $anyo);
+        $rs = $conn->query($query);
+        if ($rs) {
+            while($fila = $rs->fetch_assoc()) {
+                $vehiculo = new Vehiculo( $fila['matricula'], $fila['marca'], $fila['modelo'], $fila['precio'], $fila['year'],$fila['disponibilidad'], $fila['archivado'], $fila['imagen'], $fila['id_vehiculo']);
+                array_push($lista_vehiculos, $vehiculo);
+            }
+            $rs->free();
+        } else {
+            error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_vehiculos;
+    }
+    public static function listavehiculosPorPM($min, $max, $request){//Precio y marca
+
+        $lista_vehiculos = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT *
+                 FROM vehiculos v 
+                 WHERE v.archivado='0' AND v.precio >= '%d' AND v.precio <= '%d' AND v.marca = '%s'
+                 ORDER BY v.precio", $min, $max, $request );
+        $rs = $conn->query($query);
+        if ($rs) {
+            while($fila = $rs->fetch_assoc()) {
+                $vehiculo = new Vehiculo( $fila['matricula'], $fila['marca'], $fila['modelo'], $fila['precio'], $fila['year'],$fila['disponibilidad'], $fila['archivado'], $fila['imagen'], $fila['id_vehiculo']);
+                array_push($lista_vehiculos, $vehiculo);
+            }
+            $rs->free();
+        } else {
+            error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_vehiculos;
+    }
+    public static function listavehiculosPorMA($request, $anyo){//Marca y año
+
+        $lista_vehiculos = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT *
+                 FROM vehiculos v 
+                 WHERE v.archivado='0' AND v.year = '%d' AND v.marca = '%s'
+                 ORDER BY v.precio", $anyo, $request );
+        $rs = $conn->query($query);
+        if ($rs) {
+            while($fila = $rs->fetch_assoc()) {
+                $vehiculo = new Vehiculo( $fila['matricula'], $fila['marca'], $fila['modelo'], $fila['precio'], $fila['year'],$fila['disponibilidad'], $fila['archivado'], $fila['imagen'], $fila['id_vehiculo']);
+                array_push($lista_vehiculos, $vehiculo);
+            }
+            $rs->free();
+        } else {
+            error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_vehiculos;
+    }
+    public static function listavehiculosFiltrados($request, $min, $max, $anyo){//devuelve una lista con todas las marcas disponibles
+
+        $lista_vehiculos = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT *
+                 FROM vehiculos v 
+                 WHERE v.archivado='0' AND v.precio >= '%d' AND v.precio <= '%d' AND v.year = '%d' AND v.marca = '%s'
+                 ORDER BY v.precio", $min, $max, $anyo, $request);
+        $rs = $conn->query($query);
+        if ($rs) {
+            while($fila = $rs->fetch_assoc()) {
+                $vehiculo = new Vehiculo( $fila['matricula'], $fila['marca'], $fila['modelo'], $fila['precio'], $fila['year'],$fila['disponibilidad'], $fila['archivado'], $fila['imagen'], $fila['id_vehiculo']);
+                array_push($lista_vehiculos, $vehiculo);
+            }
+            $rs->free();
+        } else {
+            error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_vehiculos;
+    }
 }

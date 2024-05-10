@@ -13,9 +13,9 @@ class Producto
     //archivado: 0 -> no archivado, 1 -> archivado
    
     
-    public static function crea($nombre, $precio, $archivado, $descripcion, $unidades, $imagen)
+    public static function crea($nombre, $precio, $archivado, $descripcion, $unidades, $imagen, $categoria)
     {
-        $producto = new Producto($nombre, $precio, $archivado, $descripcion, $unidades, $imagen);
+        $producto = new Producto($nombre, $precio, $archivado, $descripcion, $unidades, $imagen, $categoria);
         
         return $producto->guarda();
     }
@@ -29,7 +29,7 @@ class Producto
         if ($rs) {
             $fila = $rs->fetch_assoc();
             if ($fila) {
-                $result = new Producto($fila['nombre'], $fila['precio'], $fila['archivado'], $fila['descripcion'], $fila['unidades'], $fila['imagen'],$fila['id_producto']);
+                $result = new Producto($fila['nombre'], $fila['precio'], $fila['archivado'], $fila['descripcion'], $fila['unidades'], $fila['imagen'],$fila['id_producto'], $fila['categoria']);
             }
             $rs->free();
         } else {
@@ -62,7 +62,7 @@ class Producto
         if ($rs) {
             $fila = $rs->fetch_assoc();
             if ($fila) {
-                $result = new Producto($fila['nombre'], $fila['precio'], $fila['archivado'], $fila['descripcion'], $fila['unidades'], $fila['imagen'],$fila['id_producto']);
+                $result = new Producto($fila['nombre'], $fila['precio'], $fila['archivado'], $fila['descripcion'], $fila['unidades'], $fila['imagen'],$fila['id_producto'], $fila['categoria']);
             }
             $rs->free();
         } else {
@@ -81,7 +81,7 @@ class Producto
         $rs = $conn->query($query);
         if($rs -> num_rows > 0){
             while($row = $rs->fetch_assoc()){
-                $producto = new Producto($row['nombre'], $row['precio'], $row['archivado'], $row['descripcion'], $row['cantidad'], $row['imagen'], $row['id_producto']);
+                $producto = new Producto($row['nombre'], $row['precio'], $row['archivado'], $row['descripcion'], $row['cantidad'], $row['imagen'], $row['id_producto'], $row['categoria']);
                 array_push($lista_productos, $producto);
             }
             $rs->free();
@@ -101,7 +101,7 @@ class Producto
         
         if($rs -> num_rows > 0){
             while($row = $rs->fetch_assoc()){
-                $producto = new Producto($row['nombre'], $row['precio'], $row['archivado'], $row['descripcion'], $row['unidades'], $row['imagen'], $row['id_producto']);
+                $producto = new Producto($row['nombre'], $row['precio'], $row['archivado'], $row['descripcion'], $row['unidades'], $row['imagen'], $row['id_producto'], $row['categoria']);
                 array_push($lista_productos, $producto);
             }
             $rs->free();
@@ -111,6 +111,76 @@ class Producto
         }
         return $lista_productos;
     }
+
+    public static function listaProductoCategoria($categoria){//devuelve una lista con todos los productos de la BD
+
+        $lista_productos = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT *
+                FROM productos p 
+                WHERE p.categoria = '%s'
+                ORDER BY p.categoria", $categoria);
+        $rs = $conn->query($query);
+        
+        if($rs -> num_rows > 0){
+            while($row = $rs->fetch_assoc()){
+                $producto = new Producto($row['nombre'], $row['precio'], $row['archivado'], $row['descripcion'], $row['unidades'], $row['imagen'], $row['id_producto'], $row['categoria']);
+                array_push($lista_productos, $producto);
+            }
+            $rs->free();
+        }
+        else {
+            error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_productos;
+    }
+
+    public static function listaProductoPrecio($min,$max){//devuelve una lista con todos los productos de la BD
+
+        $lista_productos = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT *
+                FROM productos p 
+                WHERE p.precio >= '%d' AND p.precio <= '%d'
+                ORDER BY p.precio", $min, $max);
+        $rs = $conn->query($query);
+        
+        if($rs -> num_rows > 0){
+            while($row = $rs->fetch_assoc()){
+                $producto = new Producto($row['nombre'], $row['precio'], $row['archivado'], $row['descripcion'], $row['unidades'], $row['imagen'], $row['id_producto'], $row['categoria']);
+                array_push($lista_productos, $producto);
+            }
+            $rs->free();
+        }
+        else {
+            error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_productos;
+    }
+
+    public static function listaproductosFiltrados($min, $max, $categoria){//devuelve una lista con todos los productos de la BD
+
+        $lista_productos = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT *
+                FROM productos p 
+                WHERE p.precio >= '%d' AND p.precio <= '%d' AND p.categoria = '%s'
+                ORDER BY p.precio", $min, $max, $categoria);
+        $rs = $conn->query($query);
+        
+        if($rs -> num_rows > 0){
+            while($row = $rs->fetch_assoc()){
+                $producto = new Producto($row['nombre'], $row['precio'], $row['archivado'], $row['descripcion'], $row['unidades'], $row['imagen'], $row['id_producto'], $row['categoria']);
+                array_push($lista_productos, $producto);
+            }
+            $rs->free();
+        }
+        else {
+            error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_productos;
+    }
+
 
     private $id_producto;
     
@@ -125,9 +195,10 @@ class Producto
     private $unidades;
 
     private $imagen;
+    private $categoria;
 
 
-    private function __construct($nombre, $precio, $archivado, $descripcion, $unidades, $imagen,$id_producto = null)
+    private function __construct($nombre, $precio, $archivado, $descripcion, $unidades, $imagen,$id_producto = null, $categoria)
     {
         $this->id_producto = $id_producto !== null ? intval($id_producto) : null;
         $this->nombre = $nombre;
@@ -136,6 +207,7 @@ class Producto
         $this->descripcion = $descripcion;
         $this->unidades = $unidades;
         $this->imagen = $imagen;
+        $this->categoria = $categoria;
     }
 
     public function setUnidades($unidades){
@@ -143,6 +215,10 @@ class Producto
     }
     public function setArchivado($archivado){
         $this->archivado = $archivado;
+    }
+
+    public function setCategoria($categoria){
+        $this->categoria = $categoria;
     }
 
     public function getId()
@@ -173,6 +249,10 @@ class Producto
     public function getImagen()
     {
         return $this->imagen;
+    }
+
+    public function getCategoria(){
+        return $this->categoria;
     }
     public function guarda()
     {
@@ -244,7 +324,7 @@ class Producto
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("INSERT INTO productos(nombre, precio, archivado, descripcion, unidades, imagen)
-            VALUES ('$producto->nombre', '$producto->precio', '$producto->archivado', '$producto->descripcion', '$producto->unidades', '$producto->imagen')");
+            VALUES ('$producto->nombre', '$producto->precio', '$producto->archivado', '$producto->descripcion', '$producto->unidades', '$producto->imagen', '$producto->categoria')");
       
         if ($conn->query($query)) {
             $result = $producto;
@@ -253,6 +333,28 @@ class Producto
             error_log("Error BD ({$conn->errno}): {$conn->error}");
         }
         return $result;
+    }
+
+    public static function listaCategorias(){//devuelve una lista con todas las marcas disponibles
+        $lista_categorias = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT categoria
+                            FROM productos p 
+                            WHERE p.archivado='0'
+                            GROUP BY p.categoria
+                            ORDER BY p.categoria");
+        $rs = $conn->query($query);
+        if($rs -> num_rows > 0){
+            while($row = $rs->fetch_assoc()){
+                $categoria = $row['categoria'];
+                array_push($lista_categorias, $categoria);
+            }
+            $rs->free();
+        }
+        else{
+            //echo "No hay pedidos en la base de datos";
+        }
+        return $lista_categorias;
     }
     
 
