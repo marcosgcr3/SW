@@ -4,6 +4,7 @@ $tituloPagina = "Calendario";
 $ev = filter_input(INPUT_GET, 'tipo', FILTER_SANITIZE_SPECIAL_CHARS);
 use es\ucm\fdi\aw\usuarios\Usuario;
 
+$contenidoPrincipal = '';
 
 if($app->esAdmin()){
   
