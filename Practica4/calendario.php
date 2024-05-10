@@ -45,7 +45,7 @@ if($app->esAdmin()){
 
 
 
-$contenidoPrincipal .= <<<HTML
+$contenidoPrincipal  .= <<<HTML
 
   <div class="container">
     <div id="calendar"></div>
@@ -55,5 +55,5 @@ $contenidoPrincipal .= <<<HTML
 HTML;
 
 $params = ['tituloPagina' => $tituloPagina, 'contenidoPrincipal' => $contenidoPrincipal];
-$app->generaVista('/plantillas/plantilla.php', $params);
-?>
+$app->generaVista('/plantillas/plantilla.php?tipo='.$ev, $params);
+
