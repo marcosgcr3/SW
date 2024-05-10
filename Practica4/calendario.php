@@ -1,9 +1,11 @@
 <?php
 require_once __DIR__.'/includes/config.php';
+require_once 'includes/src/eventos/Evento.php';
 $tituloPagina = "Calendario";
 $ev = filter_input(INPUT_GET, 'tipo', FILTER_SANITIZE_SPECIAL_CHARS);
 use es\ucm\fdi\aw\usuarios\Usuario;
 
+$contenidoPrincipal = '';
 
 if($app->esAdmin()){
   

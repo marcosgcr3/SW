@@ -1,5 +1,5 @@
 <?php
-
+require_once 'includes/config.php';
 
 $modoOscuro = isset($_COOKIE['modoOscuro']) && $_COOKIE['modoOscuro'] === 'activado';
 use es\ucm\fdi\aw\Aplicacion;
@@ -75,7 +75,7 @@ $ev = isset($params['tipo']) ? $params['tipo'] : '';
           */
         },
         
-        events: '$ev',
+        events:'<?=$ev?>',
         editable: true,
         slotDuration: '01:00:00',
         businessHours: {
