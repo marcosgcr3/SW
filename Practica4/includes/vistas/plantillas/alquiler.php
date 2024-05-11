@@ -38,17 +38,13 @@ EOS;
     } else {
         $contenido .= <<<EOS
             
+        </div>
         <form action="devolverVehiculo.php" method="post">
             <input type="hidden" name="id" value="$id">
             <button class="botoncarro" type="submit">Devolver</button>
         </form>
 
-        <form action="alquilarVehiculo.php" method="post">
-            <input type="hidden" name="matricula" value="$matricula">
-            <button class="botoncarro" type="submit">Ampliar</button>
-         </form>
-
-    </div></div></div>
+        </div></div>
     EOS;
     }
 
@@ -89,11 +85,12 @@ EOS;
         
         $contenido .= <<<EOS
             </div>
+            <div class="archivar">
             <form id="formBorrarAlquiler_$id" action="eliminarAlquiler.php" method="post">
                 <input type="hidden" name="id_alquiler" value="$id">
             </form>
-            <i id="iconoBasura" onclick="confirmarBorrado($id)">Cancelar</i>
-            <i id="iconoModificar" type"submit">Modificar</i>
+            <button class="botonA" onclick="confirmarBorrado($id)">Cancelar</i>
+            </div>
 
             </div></div>
             <script>
@@ -128,14 +125,52 @@ function buildHistorialAlquiler($alquiler)
     <div class="producto">
     
         <div class="producto-info">
-        
+
         <img src="$imagen" alt="imagen" class="producto-imagen">
         <div class="producto-detalle">
         <h2>$marca:  $modelo</h2>
             <p>Fecha de inicio: $fechaIni</p>
             <p>Fecha de fin: $fechaFin</p>
             <p>Precio: $precio&euro;</p>
+            <p>Estado: FINALIZADO</p>
         </div></div></div>
+
+        
+    
+    EOS;    
+
+    return $contenido;
+}
+
+function buildHistorialCancelados($alquiler)
+{
+    $id = $alquiler->getId();
+    $id_vehiculo = $alquiler->getIdVehiculo();
+    $fechaIni = $alquiler->getFechaIni();
+    $fechaFin = $alquiler->getFechaFin();
+    $precio = $alquiler->getPrecioFinal();
+    
+    
+    $vehiculo = Vehiculo::buscaPorId($id_vehiculo);
+    $imagen = $vehiculo->getImagen();
+    $marca = $vehiculo->getMarca();
+    $modelo = $vehiculo->getModelo();
+    $contenido="";
+    $contenido.=<<<EOS
+    <div class="producto">
+    
+        <div class="producto-info">
+
+        <img src="$imagen" alt="imagen" class="producto-imagen">
+        <div class="producto-detalle">
+        <h2>$marca:  $modelo</h2>
+            <p>Fecha de inicio: $fechaIni</p>
+            <p>Fecha de fin: $fechaFin</p>
+            <p>Precio: $precio&euro;</p>
+            <p>Estado: CANCELADO</p>
+        </div></div></div>
+
+        
     
     EOS;    
 

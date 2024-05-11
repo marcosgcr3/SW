@@ -38,18 +38,35 @@ function listaAlquileres()
 function listaHistorialAlquileres()
 {
         
-        $alquileres = Alquilar::historialAlquileres($_SESSION['id']);
-        $contenido = '';
-        if (empty($alquileres)) {
-            return sinAlquiler();
-        }
-    
-        foreach ($alquileres as $alquiler) {
-            $contenido .= historialVehiculos($alquiler);
-        }
-    
-        return $contenido;
+    $alquileres = Alquilar::historialAlquileres($_SESSION['id']);
+    $contenido = '';
+    if (empty($alquileres)) {
+        return sinAlquiler();
+    }
+
+    foreach ($alquileres as $alquiler) {
+        $contenido .= historialVehiculos($alquiler);
+    }
+
+    return $contenido;
 }
+
+function listaHistorialCancelados()
+{
+        
+    $alquileres = Alquilar::historialCancelados($_SESSION['id']);
+    $contenido = '';
+    if (empty($alquileres)) {
+        return sinAlquiler();
+    }
+
+    foreach ($alquileres as $alquiler) {
+        $contenido .= historialCancelados($alquiler);
+    }
+
+    return $contenido;
+}
+
 function elVehiculoAlquilado($alquiler){
    $contenido = buildAlquiler($alquiler);
    return $contenido;
@@ -60,6 +77,11 @@ function vehiculoPendiente($alquiler){
 }
 function historialVehiculos($alquiler){
     $contenido = buildHistorialAlquiler($alquiler);
+    return $contenido;
+}
+
+function historialCancelados($alquiler){
+    $contenido = buildHistorialCancelados($alquiler);
     return $contenido;
 }
 

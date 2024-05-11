@@ -90,12 +90,13 @@ Class Alquilar{
         }
         return $result;
     }
+
     public static function listaAlquileres($id_usuarios){
         $fechaActual = date('Y-m-d');
         $lista_alquileres = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
 
-        $query = "SELECT * FROM alquileres WHERE id_usuario=$id_usuarios AND fecha_inicio > '$fechaActual'";
+        $query = "SELECT * FROM alquileres WHERE id_usuario=$id_usuarios AND fecha_inicio > '$fechaActual' AND estado = 0";
         $rs = $conn->query($query);
         
         if ($rs) {
@@ -200,34 +201,35 @@ Class Alquilar{
         return $alquiler;
     }
 
+    public static function cambiarEstadoCancelado($id){
+        $alquiler = self::buscaPorIdAlquiler($id);
+       if($alquiler->getEstado() == 0){
+           $alquiler->estado = 2;
+         }
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("UPDATE alquileres SET estado='$alquiler->estado' WHERE id_alquiler='$alquiler->id'");
+        $rs = $conn->query($query);
+        if ($rs) {
+            if ($conn->affected_rows != 1) {
+                error_log("Error al actualizar el alquiler $alquiler->id");
+            }
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $alquiler;
+    }
+
     public static function borrar($id){
         return self::eliminarAlquiler($id);
     }
     private static function eliminarAlquiler($id){
-        $alquiler = self::buscaPorIdAlquiler($id);
-        $vehiculo = Vehiculo::buscaPorId($alquiler->getIdVehiculo());
-        Vehiculo::cambiarDisponibilidad($vehiculo);
-        $result = false;
-        $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "DELETE FROM alquileres WHERE id_alquiler='$id'";
-        if ( $conn->query($query) ) {
-            if ( $conn->affected_rows == 0) {
-                error_log("No se ha eliminado el alquiler");
-            }
-            $result = true;
-        } else {
-            error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
-        }
-        
-        return $result;
-
-
+       self::cambiarEstadoCancelado($id);
     }
     public static function historialAlquileres($id_usuarios){
         $lista_alquileres = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
 
-        $query = "SELECT * FROM alquileres WHERE id_usuario=$id_usuarios AND estado=1";
+        $query = "SELECT * FROM alquileres WHERE id_usuario=$id_usuarios AND estado = 1";
         $rs = $conn->query($query);
         
         if ($rs) {
@@ -241,6 +243,26 @@ Class Alquilar{
         }
         return $lista_alquileres;
     }
+
+    public static function historialCancelados($id_usuarios){
+        $lista_alquileres = array();
+        $conn = Aplicacion::getInstance()->getConexionBd();
+
+        $query = "SELECT * FROM alquileres WHERE id_usuario=$id_usuarios AND estado = 2";
+        $rs = $conn->query($query);
+        
+        if ($rs) {
+            while($fila = $rs->fetch_assoc()){
+                $result = new Alquilar($fila['id_usuario'], $fila['id_vehiculo'], $fila['fecha_inicio'], $fila['fecha_fin'], $fila['precioFinal'], $fila['estado'],$fila['id_alquiler']);
+                array_push($lista_alquileres, $result);
+            }
+            $rs->free();
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $lista_alquileres;
+    }
+
     public static function alquileresPendientesDeDevolver($id_usuarios){
         $lista_alquileres = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
