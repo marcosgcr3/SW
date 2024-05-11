@@ -21,7 +21,7 @@ class FormularioEditarProducto extends Formulario{
     {
         $producto = Producto::BuscaPorNombre($this->nombre);
 
-        //$nombre = $producto->getNombre();
+        $nombre = $producto->getNombre();
         $id = $producto->getId();
         $precio = $producto->getPrecio();
         $descripcion = $producto->getDescripcion();
@@ -35,7 +35,7 @@ class FormularioEditarProducto extends Formulario{
         <div class="container-registro">
             
                 <label for="Nombre">Nombre:</label>
-                <input id="nombre" type="text" name="nombre" value="$this->nombre" />
+                <input id="nombre" type="text" name="nombre" value="$nombre" />
                 {$erroresCampos['nombre']}
                 
                 <label for="Precio">Precio:</label>

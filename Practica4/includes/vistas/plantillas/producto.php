@@ -38,21 +38,45 @@ function buildArticulo($producto)
     if ($app->esAdmin() && $archivado == 0) {
         // Enlace para sumar stock, borrar producto y editar producto
         $productos .= <<<EOS
+            
             <form action="sumarStock.php" method="post">
                 <input type="hidden" name="nombre" value="$nombre">
                 <input type="number" name="cantidad" min="1" value="1">
                 <button type="submit" class="botoncarro">Sumar</button>
             </form>
-            <form id="formBorrarProducto_$nombre" action="borrarProducto.php" method="post">
-                <input type="hidden" name="nombre" value="$nombre">
-            </form>
-            <i id="iconoBasura" class="fa-solid fa-trash" onclick="document.getElementById('formBorrarProducto_$nombre').submit();"></i>
+            </div>
+
+            <div class="archivar">
 
             <form id="formEditarProducto_$nombre" action="editarProducto.php" method="post">
                 <input type="hidden" name="nombre" value="$nombre">
-            </form></div>
-            <i id="iconoEditar"  onclick="document.getElementById('formEditarProducto_$nombre').submit();">EDITAR</i>
+            </form>
+            <i id="botonEditar"  class="fa-solid fa-pen-to-square" onclick="document.getElementById('formEditarProducto_$nombre').submit();"></i>
+
+            </div>
+            <form id="formBorrarProducto_$nombre" action="archivarProducto.php" method="post">
+                <input type="hidden" name="nombre" value="$nombre">
+            </form>
+            <div>
+            <button class="botonA" onclick="confirmarBorrado('$nombre')">ARCHIVAR</button>
+            </div>
+
+            <script>
+            function confirmarBorrado(nombre) {
+                if (confirm("¿Seguro que desea archivar este producto?")) {
+                    document.getElementById('formBorrarProducto_' + nombre).submit();
+                    alert("Se ha archivado con éxito: " + nombre );
+                }
+                else{
+                    alert("Operación cancelada");
+                }
+            }
+            </script>
+
+            
         </div></div>
+
+
         EOS;
     } else if ($archivado == 0){
         // Botón para añadir al carrito

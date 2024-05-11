@@ -5,7 +5,7 @@ use es\ucm\fdi\aw\Aplicacion;
 require_once 'includes/config.php';
 require_once 'includes/src/pedidos/listadoPedidos.php';
 require_once 'includes/src/productos/producto.php';
-require_once 'procesaHorarioDisp.php';
+
 
 $tituloPagina = 'Mis Pedidos';
 

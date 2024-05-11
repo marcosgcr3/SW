@@ -144,18 +144,41 @@ function listarPedido($carrito, $id_pedido)
         $productos .= <<<EOS
             <div class="precioCarritoTotal">
                 <p>TOTAL:  {$precio_total} € <!-- Aqui el precio total del carrito --></p>
-            <form action="comprarCarro.php" method="post">
+            <form id="compraCarro" action="comprarCarro.php" method="post">
                 <input type="hidden" name="id_usuario" value="{$id_usuario}">
                 <input type="hidden" name="id_pedido" value="{$id_pedido}">
                 <input type="hidden" name="precio_total" value="{$precio_total}">
-                <button class="botoncarro" type="submit">Comprar</button>
+                
             </form>
+            <button class="botoncarro" onclick="confirmarCompra()">Comprar</button>
+            <script>
+            function confirmarCompra() {
+                if (confirm("¿Seguro que desea realizar la compra?")) {
+                    document.getElementById('compraCarro').submit();
+                    alert("Se ha realizado la compra con éxito");
+                } else {
+                    alert("Operación cancelada");
+                }
+            }
+        </script>
 
-            <form action="deleteCarro.php" method="post">
-                <input type="hidden" name="id_usuario" value="{$id_usuario}">
-                <input type="hidden" name="id_pedido" value="{$id_pedido}">
-                <button class="botonCa" type="submit">Eliminar carrito</button>
-            </form>
+
+            <form id="deleteCarro" action="deleteCarro.php" method="post">
+            <input type="hidden" name="id_usuario" value="{$id_usuario}">
+            <input type="hidden" name="id_pedido" value="{$id_pedido}">
+        </form>
+        <button class="botonCa" onclick="confirmarBorrado()">Eliminar carrito</button>
+        <script>
+            function confirmarBorrado() {
+                if (confirm("¿Seguro que desea eliminar el carrito?")) {
+                    document.getElementById('deleteCarro').submit();
+                    alert("Se ha eliminado con éxito");
+                } else {
+                    alert("Operación cancelada");
+                }
+            }
+        </script>
+        
 
             </div>
         EOS;
