@@ -15,6 +15,7 @@ $cantidad = filter_input(INPUT_POST, 'cantidad', FILTER_SANITIZE_SPECIAL_CHARS);
 $id_producto = filter_input(INPUT_POST, 'producto', FILTER_SANITIZE_SPECIAL_CHARS);
 
 $pedido = Pedidos::buscarCarrito($id_usuario);
+$producto = Producto::buscaPorId($id_producto);
 
 if($pedido == NULL){//si no existe el carrito
     echo "No existe el carrito";
@@ -25,7 +26,8 @@ else{//ya tiene carrito este usuario, lo compramos
     }
     else{
         $pedido->eliminarProductos($id_pedido,$id_producto, $unidades);
-    }  
+    }
+    $producto->devolverProductos($id_producto, $unidades);  
 }
 
 header('Location: carro.php');

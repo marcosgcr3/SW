@@ -11,11 +11,16 @@ $id_usuario =$_SESSION['id'];
 $id_pedido = filter_input(INPUT_POST, 'id_pedido', FILTER_SANITIZE_SPECIAL_CHARS);
 
 $pedido = Pedidos::buscarCarrito($id_usuario);
+$carrito = Producto::listaProductos($pedido->getId_pedido());
 
 if($pedido == NULL){//si no existe el carrito
     echo "No existe el carrito";
 }
 else{//ya tiene carrito este usuario, lo compramos
+    foreach($carrito as $productoC){
+        $producto = Producto::buscaPorId($productoC->getId());
+        $producto->devolverProductos($producto->getId(), $productoC->getUnidades());
+    }
     $pedido->borrarPedido_producto($pedido->getId_pedido());
     $pedido->borrarPedido($pedido->getId_pedido());    
 }

@@ -16,6 +16,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         //$unidades = $_POST['unidades'];
     
         $pedido = Pedidos::buscarCarrito($id_usuario);
+        $producto = Producto::buscaPorId($id_producto);
 
         if($pedido == NULL){//si no existe el carrito, lo creo
             $pedido = Pedidos::crea($id_usuario, 0, 0);
@@ -25,6 +26,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             $pedido->anyadirProducto($pedido->getId_pedido(),$id_producto, $unidades);
         }
+        $producto->borrarProductos($id_producto, $unidades);
         header('Location: tienda.php');
     } else{
         header('Location: noUsuarioAviso.php');

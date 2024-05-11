@@ -26,9 +26,10 @@ class FormularioEditarProducto extends Formulario{
         $precio = $producto->getPrecio();
         $descripcion = $producto->getDescripcion();
         $imagen = $producto->getImagen();
+        $categoria = $producto->getCategoria();
 
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
-        $erroresCampos = self::generaErroresCampos(['nombre', 'precio', 'descripcion', 'unidades', 'imagen'], $this->errores, 'span', array('class' => 'error'));
+        $erroresCampos = self::generaErroresCampos(['nombre', 'precio', 'descripcion', 'unidades', 'imagen', 'categoria'], $this->errores, 'span', array('class' => 'error'));
 
         $html = <<<EOF
         $htmlErroresGlobales
@@ -50,6 +51,9 @@ class FormularioEditarProducto extends Formulario{
                 <input id="imagen" type="file" name="imagen" />
                 {$erroresCampos['imagen']}
 
+                <label for="Categoria">Categoria:</label>
+                <input id="categoria" type="text" name="categoria" value="$categoria"/>
+                {$erroresCampos['categoria']}   
                
                 <input type="hidden" id="viejaImagen" name="viejaImagen" value="$imagen" />               
                 <input type="hidden" id="id" name="id" value="$id" />
@@ -118,14 +122,20 @@ class FormularioEditarProducto extends Formulario{
                 return;
             }
         }
+
+        $categoria = $datos['categoria'] ?? '';
+        $categoria = filter_var($categoria, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        if ( ! $categoria || empty($categoria) ) {
+            $categoria = 'Otros';
+        }
     
       
         if (count($this->errores) === 0) {
             if($ok){
-                Producto::actualiza2($nombre, $precio, $descripcion, $ruta, $id);
+                Producto::actualiza2($nombre, $precio, $descripcion, $ruta, $id, $categoria);
             }
             else{
-                Producto::actualiza2($nombre, $precio, $descripcion, $imagen, $id);
+                Producto::actualiza2($nombre, $precio, $descripcion, $imagen, $id, $categoria);
             }
             //Producto::actualiza2($nombre, $precio, $descripcion, $imagen);
             /*$producto = Producto::buscaPorNombre($nombre);

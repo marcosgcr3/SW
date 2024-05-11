@@ -320,7 +320,7 @@ public static function archivarVehiculo($vehiculo){
     {
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("INSERT INTO vehiculos (matricula, marca, modelo, precio, year , archivar, disponibilidad, imagen) 
+        $query = sprintf("INSERT INTO vehiculos (matricula, marca, modelo, precio, year , archivado, disponibilidad, imagen) 
         VALUES ('$vehiculo->matricula', '$vehiculo->marca', '$vehiculo->modelo', '$vehiculo->precio', '$vehiculo->year', '$vehiculo->archivado', '$vehiculo->disponibilidad', '$vehiculo->imagen')");
         if ( $conn->query($query) ) {
             $result = true;

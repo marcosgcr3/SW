@@ -15,7 +15,7 @@ class Producto
     
     public static function crea($nombre, $precio, $archivado, $descripcion, $unidades, $imagen, $categoria)
     {
-        $producto = new Producto($nombre, $precio, $archivado, $descripcion, $unidades, $imagen, $categoria);
+        $producto = new Producto($nombre, $precio, $archivado, $descripcion, $unidades, $imagen, NULL, $categoria);
         
         return $producto->guarda();
     }
@@ -58,7 +58,6 @@ class Producto
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = "SELECT * FROM productos WHERE id_producto='$id_producto'";
         $rs = $conn->query($query);
-        $result = false;
         if ($rs) {
             $fila = $rs->fetch_assoc();
             if ($fila) {
@@ -66,7 +65,7 @@ class Producto
             }
             $rs->free();
         } else {
-            error_log("Error BD ({$conn->errno}): {$conn->error}");
+            $result = NULL;
         }
         return $result;
     }
@@ -74,7 +73,7 @@ class Producto
     public static function listaProductos($id_pedido){//devuelve una lista con todos los productos del pedido
         $lista_productos = array();
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("SELECT p.id_producto, p.nombre, p.precio, p.archivado, p.descripcion, p.imagen, pp.cantidad
+        $query = sprintf("SELECT p.id_producto, p.nombre, p.precio, p.archivado, p.descripcion, p.imagen, pp.cantidad, p.categoria
                             FROM productos p 
                             INNER JOIN pedido_producto pp ON p.id_producto = pp.id_producto
                             WHERE pp.id_pedido = '%d'", $id_pedido );
@@ -281,11 +280,11 @@ class Producto
         return $result;
     }
 
-    public static function actualiza2($nombre, $precio, $descripcion, $imagen, $id)
+    public static function actualiza2($nombre, $precio, $descripcion, $imagen, $id, $categoria)
     {
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("UPDATE productos SET precio = '$precio', descripcion = '$descripcion', imagen = '$imagen' WHERE id_producto ='$id'");
+        $query = sprintf("UPDATE productos SET precio = '$precio', descripcion = '$descripcion', imagen = '$imagen', categoria = '$categoria' WHERE id_producto ='$id'");
         if ($conn->query($query)) {
             if ($conn->affected_rows == 0) {
                 error_log("No se ha actualizado el producto");
@@ -317,13 +316,39 @@ class Producto
         }
         return $result;
     }
+
+    public function borrarProductos($id_producto, $unidades){//borra un pedido de la base de datos
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("UPDATE productos p SET p.unidades = p.unidades -'%d' WHERE p.id_producto = '%d'", $unidades, $id_producto);
+        //eliminar de pedido_producto tambien
+
+        if ($conn->query($query) === TRUE) {
+            return true;
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}\n");
+            return false;
+        }
+    }
+
+    public function devolverProductos($id_producto, $unidades){//borra un pedido de la base de datos
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("UPDATE productos p SET p.unidades = p.unidades +'%d' WHERE p.id_producto = '%d'", $unidades, $id_producto);
+        //eliminar de pedido_producto tambien
+
+        if ($conn->query($query) === TRUE) {
+            return true;
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}\n");
+            return false;
+        }
+    }
     
    
     private static function inserta($producto)
     {
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("INSERT INTO productos(nombre, precio, archivado, descripcion, unidades, imagen)
+        $query = sprintf("INSERT INTO productos(nombre, precio, archivado, descripcion, unidades, imagen, categoria)
             VALUES ('$producto->nombre', '$producto->precio', '$producto->archivado', '$producto->descripcion', '$producto->unidades', '$producto->imagen', '$producto->categoria')");
       
         if ($conn->query($query)) {
@@ -356,6 +381,8 @@ class Producto
         }
         return $lista_categorias;
     }
+
+    
     
 
 }

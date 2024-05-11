@@ -20,13 +20,14 @@ class FormularioProducto extends Formulario{
     protected function generaCamposFormulario(&$datos)
     {
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
-        $erroresCampos = self::generaErroresCampos(['nombre', 'precio', 'descripcion', 'unidades', 'imagen'], $this->errores, 'span', array('class' => 'error'));
+        $erroresCampos = self::generaErroresCampos(['nombre', 'precio', 'descripcion', 'unidades', 'imagen', 'categoria'], $this->errores, 'span', array('class' => 'error'));
 
         $nombre = $datos['nombre'] ?? '';
         $precio = $datos['precio'] ?? '';
         $descripcion = $datos['descripcion'] ?? '';
         $unidades = $datos['unidades'] ?? '';
         $imagen = $datos['imagen'] ?? '';
+        $categoria = $datos['categoria'] ?? '';
     
 
         $html = <<<EOF
@@ -53,8 +54,9 @@ class FormularioProducto extends Formulario{
                 <input id="imagen" type="file" name="imagen"/>
                 {$erroresCampos['imagen']}
 
-               
-               
+                <label for="Categoria">Categoria:</label>
+                <input id="categoria" type="text" name="categoria" value="$categoria"/>
+                {$erroresCampos['categoria']}               
             
                 <button class="botonIni" type="submit" name="registro">Registrar</button>
             
@@ -103,6 +105,12 @@ class FormularioProducto extends Formulario{
             $this->errores['imagen'] = 'Error en la subida de la imagen';
             return;
         }
+
+        $categoria = $datos['categoria'] ?? '';
+        $categoria = filter_var($categoria, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        if ( ! $categoria || empty($categoria) ) {
+            $categoria = 'Otros';
+        }
         
 
         $nombreArchivo = $_FILES['imagen']['name'];
@@ -138,7 +146,7 @@ class FormularioProducto extends Formulario{
                
             }else{
                 
-              Producto::crea($nombre, $precio, $archivado, $descripcion, $unidades, $ruta);  
+              Producto::crea($nombre, $precio, $archivado, $descripcion, $unidades, $ruta, $categoria);  
             
             }
             

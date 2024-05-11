@@ -7,7 +7,7 @@ use es\ucm\fdi\aw\Formulario;
 class FormularioLogin extends Formulario
 {
     public function __construct() {
-        parent::__construct('formLogin', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('index.php')]);
+        parent::__construct('formLogin', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('miCuenta.php')]);
     }
     
     protected function generaCamposFormulario(&$datos)
