@@ -28,6 +28,10 @@ else{//ya tiene carrito este usuario, lo compramos
         $pedido->eliminarProductos($id_pedido,$id_producto, $unidades);
     }
     $producto->devolverProductos($id_producto, $unidades);  
+    if(empty($pedido)){
+        $pedido->borrarPedido_producto($pedido->getId_pedido());
+        $pedido->borrarPedido($pedido->getId_pedido()); 
+    }
 }
 
 header('Location: carro.php');
