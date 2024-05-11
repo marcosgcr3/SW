@@ -36,10 +36,25 @@ function buildVehiculo($vehiculo)
             <i id="botonEditar" class="fa-solid fa-pen-to-square" onclick="document.getElementById('formEditarVehiculo_$matricula').submit();"></i>
 
             </div>
-            <form action="archivarVehiculo.php" method="post">
+            <form id="formArchivarVehiculo_$matricula" action="archivarVehiculo.php" method="post">
                 <input type="hidden" name="matricula" value="$matricula">
-                <button class="botonA" type="submit">ARCHIVAR</button>
+                
             </form>
+            <div>
+            <button class="botonA" onclick="confirmarBorrado('$matricula')">ARCHIVAR</button>
+            </div>
+            <script>
+                function confirmarBorrado(matricula) {
+                    if (confirm("¿Seguro que desea archivar este vehiculo?")) {
+                        document.getElementById('formArchivarVehiculo_' + matricula).submit();
+                        alert("Se ha archivado con éxito: " + matricula );
+                    }
+                    else{
+                        alert("Operación cancelada");
+                    }
+                }
+            </script>
+
             
 
 

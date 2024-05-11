@@ -43,6 +43,14 @@ EOS;
             <input type="hidden" name="id" value="$id">
             <button class="botoncarro" type="submit">Devolver</button>
         </form>
+        <script>
+                function confirmarBorrado(id) {
+                    if (confirm("¿Seguro que desea devolver este alquiler?")) {
+                        document.getElementById('formBorrarAlquiler_' + id).submit();
+                        alert("Se ha devuelto con éxito");
+                    }
+                }
+            </script>
 
         </div></div>
     EOS;
@@ -95,9 +103,9 @@ EOS;
             </div></div>
             <script>
                 function confirmarBorrado(id) {
-                    if (confirm("¿Seguro que desea eliminar este alquiler?")) {
+                    if (confirm("¿Seguro que desea cancelar este alquiler?")) {
                         document.getElementById('formBorrarAlquiler_' + id).submit();
-                        alert("Se ha elimiando con éxito");
+                        alert("Se ha cancelado con éxito");
                     }
                 }
             </script>
