@@ -77,9 +77,11 @@ $result = null;
 
     break;
     case 'PUT':
-
+        $url = $_SERVER['REQUEST_URI'];
+        $url = explode('idCita=', $url)[1];
+        //$idCita = filter_input(INPUT_GET,(int)$url, FILTER_VALIDATE_INT);
         // 1. Comprobamos si es una consulta de un Cita concreto -> Citas.php?idCita=XXXXX
-        $idCita = filter_input(INPUT_GET, 'idCita', FILTER_VALIDATE_INT);
+        //$idCita = filter_input(INPUT_GET, 'idCita', FILTER_VALIDATE_INT);
         // 2. Leemos el contenido que nos envían
         $entityBody = file_get_contents('php://input');
         // 3. Verificamos que nos envían un objeto
@@ -90,7 +92,7 @@ $result = null;
 
         // 4. Reprocesamos el cuerpo de la petición como un array PHP
         $dictionary = json_decode($entityBody, true);
-        $e = Cita::buscaPorId($idCita);
+        $e = Cita::buscaPorId((int)$url);
         $e->actualizaDesdeDiccionario($dictionary, ['id', 'id_cliente', 'id_mecanico']);
         $result = Cita::guardaOActualiza($e);
         

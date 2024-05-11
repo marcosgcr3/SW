@@ -163,7 +163,6 @@ else{
           }
           var e = {
             "id": event.id,
-            "id_mecanico": event.id_mecanico,
             "start": moment(event.start).format("Y-MM-DD HH:mm:ss"),
             "end": moment(event.end).format("Y-MM-DD HH:mm:ss"),
             "title": event.title
@@ -179,9 +178,14 @@ else{
               alert('Cita actualizado');
             },
             error: function(XMLHttpRequest, textStatus, errorThrown,data) {
-              alert("Status: " + textStatus);
-              alert("Error: " + errorThrown);
-              alert(data);
+              //alert("Status: " + textStatus);
+              //alert("Error: " + errorThrown);
+              //console.log(data);
+              //console.log(XMLHttpRequest);
+              //console.log(textStatus);
+              console.log(errorThrown);
+              console.log(data);
+              console.log(e);
             }
           }); 
         },
