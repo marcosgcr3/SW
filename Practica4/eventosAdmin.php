@@ -105,7 +105,30 @@ $result = null;
 
 
     break;
-  
+    case 'ACEPTAR':
+        
+      
+        $idCita = filter_input(INPUT_GET, 'idCita', FILTER_VALIDATE_INT);
+        
+        Cita::cambiarEstado($idCita, 0);
+        header('Content-Type: application/json; charset=utf-8');
+        http_response_code(204); // 204 No content (como resultado)
+        header('Content-Type: application/json; charset=utf-8');
+        header('Content-Length: 0');
+
+        break;
+        
+    case 'RECHAZAR':
+            
+          
+            $idCita = filter_input(INPUT_GET, 'idCita', FILTER_VALIDATE_INT);
+           
+            Cita::cambiarEstado($idCita, 2);
+            http_response_code(204); // 204 No content (como resultado)
+            header('Content-Type: application/json; charset=utf-8');
+            header('Content-Length: 0');
+    
+            break;
     default:
         throw new MetodoNoSoportadoException($_SERVER['REQUEST_METHOD']. ' no está soportado');
     break;

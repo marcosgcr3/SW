@@ -189,7 +189,7 @@ else{
         eventClick: function(info) {
           var event = info.event;
             if(event.extendedProps.estado == 1){
-              var mecanico = <?= $app->esMecanico() ? 'true' : 'false' ?>;
+              var mecanico = <?= $app->esAdmin()||$app->esMecanico() ? 'true' : 'false' ?>;
               if(mecanico){
                   if (confirm("¿Desea aceptar esta cita?")) {
                   var id = event.id;
