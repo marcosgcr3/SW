@@ -76,6 +76,35 @@ $result = null;
         }
 
     break;
+    case 'PUT':
+
+        // 1. Comprobamos si es una consulta de un Cita concreto -> Citas.php?idCita=XXXXX
+        $idCita = filter_input(INPUT_GET, 'idCita', FILTER_VALIDATE_INT);
+        // 2. Leemos el contenido que nos envían
+        $entityBody = file_get_contents('php://input');
+        // 3. Verificamos que nos envían un objeto
+        $dictionary = json_decode($entityBody);
+        if (!is_object($dictionary)) {
+            throw new ParametroNoValidoException('El cuerpo de la petición no es valido');
+        }    
+
+        // 4. Reprocesamos el cuerpo de la petición como un array PHP
+        $dictionary = json_decode($entityBody, true);
+        $e = Cita::buscaPorId($idCita);
+        $e->actualizaDesdeDiccionario($dictionary, ['id', 'id_cliente', 'id_mecanico']);
+        $result = Cita::guardaOActualiza($e);
+        
+        // 5. Generamos un objecto como salida.
+        $json = json_encode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
+        
+        http_response_code(200); // 200 OK
+        header('Content-Type: application/json; charset=utf-8');
+        header('Content-Length: ' . mb_strlen($json));
+
+        echo $json; 
+
+
+    break;
   
     default:
         throw new MetodoNoSoportadoException($_SERVER['REQUEST_METHOD']. ' no está soportado');

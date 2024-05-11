@@ -8,7 +8,7 @@ $mensajes = mensajesPeticionAnterior();
 $app = Aplicacion::getInstance();
 $ev = isset($params['tipo']) ? $params['tipo'] : '';
 //si es un usuario cliente, el calendiario de Citas NO sera editable
-if($ev == 'pedirCita.php' || $ev == 'misCitas.php'){
+if($ev == 'pedirCita.php'){
   if($app->esCliente()){
     $editable = false;
   }
@@ -87,6 +87,7 @@ else{
         
         events: '<?= $ev ?>',
         editable: <?= $editable ? 'true' : 'false' ?>,
+        weekends: false,
         slotDuration: '01:00:00',
         businessHours: {
           // Días hábiles de lunes a viernes
@@ -173,9 +174,14 @@ else{
             dataType: "json",
             type: "PUT",
             data: JSON.stringify(e),
-            success: function() {
+            success: function(data) {
               calendar.refetchEvents();
               alert('Cita actualizado');
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown,data) {
+              alert("Status: " + textStatus);
+              alert("Error: " + errorThrown);
+              alert(data);
             }
           }); 
         },
@@ -229,24 +235,28 @@ else{
           var start = info.start;
           var end = info.end;
           var allDay = info.allDay;
-          var title = prompt("Introduzca descripción");
-          if (title) {
-            var e = {
-              "start": moment(start).format("Y-MM-DD HH:mm:ss"),
-              "end": moment(end).format("Y-MM-DD HH:mm:ss"),
-              "title": title
-            };
-            $.ajax({
-              url: " <?= $ev ?>",
-              type: "POST",
-              contentType: 'application/json; charset=utf-8',
-              dataType: "json",
-              data: JSON.stringify(e),
-              success: function() {
-                calendar.refetchEvents();
-                alert('Cita añadido');
-              }
-            })
+          //si estamos en MisCitas, no se pueden añadir citas 
+          var esMisCitass = <?= $ev == 'misCitas.php' ? 'true' : 'false' ?>;
+          if(!esMisCitas){
+              var title = prompt("Introduzca descripción");
+            if (title) {
+              var e = {
+                "start": moment(start).format("Y-MM-DD HH:mm:ss"),
+                "end": moment(end).format("Y-MM-DD HH:mm:ss"),
+                "title": title
+              };
+              $.ajax({
+                url: " <?= $ev ?>",
+                type: "POST",
+                contentType: 'application/json; charset=utf-8',
+                dataType: "json",
+                data: JSON.stringify(e),
+                success: function() {
+                  calendar.refetchEvents();
+                  alert('Cita añadido');
+                }
+              })
+            }
           }
         },
       });
