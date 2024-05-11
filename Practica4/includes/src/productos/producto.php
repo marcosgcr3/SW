@@ -284,7 +284,7 @@ class Producto
     {
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("UPDATE productos SET precio = '$precio', descripcion = '$descripcion', imagen = '$imagen', categoria = '$categoria' WHERE id_producto ='$id'");
+        $query = sprintf("UPDATE productos SET nombre = '$nombre', precio = '$precio', descripcion = '$descripcion', imagen = '$imagen', categoria = '$categoria' WHERE id_producto ='$id'");
         if ($conn->query($query)) {
             if ($conn->affected_rows == 0) {
                 error_log("No se ha actualizado el producto");
@@ -297,24 +297,21 @@ class Producto
         return $result;
     }
     
-    public static function borrar($nombre){
-        return self::eliminarProducto($nombre);
-    }
-    private static function eliminarProducto($nombre){
-        
+    public static function archivarProducto($producto){
+
+        $arch = !$producto->archivado;
         $result = false;
-        $conn = Aplicacion::getInstance()->getConexionBd();
-        //$query = "DELETE FROM productos WHERE nombre='$nombre'";
-        $query = "UPDATE productos SET archivado = '1' WHERE nombre='$nombre'";
-        if ( $conn->query($query) ) {
-            if ( $conn->affected_rows == 0) {
-                error_log("No se ha eliminado el producto");
+            $conn = Aplicacion::getInstance()->getConexionBd();
+            $query = sprintf("UPDATE productos SET archivado='%d' WHERE id_producto='%s'", $arch, $producto->getId());
+            if ( $conn->query($query) ) {
+                if ( $conn->affected_rows == 0) {
+                    error_log("No se ha eliminado el producto");
+                }
+                $result = true;
+            } else {
+                error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
             }
-            $result = true;
-        } else {
-            error_log("Error BD ({$conn->errno}): {$conn->error}");
-        }
-        return $result;
+            return $result;
     }
 
     public function borrarProductos($id_producto, $unidades){//borra un pedido de la base de datos

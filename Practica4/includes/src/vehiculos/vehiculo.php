@@ -330,23 +330,6 @@ public static function archivarVehiculo($vehiculo){
         }
         return $result;
     }
-    private static function eliminarVehiculo($matricula){
-        $result = false;
-        $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "DELETE FROM vehiculos WHERE matricula='$matricula'";
-        if ( $conn->query($query) ) {
-            if ( $conn->affected_rows == 0) {
-                error_log("No se ha eliminado el vehiculo");
-            }
-            $result = true;
-        } else {
-            error_log("Error Aplicacion ({$conn->errno}): {$conn->error}");
-        }
-        return $result;
-    }
-    public static function borrar($matricula){
-        return self::eliminarVehiculo($matricula);
-    }
 
     public static function listaMarcas(){//devuelve una lista con todas las marcas disponibles
         $lista_marca = array();
