@@ -163,7 +163,6 @@ else{
           }
           var e = {
             "id": event.id,
-            "id_mecanico": event.id_mecanico,
             "start": moment(event.start).format("Y-MM-DD HH:mm:ss"),
             "end": moment(event.end).format("Y-MM-DD HH:mm:ss"),
             "title": event.title
@@ -179,9 +178,14 @@ else{
               alert('Cita actualizado');
             },
             error: function(XMLHttpRequest, textStatus, errorThrown,data) {
-              alert("Status: " + textStatus);
-              alert("Error: " + errorThrown);
-              alert(data);
+              //alert("Status: " + textStatus);
+              //alert("Error: " + errorThrown);
+              //console.log(data);
+              //console.log(XMLHttpRequest);
+              //console.log(textStatus);
+              console.log(errorThrown);
+              console.log(data);
+              console.log(e);
             }
           }); 
         },
@@ -189,7 +193,7 @@ else{
         eventClick: function(info) {
           var event = info.event;
             if(event.extendedProps.estado == 1){
-              var mecanico = <?= $app->esMecanico() ? 'true' : 'false' ?>;
+              var mecanico = <?= $app->esAdmin()||$app->esMecanico() ? 'true' : 'false' ?>;
               if(mecanico){
                   if (confirm("¿Desea aceptar esta cita?")) {
                   var id = event.id;

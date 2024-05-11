@@ -77,9 +77,11 @@ $result = null;
 
     break;
     case 'PUT':
-
+        $url = $_SERVER['REQUEST_URI'];
+        $url = explode('idCita=', $url)[1];
+        //$idCita = filter_input(INPUT_GET,(int)$url, FILTER_VALIDATE_INT);
         // 1. Comprobamos si es una consulta de un Cita concreto -> Citas.php?idCita=XXXXX
-        $idCita = filter_input(INPUT_GET, 'idCita', FILTER_VALIDATE_INT);
+        //$idCita = filter_input(INPUT_GET, 'idCita', FILTER_VALIDATE_INT);
         // 2. Leemos el contenido que nos envían
         $entityBody = file_get_contents('php://input');
         // 3. Verificamos que nos envían un objeto
@@ -90,7 +92,7 @@ $result = null;
 
         // 4. Reprocesamos el cuerpo de la petición como un array PHP
         $dictionary = json_decode($entityBody, true);
-        $e = Cita::buscaPorId($idCita);
+        $e = Cita::buscaPorId((int)$url);
         $e->actualizaDesdeDiccionario($dictionary, ['id', 'id_cliente', 'id_mecanico']);
         $result = Cita::guardaOActualiza($e);
         
@@ -105,7 +107,31 @@ $result = null;
 
 
     break;
-  
+    case 'ACEPTAR':
+        
+      
+        $url = $_SERVER['REQUEST_URI'];
+        $url = explode('idCita=', $url)[1];
+        Cita::cambiarEstado($url, 0);
+        header('Content-Type: application/json; charset=utf-8');
+        http_response_code(204); // 204 No content (como resultado)
+        header('Content-Type: application/json; charset=utf-8');
+        header('Content-Length: 0');
+
+        break;
+        
+    case 'RECHAZAR':
+            
+          
+        $url = $_SERVER['REQUEST_URI'];
+        $url = explode('idCita=', $url)[1];
+           
+        Cita::cambiarEstado($url, 2);
+        http_response_code(204); // 204 No content (como resultado)
+        header('Content-Type: application/json; charset=utf-8');
+        header('Content-Length: 0');
+
+        break;
     default:
         throw new MetodoNoSoportadoException($_SERVER['REQUEST_METHOD']. ' no está soportado');
     break;
