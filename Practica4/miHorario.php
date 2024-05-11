@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__.'/includes/config.php';
 
-use es\ucm\fdi\aw\eventos\Evento;
+use es\ucm\fdi\aw\citas\Cita;
 use es\ucm\fdi\aw\usuarios\Usuario;
 
 // Procesamos la cabecera Content-Type
@@ -35,13 +35,13 @@ $result = null;
     // Consulta de datos
     case 'GET':
         try {
-            // Comprobamos si es una consulta de un evento concreto -> eventos.php?idEvento=XXXXX
-            $idEvento = filter_input(INPUT_GET, 'idEvento', FILTER_VALIDATE_INT);
-            if ($idEvento) {
+            // Comprobamos si es una consulta de un Cita concreto -> Citas.php?idCita=XXXXX
+            $idCita = filter_input(INPUT_GET, 'idCita', FILTER_VALIDATE_INT);
+            if ($idCita) {
                 $result = [];
-                    $result[] = Evento::buscaPorId((int)$idEvento);
+                    $result[] = Cita::buscaPorId((int)$idCita);
             } else {
-                // Comprobamos si es una lista de eventos entre dos fechas -> eventos.php?start=XXXXX&end=YYYYY
+                // Comprobamos si es una lista de Citas entre dos fechas -> Citas.php?start=XXXXX&end=YYYYY
                 // https://fullcalendar.io/docs/events-json-feed
                 $start = filter_input(INPUT_GET, 'start', FILTER_SANITIZE_SPECIAL_CHARS);
                 $end = filter_input(INPUT_GET, 'end', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -50,7 +50,7 @@ $result = null;
                     $endDateTime = \DateTime::createFromFormat(DateTime::ISO8601, $end);
                     
                     
-                     $result = Evento::buscaEntreFechas($_SESSION['id'], $startDateTime, $endDateTime);
+                     $result = Cita::buscaEntreFechas($_SESSION['id'], $startDateTime, $endDateTime);
 
                 } else {
                     http_response_code(400);
@@ -59,7 +59,7 @@ $result = null;
                 }
             }
 
-            // Generamos un array de eventos en formato JSON
+            // Generamos un array de Citas en formato JSON
             $json = json_encode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
 
             http_response_code(200); // 200 OK
@@ -77,8 +77,8 @@ $result = null;
     break;
     case 'PUT':
 
-        // 1. Comprobamos si es una consulta de un evento concreto -> eventos.php?idEvento=XXXXX
-        $idEvento = filter_input(INPUT_GET, 'idEvento', FILTER_VALIDATE_INT);
+        // 1. Comprobamos si es una consulta de un Cita concreto -> Citas.php?idCita=XXXXX
+        $idCita = filter_input(INPUT_GET, 'idCita', FILTER_VALIDATE_INT);
         // 2. Leemos el contenido que nos envían
         $entityBody = file_get_contents('php://input');
         // 3. Verificamos que nos envían un objeto
@@ -89,9 +89,9 @@ $result = null;
 
         // 4. Reprocesamos el cuerpo de la petición como un array PHP
         $dictionary = json_decode($entityBody, true);
-        $e = Evento::buscaPorId($idEvento);
+        $e = Cita::buscaPorId($idCita);
         $e->actualizaDesdeDiccionario($dictionary, ['id', 'id_cliente', 'id_mecanico']);
-        $result = Evento::guardaOActualiza($e);
+        $result = Cita::guardaOActualiza($e);
         
         // 5. Generamos un objecto como salida.
         $json = json_encode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
@@ -108,9 +108,9 @@ $result = null;
     case 'ACEPTAR':
         
       
-        $idEvento = filter_input(INPUT_GET, 'idEvento', FILTER_VALIDATE_INT);
+        $idCita = filter_input(INPUT_GET, 'idCita', FILTER_VALIDATE_INT);
         
-        Evento::cambiarEstado($idEvento, 0);
+        Cita::cambiarEstado($idCita, 0);
         header('Content-Type: application/json; charset=utf-8');
         http_response_code(204); // 204 No content (como resultado)
         header('Content-Type: application/json; charset=utf-8');
@@ -121,9 +121,9 @@ $result = null;
     case 'RECHAZAR':
             
           
-            $idEvento = filter_input(INPUT_GET, 'idEvento', FILTER_VALIDATE_INT);
+            $idCita = filter_input(INPUT_GET, 'idCita', FILTER_VALIDATE_INT);
            
-            Evento::cambiarEstado($idEvento, 2);
+            Cita::cambiarEstado($idCita, 2);
             http_response_code(204); // 204 No content (como resultado)
             header('Content-Type: application/json; charset=utf-8');
             header('Content-Length: 0');

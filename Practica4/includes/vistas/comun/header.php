@@ -49,7 +49,7 @@ use es\ucm\fdi\aw\Aplicacion;
                                 
             }
             else if ($app->usuarioLogueado() && !$app->esAdmin() && !$app->esMecanico()){
-                echo "<li ><a href='calendario.php?tipo=eventos.php' >CITAS</a></li>";
+                echo "<li ><a href='calendario.php?tipo=pedirCita.php' >CITAS</a></li>";
                 
             }else{
                 echo "<li><a href='noUsuarioAviso.php'>CITAS</a></li>";

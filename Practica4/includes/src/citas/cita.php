@@ -1,6 +1,6 @@
 <?php
 
-namespace es\ucm\fdi\aw\eventos;
+namespace es\ucm\fdi\aw\citas;
 
 use es\ucm\fdi\aw\Aplicacion as App;
 use es\ucm\fdi\aw\usuarios\Usuario;
@@ -9,19 +9,19 @@ use \DateTime;
 use DateInterval;
 
 /**
- * Representa un evento de calendario.
+ * Representa un Cita de calendario.
  */
-class Evento implements \JsonSerializable
+class Cita implements \JsonSerializable
 {
 
     /**
-     * Busca todos los eventos de un usuario con id $id_mecanico.
+     * Busca todos los Citas de un usuario con id $id_mecanico.
      *
      * @param int $id_mecanico Id del usuario a buscar.
      *
-     * @return array[Evento] Lista de eventos del usuario con id $id_mecanico.
+     * @return array[Cita] Lista de Citas del usuario con id $id_mecanico.
      */
-    public static function buscaTodosEventos(int $id_mecanico)
+    public static function buscaTodasCitas(int $id_mecanico)
     {
         if (!$id_mecanico) {
             throw new \BadMethodCallException('$id_mecanico no puede ser nulo.');
@@ -36,58 +36,58 @@ class Evento implements \JsonSerializable
             $rs = $conn->query($query);
             if ($rs) {
                 while($fila = $rs->fetch_assoc()) {
-                    $e = new Evento();
+                    $e = new Cita();
                     $e->asignaDesdeDiccionario($fila);
                     $result[] = $e;
                 }
                 $rs->free();
             } else {
-                throw new DataAccessException("Se esperaba 1 evento y se han obtenido: ".$rs->num_rows);
+                throw new DataAccessException("Se esperaba 1 Cita y se han obtenido: ".$rs->num_rows);
             }
             return $result;
         }
 
     /**
-     * Busca un evento con id $idEvento.
+     * Busca un Cita con id $idCita.
      *
-     * @param int $idEvento Id del evento a buscar.
+     * @param int $idCita Id del Cita a buscar.
      *
-     * @return Evento Evento encontrado.
+     * @return Cita Cita encontrado.
      */
-    public static function buscaPorId(int $idEvento)
+    public static function buscaPorId(int $idCita)
     {
-        if (!$idEvento) {
-            throw new \BadMethodCallException('$idEvento no puede ser nulo.');
+        if (!$idCita) {
+            throw new \BadMethodCallException('$idCita no puede ser nulo.');
         }
 
         $result = null;
         $app = App::getSingleton();
         $conn = $app->getConexionBd();
-        $query = sprintf("SELECT C.id, C.id_cliente, C.title, C.id_mecanico, C.startDate AS start, C.endDate AS end FROM citas C WHERE C.id = %d", $idEvento);
+        $query = sprintf("SELECT C.id, C.id_cliente, C.title, C.id_mecanico, C.startDate AS start, C.endDate AS end FROM citas C WHERE C.id = %d", $idCita);
         $rs = $conn->query($query);
         if ($rs && $rs->num_rows == 1) {
             while($fila = $rs->fetch_assoc()) {
-                $result = new Evento();
+                $result = new Cita();
                 $result->asignaDesdeDiccionario($fila);
             }
             $rs->free();
         } else {
             if ($conn->affected_rows == 0) {
-                throw new EventoNoEncontradoException("No se ha encontrado el evento: ".$idEvento); 
+                throw new CitaNoEncontradoException("No se ha encontrado el Cita: ".$idCita); 
             }
-            throw new DataAccessException("Se esperaba 1 evento y se han obtenido: ".$rs->num_rows);
+            throw new DataAccessException("Se esperaba 1 Cita y se han obtenido: ".$rs->num_rows);
         }
         return $result;
     }
   
     /**
-     * Busca los eventos de un usuario con id $id_mecanico en el rango de fechas $start y $end (si se proporciona).
+     * Busca los Citas de un usuario con id $id_mecanico en el rango de fechas $start y $end (si se proporciona).
      *
-     * @param int $id_mecanico Id del usuario para el que se buscarán los eventos.
-     * @param DateTime $start Fecha a partir de la cual se buscarán eventos (@link MYSQL_DATE_TIME_FORMAT)
-     * @param DateTime|null $end Fecha hasta la que se buscarán eventos (@link MYSQL_DATE_TIME_FORMAT)
+     * @param int $id_mecanico Id del usuario para el que se buscarán los Citas.
+     * @param DateTime $start Fecha a partir de la cual se buscarán Citas (@link MYSQL_DATE_TIME_FORMAT)
+     * @param DateTime|null $end Fecha hasta la que se buscarán Citas (@link MYSQL_DATE_TIME_FORMAT)
      *
-     * @return array[Evento] Lista de eventos encontrados.
+     * @return array[Cita] Lista de Citas encontrados.
      */
     public static function cuentaMecanicosDistintos()
 {
@@ -138,18 +138,18 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
         $currentDateF = clone $currentDate;
         $currentDateF->add(new DateInterval('PT1H'));
         $currentDateTimeF = $currentDateF->format(self::MYSQL_DATE_TIME_FORMAT);
-        // Contar el número de eventos para el día y hora actual
-        $query = sprintf("SELECT COUNT(*) AS num_eventos FROM citas WHERE '%s' >= startDate AND '%s' <= endDate", $currentDateTime, $currentDateTimeF );
+        // Contar el número de Citas para el día y hora actual
+        $query = sprintf("SELECT COUNT(*) AS num_Citas FROM citas WHERE '%s' >= startDate AND '%s' <= endDate", $currentDateTime, $currentDateTimeF );
         $rs = $conn->query($query);
         $fila = $rs->fetch_assoc();
-        $numEventos = intval($fila['num_eventos']);
+        $numCitas = intval($fila['num_Citas']);
         
         // Obtener el número de mecánicos
         $numMecanicos =self::cuentaMecanicosDistintos();
         
-        // Si el número de eventos es igual al número de mecánicos, establecer el evento "ocupado"
-        if ($numEventos == $numMecanicos) {
-            $ocupado = new Evento();
+        // Si el número de Citas es igual al número de mecánicos, establecer el Cita "ocupado"
+        if ($numCitas == $numMecanicos) {
+            $ocupado = new Cita();
             $ocupado->setTitle("Ocupado");
             $ocupado->setStart(new DateTime($currentDateTime));
             $ocupado->setEnd(new DateTime($currentDateTimeF));
@@ -159,7 +159,7 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
             $rs = $conn->query($query);
             $fila = $rs->fetch_assoc();
             if($fila){
-                $ocupado = new Evento();
+                $ocupado = new Cita();
                 $ocupado->setTitle($fila['title']);
                 $ocupado->setStart(new DateTime($currentDateTime));
                 $ocupado->setEnd(new DateTime($currentDateTimeF));
@@ -210,28 +210,28 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
         $rs = $conn->query($query);
         if ($rs) {
             while($fila = $rs->fetch_assoc()) {
-                $e = new Evento();
+                $e = new Cita();
                 $e->asignaDesdeDiccionario($fila);
                 $result[] = $e;
             }
-            foreach($result as $evento){
-                $nombreMecanico = Usuario::buscaPorId($evento->getid_mecanico());
-                $evento-> __set('nombre',$nombreMecanico->getNombre());
+            foreach($result as $Cita){
+                $nombreMecanico = Usuario::buscaPorId($Cita->getid_mecanico());
+                $Cita-> __set('nombre',$nombreMecanico->getNombre());
             }
             $rs->free();
         }
         return $result;
     }
-    public static function cambiarEstado(int $idEvento, int $estado)
+    public static function cambiarEstado(int $idCita, int $estado)
     {
-        if (!$idEvento) {
-            throw new \BadMethodCallException('$idEvento no puede ser nulo.');
+        if (!$idCita) {
+            throw new \BadMethodCallException('$idCita no puede ser nulo.');
         }
         $result = false;
         $conn = App::getInstance()->getConexionBd();
         $query = sprintf("UPDATE citas E SET estado=%d WHERE E.id = %d"
             , $estado
-                , $idEvento);      
+                , $idCita);      
         $result = $conn->query($query);
         if ($result) {
             $result = true;
@@ -271,13 +271,13 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
         $rs = $conn->query($query);
         if ($rs) {
             while($fila = $rs->fetch_assoc()) {
-                $e = new Evento();
+                $e = new Cita();
                 $e->asignaDesdeDiccionario($fila);
                 $result[] = $e;
             }
-            foreach($result as $evento){
-                $nombreMecanico = Usuario::buscaPorId($evento->getid_mecanico());
-                $evento-> __set('nombre',$nombreMecanico->getNombre());
+            foreach($result as $Cita){
+                $nombreMecanico = Usuario::buscaPorId($Cita->getid_mecanico());
+                $Cita-> __set('nombre',$nombreMecanico->getNombre());
             }
             $rs->free();
         }
@@ -285,43 +285,43 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
     }
     
     /**
-     * Guarda o actualiza un evento $evento en la BD.
+     * Guarda o actualiza un Cita $Cita en la BD.
      *
-     * @param Evento $evento Evento a guardar o actualizar.
+     * @param Cita $Cita Cita a guardar o actualizar.
      */
-    public static function guardaOActualiza(Evento $evento)
+    public static function guardaOActualiza(Cita $Cita)
     {
-        if (!$evento) {
-            throw new \BadMethodCallException('$evento no puede ser nulo.');
+        if (!$Cita) {
+            throw new \BadMethodCallException('$Cita no puede ser nulo.');
         }
         $result = false;
         $conn = App::getInstance()->getConexionBd();
-        if (!$evento->id) {
+        if (!$Cita->id) {
             $query = sprintf("INSERT INTO citas (id_cliente, id_mecanico, title, startDate, endDate, estado) VALUES (%d, %d,'%s', '%s', '%s', %d)"
-                , $evento->id_cliente
-                , $evento->id_mecanico
-                    , $conn->real_escape_string($evento->title)
-                        , $evento->start->format(self::MYSQL_DATE_TIME_FORMAT)
-                            , $evento->end->format(self::MYSQL_DATE_TIME_FORMAT)
-                                , $evento->estado);
+                , $Cita->id_cliente
+                , $Cita->id_mecanico
+                    , $conn->real_escape_string($Cita->title)
+                        , $Cita->start->format(self::MYSQL_DATE_TIME_FORMAT)
+                            , $Cita->end->format(self::MYSQL_DATE_TIME_FORMAT)
+                                , $Cita->estado);
 
             $result = $conn->query($query);
             if ($result) {
-                $evento->id = $conn->insert_id;
-                $result = $evento;
+                $Cita->id = $conn->insert_id;
+                $result = $Cita;
             } else {
-                throw new DataAccessException("No se ha podido guardar el evento");
+                throw new DataAccessException("No se ha podido guardar el Cita");
             }
         } else {
             $query = sprintf("UPDATE citas E SET id_mecanico=%d, title='%s', startDate='%s', endDate='%s' WHERE E.id = %d"
-                , $evento->id_mecanico
-                    , $conn->real_escape_string($evento->title)
-                        , $evento->start->format(self::MYSQL_DATE_TIME_FORMAT)
-                            , $evento->end->format(self::MYSQL_DATE_TIME_FORMAT)
-                                , $evento->id);      
+                , $Cita->id_mecanico
+                    , $conn->real_escape_string($Cita->title)
+                        , $Cita->start->format(self::MYSQL_DATE_TIME_FORMAT)
+                            , $Cita->end->format(self::MYSQL_DATE_TIME_FORMAT)
+                                , $Cita->id);      
             $result = $conn->query($query);
             if ($result) {
-                $result = $evento;
+                $result = $Cita;
             } else {
                 throw new DataAccessException("Se han actualizado más de 1 fila cuando sólo se esperaba 1 actualización: ".$conn->affected_rows);
             }
@@ -331,26 +331,26 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
     }
   
     /**
-     * Borra un evento id $idEvento.
+     * Borra un Cita id $idCita.
      *
-     * @param int $idEvento Id del evento a borrar.
+     * @param int $idCita Id del Cita a borrar.
      *
      */
-    public static function borraPorId(int $idEvento)
+    public static function borraPorId(int $idCita)
     {
-        if (!$idEvento) {
-            throw new \BadMethodCallException('$idEvento no puede ser nulo.');
+        if (!$idCita) {
+            throw new \BadMethodCallException('$idCita no puede ser nulo.');
         }
         $result = false;
         $conn = App::getInstance()->getConexionBd();
         
-        $query = sprintf('DELETE FROM citas WHERE id=%d', $idEvento);
+        $query = sprintf('DELETE FROM citas WHERE id=%d', $idCita);
         $result = $conn->query($query);
         if ($result && $conn->affected_rows == 1) {
             $result = true;
         } else {
             if ($conn->affected_rows == 0) {
-                throw new EventoNoEncontradoException("No se ha encontrado el evento: ".$idEvento); 
+                throw new CitaNoEncontradoException("No se ha encontrado el Cita: ".$idCita); 
             }
             throw new DataAccessException("Se esperaba borrar 1 fila y se han borrado: ".$conn->affected_rows); 
         }
@@ -358,26 +358,26 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
     }
   
     /**
-     * Crear un evento asociado a un usuario $id_mecanico y un título $title.
+     * Crear un Cita asociado a un usuario $id_mecanico y un título $title.
      * El comienzo es la fecha y hora actual del sistema y el fin es una hora más tarde.
      *
-     * @param int $id_mecanico Id del propietario del evento.
-     * @param string $title Título del evento.
+     * @param int $id_mecanico Id del propietario del Cita.
+     * @param string $title Título del Cita.
      *
      */
     public static function creaSimple(int $id_cliente, int $id_mecanico, string $title)
     {
         $start = new \DateTime();
         $end = $start->add(new \DateInterval('PT1H'));
-        return self::creaDetallado($id_cliente, $id_mecanico, $title, $start, $end);
+        return self::creaDetallado($id_cliente, $id_mecanico, $title, $start, $end, 0);
     }
   
     /**
-     * Crear un evento asociado a un usuario $id_mecanico, un título $title y una fecha y hora de comienzo.
+     * Crear un Cita asociado a un usuario $id_mecanico, un título $title y una fecha y hora de comienzo.
      * El fin es una hora más tarde de la hora de comienzo.
      *
-     * @param int $id_mecanico Id del propietario del evento.
-     * @param string $title Título del evento.
+     * @param int $id_mecanico Id del propietario del Cita.
+     * @param string $title Título del Cita.
      * @param DateTime $start Fecha y horas de comienzo.
      */
     public static function creaComenzandoEn(int $id_cliente, int $id_mecanico, string $title, \DateTime $start)
@@ -387,20 +387,20 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
         }
 
         $end = $start->add(new \DateInterval('PT1H'));
-        return self::creaDetallado($id_cliente, $id_mecanico, $title, $start, $end);
+        return self::creaDetallado($id_cliente, $id_mecanico, $title, $start, $end, 0);
     }
   
     /**
-     * Crear un evento asociado a un usuario $id_mecanico, un título $title y una fecha y hora de comienzo y fin.
+     * Crear un Cita asociado a un usuario $id_mecanico, un título $title y una fecha y hora de comienzo y fin.
      *
-     * @param int $id_mecanico Id del propietario del evento.
-     * @param string $title Título del evento.
+     * @param int $id_mecanico Id del propietario del Cita.
+     * @param string $title Título del Cita.
      * @param DateTime $start Fecha y horas de comienzo.
      * @param DateTime $end Fecha y horas de fin.
      */
     public static function creaDetallado(int $id_cliente ,int $id_mecanico, string $title, \DateTime $start, \DateTime $end, int $estado)
     {
-        $e = new Evento();
+        $e = new Cita();
         $e->setid_cliente($id_cliente);
         $e->setid_mecanico($id_mecanico);
         $e->setTitle($title);
@@ -411,17 +411,17 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
     }
 
     /**
-     * Crear un evento un evento a partir de un diccionario PHP.
+     * Crear un Cita un Cita a partir de un diccionario PHP.
      * Como por ejemplo array("id_mecanico" => (int)1, "title" => "Descripcion"
      *   , "start" => "2019-04-29 00:00:00", "end" => "2019-04-30 00:00:00")
      *
-     * @param array $diccionario Array / map / diccionario PHP con los datos del evento a crear.
+     * @param array $diccionario Array / map / diccionario PHP con los datos del Cita a crear.
      *
-     * @return Evento Devuelve el evento creado.
+     * @return Cita Devuelve el Cita creado.
      */
     public static function creaDesdeDicionario(array $diccionario)
     {
-        $e = new Evento();
+        $e = new Cita();
         $e->asignaDesdeDiccionario($diccionario, ['id_cliente', 'id_mecanico', 'title', 'start', 'end','estado']);
         return $e;
     }
@@ -445,7 +445,7 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
     }
 
     /**
-     * @param int Longitud máxima del título de un evento.
+     * @param int Longitud máxima del título de un Cita.
      */
     const TITLE_MAX_SIZE = 255;
 
@@ -587,7 +587,7 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
     /**
      * Método utilizado por la función de PHP json_encode para serializar un objeto que no tiene atributos públicos.
      *
-     * @return Devuelve un objeto con propiedades públicas y que represente el estado de este evento.
+     * @return Devuelve un objeto con propiedades públicas y que represente el estado de este Cita.
      */
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
@@ -606,11 +606,11 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
  
 
     /**
-     * Actualiza este evento a partir de un diccionario PHP. No todas las propiedades tienen que actualizarse.
+     * Actualiza este Cita a partir de un diccionario PHP. No todas las propiedades tienen que actualizarse.
      * Por ejemplo el array("title" => "Nueva descripcion", "end" => "2019-04-30 00:00:00") sólo actualiza las 
      * propiedades "title" y "end".
      *
-     * @param array $diccionario Array / map / diccionario PHP con los datos del evento a actualizar.
+     * @param array $diccionario Array / map / diccionario PHP con los datos del Cita a actualizar.
      * @param array[string] $propiedadesAIgnorar Nombre de propiedades que se ignorarán, y no se actualizarán, si se
      *                                           encuentran en $diccionario.
      *
@@ -629,10 +629,10 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
     }
     
     /**
-     * Actualiza este evento a partir de un diccionario PHP. No todas las propiedades tienen que actualizarse, aunque son
+     * Actualiza este Cita a partir de un diccionario PHP. No todas las propiedades tienen que actualizarse, aunque son
      * obligatorias las propiedades cuyo nombre se incluyan en $propiedadesRequeridas.
      *
-     * @param array $diccionario Array / map / diccionario PHP con los datos del evento a actualizar.
+     * @param array $diccionario Array / map / diccionario PHP con los datos del Cita a actualizar.
      * @param array[string] $propiedadesRequeridas Nombre de propiedades que se requieren actualizar. Si no existen en
      *                                             $diccionario, se lanza BadMethodCallException.
      *
