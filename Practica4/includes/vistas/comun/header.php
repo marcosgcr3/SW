@@ -61,7 +61,7 @@ use es\ucm\fdi\aw\Aplicacion;
                 
                                 
             }
-            else if($app->esCliente()){
+            else if(!$app->esMecanico()){
                 echo "<li><a href='tienda.php' >TIENDA</a></li>";
             }
 
