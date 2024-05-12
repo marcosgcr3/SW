@@ -23,8 +23,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $pedido->anyadirProducto($pedido->getId_pedido(),$id_producto, $unidades);
         }
         else{//ya tiene carrito este usuario, añado el producto al carrito
+            //si ya existe el producto en el carrito, sumo las unidades
+            if($pedido->existeProducto($id_producto))
+                $pedido->sumarUnidadesProducto($pedido->getId_pedido(),$id_producto, $unidades);
+            else{
+                $pedido->anyadirProducto($pedido->getId_pedido(),$id_producto, $unidades);
+            }
 
-            $pedido->anyadirProducto($pedido->getId_pedido(),$id_producto, $unidades);
+           
         }
         
         header('Location: tienda.php');

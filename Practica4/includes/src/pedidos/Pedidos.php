@@ -92,6 +92,38 @@ class Pedidos
         }
     }
 
+    public function existeProducto($id_producto){//comprueba si un producto ya esta en el carrito
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT * FROM pedido_producto WHERE id_pedido = '%d' AND id_producto = '%d'",
+            $this->id_pedido,
+            $id_producto
+        );
+        $rs = $conn->query($query);
+        if($rs -> num_rows > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public function sumarUnidadesProducto($id_pedido,$id_producto, $cantidad){//suma unidades a un producto en el carrito
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("UPDATE pedido_producto SET cantidad = cantidad + '%d' WHERE id_pedido = '%d' AND id_producto = '%d'",
+                $cantidad,
+                $id_pedido,
+                $id_producto
+        );
+        if($conn->query($query)){
+            return true;
+        }
+        else{
+            echo "Error en la BD: " . $conn->errno . "<br>" . utf8_encode($conn->error);
+            return false;
+        }
+    }
+
+
     public function anyadirProducto($id_pedido,$id_producto, $cantidad){//añade un producto al CARRITO
         $conn = Aplicacion::getInstance()->getConexionBd();
         try{
