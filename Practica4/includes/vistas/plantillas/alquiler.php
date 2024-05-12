@@ -19,7 +19,7 @@ function buildAlquilerPendiente($alquiler){
     $matricula = $vehiculo->getMatricula();
     $contenido="";
     $contenido.=<<<EOS
-    <div class="producto">
+    <div class="alquiler">
     
         <div class="producto-info">
         
@@ -41,7 +41,7 @@ EOS;
         </div>
         <form action="devolverVehiculo.php" method="post">
             <input type="hidden" name="id" value="$id">
-            <button class="botoncarro" type="submit">Devolver</button>
+            <button class="botonD" type="submit">Devolver</button>
         </form>
         <script>
                 function confirmarBorrado(id) {
@@ -73,7 +73,7 @@ function buildAlquiler($alquiler)
     $modelo = $vehiculo->getModelo();
     $contenido="";
     $contenido.=<<<EOS
-    <div class="producto">
+    <div class="alquiler">
     
         <div class="producto-info">
         
@@ -130,7 +130,7 @@ function buildHistorialAlquiler($alquiler)
     $modelo = $vehiculo->getModelo();
     $contenido="";
     $contenido.=<<<EOS
-    <div class="producto">
+    <div class="alquiler">
     
         <div class="producto-info">
 
@@ -165,7 +165,7 @@ function buildHistorialCancelados($alquiler)
     $modelo = $vehiculo->getModelo();
     $contenido="";
     $contenido.=<<<EOS
-    <div class="producto">
+    <div class="alquiler">
     
         <div class="producto-info">
 
