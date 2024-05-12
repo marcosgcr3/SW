@@ -207,21 +207,25 @@ footer{
     position: relative;
     border: #ffffff 2px solid;
     margin-bottom: 20px;
+    height: 240px;
     margin-left: 16%;
 }
 
 .producto-info {
     display: flex;
-    align-items: center;
+    align-items: end;
+    height: 240px;
 }
 
 .producto-imagen {
     width: 300px;
     margin-right: 20px;
+    height: 240px;
 }
 .producto-detalle {
     flex: 1;
     position: relative;
+    height: 240px;
 }
 
 .botoncarro {
@@ -267,8 +271,24 @@ input[type="number"] {
     padding: 5px 10px; /* Some padding */
     font-size: 10px; /* Set a font size */
     cursor: pointer; /* Mouse pointer on hover */
-  }
-  select.selectMecanico{
+}
+#botonEditar {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: #ffffff;
+    font-size: larger;
+    
+}
+
+
+#iconoArchivar {
+    position: absolute;
+    top: 120px;
+    right: 15px;
+    color: #ec2000;
+}
+select.selectMecanico{
     font-family: "Montserrat", sans-serif;
     font-weight: 600;
     display: block;
@@ -315,7 +335,7 @@ input[type="number"] {
 
 .productoX {
     position: relative;
-    border: #000000 2px solid;
+    border: #ffffff 2px solid;
     margin-bottom: 20px;
 }
 .botonA{
