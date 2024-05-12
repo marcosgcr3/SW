@@ -19,21 +19,6 @@ SET time_zone = "+00:00";
 
 --
 -- Base de datos: `drivecrafters`
---
-
---
--- Volcado de datos para la tabla `pedido`
---
-
-INSERT INTO `pedido` (`id_pedido`, `id_usuario`, `estado`, `precio_total`) VALUES
-(1, 11, 1, 23);
-
---
--- Volcado de datos para la tabla `pedido_producto`
---
-
-INSERT INTO `pedido_producto` (`id_pedido`, `id_producto`, `cantidad`) VALUES
-(1, 3, 1);
 
 --
 -- Volcado de datos para la tabla `productos`
@@ -49,7 +34,7 @@ INSERT INTO `productos` (`id_producto`, `nombre`, `precio`, `archivado`, `descri
 --
 
 INSERT INTO `usuarios` (`id`, `NIF`, `nombre`, `apellido`, `correo`, `password`, `rol`) VALUES
-(1, '000000000', 'Marcos', 'Gomez', 'lagarto@gmail.com', '$2y$10$IGlIFQvB75s3Q6eG1s3GLu5IoI1myTSnD2.t7ulMDv/cL9ug/xt0y', 'mecanico'), // sd
+(1, '000000000', 'Marcos', 'Gomez', 'lagarto@gmail.com', '$2y$10$IGlIFQvB75s3Q6eG1s3GLu5IoI1myTSnD2.t7ulMDv/cL9ug/xt0y', 'mecanico'), 
 (2, '12', 'pepe', 'peres', 'pepe@gmail.com', '$2y$10$RSE/bu0FF67rcqWU/i6BPO/jhmP0VMYAyRvn4vz62gsPPb.OWgHE6', 'usuario'),
 (3, '1234567', 'cristiano', 'ronaldo', 'elbicho@gmail.com', 'messimalo', 'mecanico'),
 (4, '123456789', 'ghj', 'ghj', 'hgj@gmail.com', '$2y$10$8iYgOYrv.WTNpD.1XfaIXewG8IWk4rXcaF4M5u0GaTjPd4HPHMRGW', 'usuario'),
