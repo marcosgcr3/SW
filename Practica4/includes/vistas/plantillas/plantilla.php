@@ -240,8 +240,11 @@ else{
           var end = info.end;
           var allDay = info.allDay;
           //si estamos en MisCitas, no se pueden añadir citas 
-          var esMisCitass = <?= $ev == 'misCitas.php' ? 'true' : 'false' ?>;
-          if(!esMisCitas){
+          var esMisCitass =false;
+          if('<?= $ev ?>' == 'pedirCita.php'){
+            esMisCitas = true;
+          }
+          if(esMisCitas){
               var title = prompt("Introduzca descripción");
             if (title) {
               var e = {

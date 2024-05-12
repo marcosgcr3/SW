@@ -79,7 +79,7 @@ $result = null;
 
     break;
     case 'POST':
-        if(!$app->esMecanico() && $app->usuarioLogueado()){
+        
         // 1. Leemos el contenido que nos envían
         $entityBody = file_get_contents('php://input');
         // 2. Verificamos que nos envían un objeto
@@ -108,7 +108,7 @@ $result = null;
         header('Content-Length: ' . mb_strlen($json));
 
         echo $json;  
-    } 
+    
 
     break;
     case 'PUT':
@@ -140,18 +140,7 @@ $result = null;
 
   
         break;
-    case 'DELETE':
-        if(!$app->esMecanico() && $app->usuarioLogueado()){
-        // 1. Comprobamos si es una consulta de un Cita concreto -> Citas.php?idCita=XXXXX
-        $idCita = filter_input(INPUT_GET, 'idCita', FILTER_VALIDATE_INT);
-        // 2. Borramos el Cita
-        Cita::borraPorId($idCita);
-
-        http_response_code(204); // 204 No content (como resultado)
-        header('Content-Type: application/json; charset=utf-8');
-        header('Content-Length: 0');
-        break;
-        }
+  
     default:
         throw new MetodoNoSoportadoException($_SERVER['REQUEST_METHOD']. ' no está soportado');
     break;
