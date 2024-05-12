@@ -88,13 +88,14 @@ class FormularioContacto extends Formulario {
 
        
         if (count($this->errores) === 0) {
-            $destinatario = 'drivecrafters@gmail.com';
+            $destinatario = 'drivecrafters@ucm.es';
             $titulo = "Nuevo mensaje de contacto: $asunto";
             $mensajeCorreo = "Nombre: $nombre\n\n";
             $mensajeCorreo .= "Email: $email\n\n";
             $mensajeCorreo .= "Mensaje:\n$mensaje";
 
             // Envío del correo
+            
             $enviado = mail($destinatario, $titulo, $mensajeCorreo);
 
             if (!$enviado) {
