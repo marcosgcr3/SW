@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__.'/includes/config.php';
 
-use es\ucm\fdi\aw\citas\Cita;
+use es\ucm\fdi\aw\citas\cita;
 use es\ucm\fdi\aw\usuarios\Usuario;
 
 // Procesamos la cabecera Content-Type
