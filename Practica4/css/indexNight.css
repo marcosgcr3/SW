@@ -268,7 +268,40 @@ input[type="number"] {
     font-size: 10px; /* Set a font size */
     cursor: pointer; /* Mouse pointer on hover */
   }
+  select.selectMecanico{
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    display: block;
+    width: 150px;
+    height: 50px;
+    text-align:center;
+    border-radius:35px;
+    background-color: maroon;
+    color: #f5f5f5;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    margin-right: auto;
+    margin-left: auto;
 
+}
+.botonSeleccionarMecanico{
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    width: 150px;
+    height: 50px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border-radius:35px;
+    background-color: maroon;
+    color: #f5f5f5;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
 .barra {
     height:100%;
     background-color:#000000;
@@ -284,6 +317,32 @@ input[type="number"] {
     position: relative;
     border: #000000 2px solid;
     margin-bottom: 20px;
+}
+.botonA{
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    width: 100px;
+    height: 35px;
+    margin-top: 40px;
+    border-radius:35px;
+    background-color: maroon;
+    color: #f5f5f5;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+    margin-bottom: 10%;
+    margin-right: 10px;
+}
+
+.pedido{
+    cursor: pointer;
+}
+
+.productoPedido{
+    display: none;
 }
 
 .botonC{
