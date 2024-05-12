@@ -84,7 +84,7 @@ function buildArticulo($producto)
                 <form action="addProductoAlCarro.php" method="POST" id="formAddProducto">
                 <input type="hidden" name="id_producto" id="idProducto" value="$id_producto">
                 <input type="hidden" name="nombre" id="nombre" value="$nombre">
-                <input type="number" name="unidades" id="units" min="1" max="100000" value="1">
+                <input type="number" name="unidades" id="units" min="1" max="$unidades" value="1">
                 <button type="submit" id="bottonCompra" class="botoncarro">Añadir al carrito</button>
                 </form>
         </div>
