@@ -214,7 +214,7 @@ private static function estaDisponible($mecanico, $fechaHora) {
     //$fechaHora = $fechaHora->format('Y-m-d H:i:s');
 
     // Consultar si hay citas para el mecánico en la hora y día dados
-    $query = "SELECT COUNT(*) AS numCitas FROM citas WHERE id_mecanico = $idMecanico AND startDate = '$fechaHora' AND estado = 0";
+    $query = "SELECT COUNT(*) AS numCitas FROM citas WHERE id_mecanico = $idMecanico AND startDate = '$fechaHora'AND (estado = 0 OR estado = 1)";
     $rs = $conn->query($query);
 
     if ($rs) {
