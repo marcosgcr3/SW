@@ -4,7 +4,7 @@
 require_once __DIR__.'/includes/config.php';
 
 use es\ucm\fdi\aw\Aplicacion;
-use es\ucm\fdi\aw\productos\Producto;
+use es\ucm\fdi\aw\productos\producto;
 use es\ucm\fdi\aw\pedidos\Pedidos;
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -16,7 +16,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         //$unidades = $_POST['unidades'];
     
         $pedido = Pedidos::buscarCarrito($id_usuario);
-        $producto = Producto::buscaPorId($id_producto);
+        $producto = producto::buscaPorId($id_producto);
 
         if($pedido == NULL){//si no existe el carrito, lo creo
             $pedido = Pedidos::crea($id_usuario, 0, 0);

@@ -4,7 +4,7 @@
 require_once __DIR__.'/includes/config.php';
 
 use es\ucm\fdi\aw\Aplicacion;
-use es\ucm\fdi\aw\productos\Producto;
+use es\ucm\fdi\aw\productos\producto;
 use es\ucm\fdi\aw\pedidos\Pedidos;
 
 $id_usuario =$_SESSION['id'];
@@ -15,7 +15,7 @@ $cantidad = filter_input(INPUT_POST, 'cantidad', FILTER_SANITIZE_SPECIAL_CHARS);
 $id_producto = filter_input(INPUT_POST, 'producto', FILTER_SANITIZE_SPECIAL_CHARS);
 
 $pedido = Pedidos::buscarCarrito($id_usuario);
-$producto = Producto::buscaPorId($id_producto);
+$producto = producto::buscaPorId($id_producto);
 
 if($pedido == NULL){//si no existe el carrito
     echo "No existe el carrito";
