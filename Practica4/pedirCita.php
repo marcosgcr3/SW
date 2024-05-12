@@ -3,6 +3,8 @@ require_once __DIR__.'/includes/config.php';
 
 use es\ucm\fdi\aw\citas\cita;
 use es\ucm\fdi\aw\usuarios\Usuario;
+use es\ucm\fdi\aw\http\ContentTypeNoSoportadoException;
+use es\ucm\fdi\aw\http\ParametroNoValidoException;
 
 // Procesamos la cabecera Content-Type
 $contentType= $_SERVER['CONTENT_TYPE'] ?? 'application/json';
