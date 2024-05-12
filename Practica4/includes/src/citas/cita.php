@@ -197,14 +197,23 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
                 throw new \BadMethodCallException('$diccionario[\'end\'] no sigue el formato válido: '.self::MYSQL_DATE_TIME_FORMAT);
             }
         }
-        
+        $app = App::getInstance(); 
         $conn = App::getInstance()->getConexionBd();
+        if($app->esMecanico()){ 
+            $query = sprintf("SELECT C.id, C.id_cliente, C.estado, C.title, C.id_mecanico, C.startDate  AS start, C.endDate AS end  FROM citas C WHERE C.id_mecanico=%d AND C.estado != 2 AND C.startDate >= '%s'", $id_mecanico, $startDate);
+            if ($endDate) {
+                $query = sprintf($query . " AND C.startDate <= '%s'", $endDate);
+            }
         
-        $query = sprintf("SELECT C.id, C.id_cliente, C.estado, C.title, C.id_mecanico, C.startDate  AS start, C.endDate AS end  FROM citas C WHERE C.id_mecanico=%d AND C.estado != 2 AND C.startDate >= '%s'", $id_mecanico, $startDate);
-        if ($endDate) {
-            $query = sprintf($query . " AND C.startDate <= '%s'", $endDate);
+
+        
+        }else{
+            $query = sprintf("SELECT C.id, C.id_cliente, C.estado, C.title, C.id_mecanico, C.startDate  AS start, C.endDate AS end  FROM citas C WHERE C.id_mecanico=%d AND C.startDate >= '%s'", $id_mecanico, $startDate);
+            if ($endDate) {
+                $query = sprintf($query . " AND C.startDate <= '%s'", $endDate);
+            }
         }
-        
+       
         $result = [];
         
         $rs = $conn->query($query);
