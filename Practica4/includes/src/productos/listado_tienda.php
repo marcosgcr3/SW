@@ -8,7 +8,7 @@ use es\ucm\fdi\aw\productos\producto;
 
 function listaproductos()
 {
-    $productos = Producto::listaProducto();
+    $productos = producto::listaProducto();
     $contenido = '';
     if (empty($productos)) {
         return sinArticulos();
@@ -23,7 +23,7 @@ function listaproductos()
 
 function listaproductosPrecio($min, $max)
 {
-    $productos = Producto::listaProductoPrecio($min,$max);
+    $productos = producto::listaProductoPrecio($min,$max);
     $contenido = '';
     if (empty($productos)) {
         return sinArticulos();
@@ -38,7 +38,7 @@ function listaproductosPrecio($min, $max)
 
 function listaproductosCategoria($categoria)
 {
-    $productos = Producto::listaProductoCategoria($categoria);
+    $productos = producto::listaProductoCategoria($categoria);
     $contenido = '';
     if (empty($productos)) {
         return sinArticulos();
@@ -53,7 +53,7 @@ function listaproductosCategoria($categoria)
 
 function listaproductosFiltrados($min, $max, $categoria)
 {
-    $productos = Producto::listaproductosFiltrados($min, $max, $categoria);
+    $productos = producto::listaproductosFiltrados($min, $max, $categoria);
     $contenido = '';
     if (empty($productos)) {
         return sinArticulos();

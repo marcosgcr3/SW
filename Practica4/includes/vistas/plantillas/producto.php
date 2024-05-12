@@ -81,11 +81,10 @@ function buildArticulo($producto)
     } else if ($archivado == 0){
         // Botón para añadir al carrito
         $productos .= <<<EOS
-                <form action="addProductoAlCarro.php" method="POST" id="formAddProducto">
-                <input type="hidden" name="id_producto" id="idProducto" value="$id_producto">
-                <input type="hidden" name="nombre" id="nombre" value="$nombre">
-                <input type="number" name="unidades" id="units" min="1" max="$unidades" value="1">
-                <button type="submit" id="bottonCompra" class="botoncarro">Añadir al carrito</button>
+                <form action="addProductoAlCarro.php" method="POST">
+                <input type="hidden" name="id_producto" value="$id">
+                <input type="number" name="unidades" min="1" max="$unidades" value="1">
+                <button type="submit" class="botoncarro">Añadir al carrito</button>
                 </form>
         </div>
 
