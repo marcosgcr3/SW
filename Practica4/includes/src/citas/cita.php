@@ -94,7 +94,7 @@ class Cita implements \JsonSerializable
     $result = null;
     $conn = App::getInstance()->getConexionBd();
     
-    $query = "SELECT COUNT(DISTINCT id_mecanico) AS num_mecanicos FROM citas";
+    $query = "SELECT COUNT(DISTINCT id) AS num_mecanicos FROM usuarios WHERE rol= 'mecanico'";
     
     $result = $conn->query($query);
     if ($result) {
