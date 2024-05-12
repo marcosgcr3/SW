@@ -80,7 +80,7 @@ class Producto
         $rs = $conn->query($query);
         if($rs -> num_rows > 0){
             while($row = $rs->fetch_assoc()){
-                $producto = new Producto($row['nombre'], $row['precio'], $row['archivado'], $row['descripcion'], $row['cantidad'], $row['imagen'], $fila['categoria'], $row['id_producto']);
+                $producto = new Producto($row['nombre'], $row['precio'], $row['archivado'], $row['descripcion'], $row['cantidad'], $row['imagen'], $row['categoria'], $row['id_producto']);
                 array_push($lista_productos, $producto);
             }
             $rs->free();
@@ -123,7 +123,7 @@ class Producto
         
         if($rs -> num_rows > 0){
             while($row = $rs->fetch_assoc()){
-                $producto = new Producto($row['nombre'], $row['precio'], $row['archivado'], $row['descripcion'], $row['unidades'], $row['imagen'], $fila['categoria'], $row['id_producto']);
+                $producto = new Producto($row['nombre'], $row['precio'], $row['archivado'], $row['descripcion'], $row['unidades'], $row['imagen'], $row['categoria'], $row['id_producto']);
                 array_push($lista_productos, $producto);
             }
             $rs->free();
@@ -146,7 +146,7 @@ class Producto
         
         if($rs -> num_rows > 0){
             while($row = $rs->fetch_assoc()){
-                $producto = new Producto($row['nombre'], $row['precio'], $row['archivado'], $row['descripcion'], $row['unidades'], $row['imagen'], $fila['categoria'], $row['id_producto']);
+                $producto = new Producto($row['nombre'], $row['precio'], $row['archivado'], $row['descripcion'], $row['unidades'], $row['imagen'], $row['categoria'], $row['id_producto']);
                 array_push($lista_productos, $producto);
             }
             $rs->free();
@@ -169,7 +169,7 @@ class Producto
         
         if($rs -> num_rows > 0){
             while($row = $rs->fetch_assoc()){
-                $producto = new Producto($row['nombre'], $row['precio'], $row['archivado'], $row['descripcion'], $row['unidades'], $row['imagen'], $fila['categoria'], $row['id_producto']);
+                $producto = new Producto($row['nombre'], $row['precio'], $row['archivado'], $row['descripcion'], $row['unidades'], $row['imagen'], $row['categoria'], $row['id_producto']);
                 array_push($lista_productos, $producto);
             }
             $rs->free();
