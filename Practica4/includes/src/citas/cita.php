@@ -139,7 +139,7 @@ public static function fechasDisponibles(int $id_cliente, DateTime $start, DateT
         $currentDateF->add(new DateInterval('PT1H'));
         $currentDateTimeF = $currentDateF->format(self::MYSQL_DATE_TIME_FORMAT);
         // Contar el número de Citas para el día y hora actual
-        $query = sprintf("SELECT COUNT(*) AS num_Citas FROM citas WHERE '%s' >= startDate AND '%s' <= endDate", $currentDateTime, $currentDateTimeF );
+        $query = sprintf("SELECT COUNT(*) AS num_Citas FROM citas WHERE '%s' >= startDate AND '%s' <= endDate AND estado != 2", $currentDateTime, $currentDateTimeF );
         $rs = $conn->query($query);
         $fila = $rs->fetch_assoc();
         $numCitas = intval($fila['num_Citas']);
