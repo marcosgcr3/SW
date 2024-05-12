@@ -197,7 +197,7 @@ class Producto
     private $categoria;
 
 
-    private function __construct($nombre, $precio, $archivado, $descripcion, $unidades, $imagen,$id_producto = null, $categoria)
+    private function __construct($nombre, $precio, $archivado, $descripcion, $unidades, $imagen, $categoria, $id_producto = null)
     {
         $this->id_producto = $id_producto !== null ? intval($id_producto) : null;
         $this->nombre = $nombre;

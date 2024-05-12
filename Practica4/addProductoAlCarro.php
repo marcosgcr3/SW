@@ -26,7 +26,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             $pedido->anyadirProducto($pedido->getId_pedido(),$id_producto, $unidades);
         }
-        $producto->borrarProductos($id_producto, $unidades);
+        
         header('Location: tienda.php');
     } else{
         header('Location: noUsuarioAviso.php');
