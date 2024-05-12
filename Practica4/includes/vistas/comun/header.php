@@ -61,7 +61,7 @@ use es\ucm\fdi\aw\Aplicacion;
                 
                                 
             }
-            else {
+            else if($app->esCliente()){
                 echo "<li><a href='tienda.php' >TIENDA</a></li>";
             }
 
