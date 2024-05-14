@@ -5,7 +5,7 @@ use es\ucm\fdi\aw\alquilar\vehiculo;
 require_once 'includes/config.php';
 require_once 'includes/src/alquilar/listaAlquileres.php';
 
-require_once 'includes/src/productos/producto.php';
+
 
 $tituloPagina = 'Mis Alquileres';
 
@@ -57,6 +57,7 @@ $contenidoPrincipal = '';
     <div id=lista3 class="productoPedido">
     EOS;
     $contenidoPrincipal .= listaHistorialAlquileres();
+    $contenidoPrincipal .= listaHistorialCancelados();
     $contenidoPrincipal .=<<<EOS
     </div>
     <button class="botonC" onclick="location.href='miCuenta.php'">Volver</button>

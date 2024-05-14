@@ -14,7 +14,7 @@ class FormularioAlquiler extends Formulario{
     private $vehiculo;
     
     public function __construct($matricula) {
-        parent::__construct('formAlquiler', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('alquiler.php')]);
+        parent::__construct('formAlquiler', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('misAlquileres.php')]);
        
         $this->matricula = $matricula;
         $this->vehiculo = Vehiculo::buscaPorMatricula($matricula);

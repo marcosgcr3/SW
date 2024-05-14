@@ -295,7 +295,7 @@ public static function archivarVehiculo($vehiculo){
     $fechaActual = date('Y-m-d');
 
     
-    $query = sprintf("SELECT * FROM alquileres WHERE id_vehiculo = '%s' AND fecha_inicio <= '%s' AND fecha_fin >= '%s' AND archivado= '0'", $vehiculo->id_vehiculo, $fechaActual, $fechaActual);
+    $query = sprintf("SELECT * FROM alquileres WHERE id_vehiculo = '%s' AND fecha_inicio <= '%s' AND fecha_fin >= '%s'", $vehiculo->id_vehiculo, $fechaActual, $fechaActual);
     $rs = $conn->query($query);
     
     if ($rs && $rs->num_rows > 0) {
