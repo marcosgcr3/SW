@@ -18,8 +18,15 @@ $tituloPagina = 'Portada';
         de un servicio de alquiler de automóviles en caso de no disponer de uno o simplemente 
         poder conducir el coche que siempre deseaste. No lo dudes y confía en DRIVECRAFTERS.
     </p>
-    <button class="botonIni" onclick="location.href='entrar.php'">LOGIN/REGISTER</button>
+
+    
     EOS;
+    if(!$app->usuarioLogueado()){
+        $contenidoPrincipal .= <<<EOS
+        <button class="botonIni" onclick="location.href='entrar.php'">LOGIN/REGISTER</button>
+        EOS;
+    }
+    
 
     //$scripts = ['js/index.js']; // Añadir los scripts que se necesiten 
 

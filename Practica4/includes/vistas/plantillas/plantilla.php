@@ -7,8 +7,8 @@ $params['app']->doInclude('/vistas/helpers/plantilla.php');
 $mensajes = mensajesPeticionAnterior();
 $app = Aplicacion::getInstance();
 $ev = isset($params['tipo']) ? $params['tipo'] : '';
-//si es un usuario cliente, el calendiario de eventos NO sera editable
-if($ev == 'eventos.php'){
+//si es un usuario cliente, el calendiario de Citas NO sera editable
+if($ev == 'pedirCita.php'){
   if($app->esCliente()){
     $editable = false;
   }
@@ -87,6 +87,7 @@ else{
         
         events: '<?= $ev ?>',
         editable: <?= $editable ? 'true' : 'false' ?>,
+        weekends: false,
         slotDuration: '01:00:00',
         businessHours: {
           // Días hábiles de lunes a viernes
@@ -97,7 +98,7 @@ else{
         },
         slotMinTime: '09:00', // Hora mínima
         slotMaxTime: '20:00', // Hora máxima
-        color: 'black', // Color de los eventos
+        color: 'black', // Color de los Citas
         //Ajustar formato del horario
         slotLabelInterval: { hours: 1 },
         slotLabelContent: function(slotInfo) {
@@ -109,7 +110,7 @@ else{
           var formattedMinute = minute.toString().padStart(2, '0');
           return formattedHour + ':' + formattedMinute;
         },
-        //Añadir eventos solo de lunes-viernes
+        //Añadir Citas solo de lunes-viernes
         selectAllow: function(selectInfo) {
           // Verificar si es sábado o domingo
           if (selectInfo.start.getDay() === 6 || selectInfo.start.getDay() === 0) {
@@ -117,7 +118,7 @@ else{
           }
           return true; // Permitir selección en los demás días
         },
-        // Ejecutado al cambiar la duración del evento arrastrando
+        // Ejecutado al cambiar la duración del Cita arrastrando
        /* eventResize: function(info) {
           var event = info.event;
           var e = {
@@ -148,7 +149,7 @@ else{
             // Revertir el cambio (no permitir el arrastre a sábado o domingo)
             info.revert();
             // Mostrar un mensaje de alerta indicando que no se puede mover a sábado o domingo
-            alert('No puedes arrastrar eventos a sábado o domingo');
+            alert('No puedes arrastrar Citas a sábado o domingo');
             return;
          }
          //variable date del dia de hoy
@@ -157,7 +158,7 @@ else{
             // Revertir el cambio (no permitir el arrastre a una hora pasada)
             info.revert();
             // Mostrar un mensaje de alerta indicando que no se puede mover a una hora pasada
-            alert('No puedes arrastrar eventos a una hora pasada');
+            alert('No puedes arrastrar Citas a una hora pasada');
             return;
           }
           var e = {
@@ -168,18 +169,23 @@ else{
             "title": event.title
           };
           $.ajax({
-            url: "<?= $ev ?>?idEvento=" + event.id,
+            url: "<?= $ev ?>?idCita=" + event.id,
             contentType: 'application/json; charset=utf-8',
             dataType: "json",
             type: "PUT",
             data: JSON.stringify(e),
-            success: function() {
+            success: function(data) {
               calendar.refetchEvents();
-              alert('Evento actualizado');
+              alert('Cita actualizado');
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown,data) {
+              alert("Status: " + textStatus);
+              alert("Error: " + errorThrown);
+              alert(data);
             }
           }); 
         },
-        // Ejecutado al hacer click sobre un evento
+        // Ejecutado al hacer click sobre un Cita
         eventClick: function(info) {
           var event = info.event;
             if(event.extendedProps.estado == 1){
@@ -188,7 +194,7 @@ else{
                   if (confirm("¿Desea aceptar esta cita?")) {
                   var id = event.id;
                   $.ajax({
-                      url: '<?= $ev ?>?idEvento=' + id,
+                      url: '<?= $ev ?>?idCita=' + id,
                       contentType: 'application/json; charset=utf-8',
                       dataType: "json",
                       type: "ACEPTAR", // Cambiado a POST para aceptar la cita
@@ -206,7 +212,7 @@ else{
                 
                     var id = event.id;
                     $.ajax({
-                        url: '<?= $ev ?>?idEvento=' + id,
+                        url: '<?= $ev ?>?idCita=' + id,
                         contentType: 'application/json; charset=utf-8',
                         dataType: "json",
                         type: "RECHAZAR", // Cambiado a POST para rechazar la cita
@@ -229,24 +235,28 @@ else{
           var start = info.start;
           var end = info.end;
           var allDay = info.allDay;
-          var title = prompt("Introduzca descripción");
-          if (title) {
-            var e = {
-              "start": moment(start).format("Y-MM-DD HH:mm:ss"),
-              "end": moment(end).format("Y-MM-DD HH:mm:ss"),
-              "title": title
-            };
-            $.ajax({
-              url: " <?= $ev ?>",
-              type: "POST",
-              contentType: 'application/json; charset=utf-8',
-              dataType: "json",
-              data: JSON.stringify(e),
-              success: function() {
-                calendar.refetchEvents();
-                alert('Evento añadido');
-              }
-            })
+          //si estamos en MisCitas, no se pueden añadir citas 
+          var esMisCitass = <?= $ev == 'misCitas.php' ? 'true' : 'false' ?>;
+          if(!esMisCitas){
+              var title = prompt("Introduzca descripción");
+            if (title) {
+              var e = {
+                "start": moment(start).format("Y-MM-DD HH:mm:ss"),
+                "end": moment(end).format("Y-MM-DD HH:mm:ss"),
+                "title": title
+              };
+              $.ajax({
+                url: " <?= $ev ?>",
+                type: "POST",
+                contentType: 'application/json; charset=utf-8',
+                dataType: "json",
+                data: JSON.stringify(e),
+                success: function() {
+                  calendar.refetchEvents();
+                  alert('Cita añadido');
+                }
+              })
+            }
           }
         },
       });
